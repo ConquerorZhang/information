@@ -1,0 +1,19 @@
+{
+  "name": "H5CorpInformation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://10.10.6.126:3000/zhangcong/H5CorpInformation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dcloudio/uni-ui": "^1.0.9"
+  }
+}

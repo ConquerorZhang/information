@@ -1,9 +1,21 @@
 import Vue from 'vue'
 import App from './App'
+var request = require('./plugins/request/index');
 
 Vue.config.productionTip = false
-
 App.mpType = 'app'
+
+// 正式库
+// Vue.prototype.$http = request.http;
+// 测试库
+Vue.prototype.$http = request.test;
+
+// 网络请求尝试
+Vue.prototype.$http.get('/user/login', {params: {userName: 'name', password: '123456'}}).then(res => {
+
+}).catch(err => {
+	console.log('测试网络请求');
+})
 
 // 建立桥接示例
 // switch(uni.getSystemInfoSync().platform){

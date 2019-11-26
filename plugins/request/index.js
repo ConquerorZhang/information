@@ -3,7 +3,7 @@ import Request from './request'
 const test = new Request()
 
 test.setConfig((config) => { /* 设置全局配置 */
-  config.baseUrl = 'http://www.aaa.cn'
+  config.baseUrl = 'http://localhost:8080'
   config.header = {
     ...config.header,
     a: 1,
@@ -43,7 +43,7 @@ test.interceptor.response((response) => { /* 请求之后拦截器 */
 const http = new Request()
 
 http.setConfig((config) => { /* 设置全局配置 */
-  config.baseUrl = 'http://www.bbb.cn' /* 根域名不同 */
+  config.baseUrl = 'https://www.baidu.com' /* 根域名不同 */
   config.header = {
     ...config.header,
     a: 1,

@@ -1,21 +1,33 @@
 import Vue from 'vue'
 import App from './App'
-var request = require('./plugins/request/index');
 
 Vue.config.productionTip = false
 App.mpType = 'app'
 
+// 初始传入token和guid
+Vue.config.configDic = {
+	guid: "123456",
+	token: "abcdefg",
+	version: "0.0.1",
+	verCode: "191122",
+	appCode: "corpMall",
+};
+
 // 正式库
-// Vue.prototype.$http = request.http;
+// var http = request.http;
 // 测试库
-Vue.prototype.$http = request.test;
+// var http = request.test;
 
-// 网络请求尝试
-Vue.prototype.$http.get('/user/login', {params: {userName: 'name', password: '123456'}}).then(res => {
-
-}).catch(err => {
-	console.log('测试网络请求');
-})
+// 配置header
+// http.setConfig((config) => { /* config 为默认全局配置*/
+//     config.baseUrl = 'http://www.bbb.cn'; /* 根域名 */
+//     config.header = {
+//         a: 1,
+//         b: 2
+//     }
+//     return config
+// })
+// Vue.prototype.$http = http;
 
 // 建立桥接示例
 // switch(uni.getSystemInfoSync().platform){
@@ -25,7 +37,7 @@ Vue.prototype.$http.get('/user/login', {params: {userName: 'name', password: '12
 //     case 'ios':{
 // 		console.log('运行iOS上')
 		
-// 	    var util = require('./common/util.js');
+// 	    var util = require('./common/bridge.js');
 // 		util.setupWebViewJavascriptBridge(function(bridg
 // 			/* Initialize your app here */
 // 			bridge.registerHandler('JS Echo', function(data, responseCallback) {

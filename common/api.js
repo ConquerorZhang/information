@@ -1,0 +1,79 @@
+//用的测试库API
+import Vue from 'vue'
+
+var request = require('../plugins/request/index');
+const CONFIG = require('./config.js')
+const SIGN = require('./sign.js')
+
+var api_BASE_URL;
+var http;
+if (process.env.NODE_ENV === 'development') {
+	console.log(' 开发环境')
+	api_BASE_URL = CONFIG.testURL;
+	http = request.http;
+} else {
+	console.log('生产环境')
+	api_BASE_URL = CONFIG.httpURL;
+	http = request.test;
+}
+
+const MyAPI = (url, needSubDomain, method, data) => {
+	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url
+
+	let token = Vue.config.configDic.token;
+	let guid = Vue.config.configDic.guid;
+	let nonce = Math.floor(Math.random() * 800000000 + 100000000);
+	let ttl = Date.parse(new Date()) / 1000;
+	let sign = SIGN.sign(url, guid, nonce, ttl, token, data);
+
+	data['guid'] = guid;
+	data['nonce'] = nonce;
+	data['sign'] = sign;
+	data['ttl'] = ttl;
+
+	http.setConfig((config) => { /* config 为默认全局配置*/
+		config.baseUrl = api_BASE_URL; /* 根域名 */
+		config.header = {
+			// guid: guid,
+			// nonce: nonce,
+			// ttl: ttl,
+			// sign: sign,
+			token: token,
+			version: Vue.config.configDic.version,
+			verCode: Vue.config.configDic.verCode,
+			appCode: Vue.config.configDic.appCode,
+		}
+		return config
+	})
+
+	if (method == "GET") {
+		return new Promise((resolve, reject) => {
+				http.get(_url, {
+						params: data
+					})
+					.then(res => {
+						resolve(res)
+					}).catch(err => {
+						reject(err)
+					});
+			});
+	} else if (method == "POST") {
+		return new Promise((resolve, reject) => {
+				http.post(_url, {
+						params: data
+					})
+					.then(res => {
+						resolve(res)
+					}).catch(err => {
+						reject(err)
+					});
+			});
+	}
+}
+
+module.exports = {
+	MyAPI,
+	loginInfo: (data) => {
+		return MyAPI('login/regUserlogin', false, 'GET', data)
+	},
+}

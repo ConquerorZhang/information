@@ -38,7 +38,7 @@ Vue.config.configDic = {
 // 		console.log('运行iOS上')
 		
 // 	    var util = require('./common/bridge.js');
-// 		util.setupWebViewJavascriptBridge(function(bridg
+// 		util.setupWebViewJavascriptBridge(function(bridge) {
 // 			/* Initialize your app here */
 // 			bridge.registerHandler('JS Echo', function(data, responseCallback) {
 // 				console.log("JS Echo called with:", data)

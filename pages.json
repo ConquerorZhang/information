@@ -19,6 +19,12 @@
 				"navigationBarTitleText": "uni-app"
 			}
 		}
+        ,{
+            "path" : "pages/myInfo/myMessage",
+            "style" : {
+				"navigationBarTitleText": "我的消息"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

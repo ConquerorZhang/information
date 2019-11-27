@@ -3,17 +3,17 @@
 		<view class="settingTopBgView">
 			<image class="settingBtn" src="../../static/logo.png"></image>
 			<view class="headBGView">
-				<image class="head" :src='this.data.head'></image>
+				<image class="head" :src='data.head'></image>
 				<view class="nameInfo">
-					<view class="name">{{this.data.name}}</view>
-					<view class="mail">{{this.data.mail}}</view>
-					<view class="phone">{{this.data.phone}}</view>
+					<view class="name">{{data.name}}</view>
+					<view class="mail">{{data.mail}}</view>
+					<view class="phone">{{data.phone}}</view>
 				</view>
 			</view>
 		</view>
 		<view class="myFunctionModel">
-			<view class="content" v-for="item in this.data.myFunctionArr" :key="item.id">
-				<image class="myFunctionImage" :src="item.image" mode="scaleToFill"></image>
+			<view class="content" v-for="(item,index) in data.myFunctionArr" :key="index">
+				<image class="myFunctionImage" :src="item.image" mode="scaleToFill" v-on:click="navigateToFunc(index)"></image>
 				<view class="myFunctionImageLabel">{{item.text}}</view>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 			<view class="interTitle">我的互动</view>
 			<view class="lineView"></view>
 			<view class="interactionPart">
-				<view class="content" v-for="item in this.data.interactionArr" :key="item.id">
+				<view class="content" v-for="(item,index) in data.interactionArr" :key="index">
 					<view class="interactionNumber">{{item.number}}</view>
 					<view class="interactionText">{{item.text}}</view>
 				</view>
@@ -29,7 +29,7 @@
 		</view>
 		<view class="hotTitle">热门收藏</view>
 		<view class="hotListModel">
-			<view class="hotList" v-for="item in this.data.hotList" :key="item.id">
+			<view class="hotList" v-for="item in data.hotList" :key="item.id">
 				<image class="hotListImage" :src="item.image" mode="scaleToFill"></image>
 				<view class="hotListText">
 					<view class="title">{{item.title}}</view>
@@ -111,7 +111,30 @@
 			})
 		},
 		methods: {
-
+			navigateToFunc(index) {
+				switch (index){
+					case 0: {
+						
+						break;
+					}
+					case 1: {
+						
+						break;
+					}
+					case 2: {
+						
+						break;
+					}
+					case 3: {
+						uni.navigateTo({
+							url:"myMessage"
+						})
+						break;
+					}
+					default:
+						break;
+				}
+			}
 		}
 	}
 </script>
@@ -150,7 +173,7 @@
 			display: inline-block;
 			width: 20px;
 			height: 20px;
-			background: url('../../static/logo.png');
+			background-image: url('~@/static/logo.png');
 			background-size: cover;
 			margin-right: 10rpx;
 		}
@@ -164,7 +187,7 @@
 			display: inline-block;
 			width: 20px;
 			height: 20px;
-			background: url('../../static/logo.png');
+			background-image: url('~@/static/logo.png');
 			background-size: cover;
 			margin-right: 10rpx;
 		}
@@ -229,7 +252,7 @@
 		display: inline-block;
 		width: 50rpx;
 		height: 50rpx;
-		background: url('../../static/logo.png');
+		background-image: url('~@/static/logo.png');
 		background-size: cover;
 		margin-right: 10rpx;
 	}

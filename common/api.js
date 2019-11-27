@@ -1,4 +1,3 @@
-//用的测试库API
 import Vue from 'vue'
 
 var request = require('../plugins/request/index');
@@ -48,26 +47,26 @@ const MyAPI = (url, needSubDomain, method, data) => {
 
 	if (method == "GET") {
 		return new Promise((resolve, reject) => {
-				http.get(_url, {
-						params: data
-					})
-					.then(res => {
-						resolve(res)
-					}).catch(err => {
-						reject(err)
-					});
-			});
+			http.get(_url, {
+					params: data
+				})
+				.then(res => {
+					resolve(res)
+				}).catch(err => {
+					reject(err)
+				});
+		});
 	} else if (method == "POST") {
 		return new Promise((resolve, reject) => {
-				http.post(_url, {
-						params: data
-					})
-					.then(res => {
-						resolve(res)
-					}).catch(err => {
-						reject(err)
-					});
-			});
+			http.post(_url, {
+					params: data
+				})
+				.then(res => {
+					resolve(res)
+				}).catch(err => {
+					reject(err)
+				});
+		});
 	}
 }
 

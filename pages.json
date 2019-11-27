@@ -9,7 +9,13 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationStyle":"custom",
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "uni-app"
+			}
+		}, {
+			"path": "pages/interaction/interaction",
+			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "uni-app"
 			}
 		}

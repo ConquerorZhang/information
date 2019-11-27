@@ -1,9 +1,15 @@
 <template>
 	<view class="content">
+		<view :style="{ height: iStatusBarHeight + 'px'}"></view>
+		<view> 状态栏下的文字 </view>
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
 		</view>
+		<uni-list>
+			<uni-list-item title="" note=""></uni-list-item>
+			<uni-list-item title="" note=""></uni-list-item>
+		</uni-list>
 	</view>
 </template>
 
@@ -11,11 +17,14 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello啊啊啊'
+				iStatusBarHeight: 0,
+				title: 'hello'
 			}
 		},
 		onLoad() {
-
+			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight
+			this.iStatusBarHeight = 25;
+			console.log(this.iStatusBarHeight)
 		},
 		methods: {
 

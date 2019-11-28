@@ -43,7 +43,7 @@
 		},
 		data() {
 			return {
-				show: false,
+				show: true,
 				showSync: false,
 				searchVal: ""
 			}

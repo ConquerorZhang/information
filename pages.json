@@ -47,6 +47,12 @@
 				"navigationBarTitleText": "发布问题"
 			}
         }
+        ,{
+            "path" : "pages/interaction/interactionDetail",
+            "style" : {
+				"navigationBarTitleText": "问题详情"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

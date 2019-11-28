@@ -75,7 +75,7 @@
 				titleColor: '#ffffff',
 				filterResult: '',
 				menuList: [{
-						'title': '区域',
+						'title': '全部',
 						'key': 'sort',
 						'isSort': true,
 						'reflexTitle': true,
@@ -245,8 +245,6 @@
 
 				.item-text {
 					display: block;
-					font-size: 20upx;
-					color: $uni-text-color-text;
 				}
 
 				.item-top {
@@ -284,6 +282,14 @@
 								margin-left: 20rpx;
 							}
 						}
+						.name{
+							color: #585858;
+							font-size: 20upx;
+						}
+						.time,.number{
+							color: #8D8D8D;
+							font-size: 15upx;
+						}
 					}
 				}
 
@@ -297,6 +303,16 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					-webkit-box-orient: vertical;
+				}
+				
+				.title{
+					color: #282828;
+					font-size: 27upx;
+				}
+				
+				.brief{
+					color: #525252;
+					font-size: 20upx;
 				}
 
 				.item-image {
@@ -339,7 +355,7 @@
 
 					.bottom-text {
 						font-size: 20upx;
-						color: $uni-text-color-text;
+						color: #525252;
 					}
 
 				}

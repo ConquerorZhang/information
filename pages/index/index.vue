@@ -23,7 +23,6 @@
 		},
 		onLoad() {
 			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight
-			this.iStatusBarHeight = 25;
 			console.log(this.iStatusBarHeight)
 		},
 		methods: {

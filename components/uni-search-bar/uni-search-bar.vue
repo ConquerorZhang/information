@@ -16,7 +16,7 @@
 				<uni-icons color="#999999" class="" size="24" type="clear" />
 			</view>
 		</view>
-		<text @click="cancel" class="uni-searchbar__cancel" v-if="show">取消</text>
+		<!-- <text @click="cancel" class="uni-searchbar__cancel" v-if="show">取消</text> -->
 	</view>
 </template>
 
@@ -158,6 +158,6 @@
 		padding-left: 10px;
 		line-height: $uni-searchbar-height;
 		font-size: 14px;
-		color: $uni-text-color;
+		color: #ffffff;
 	}
 </style>

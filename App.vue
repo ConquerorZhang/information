@@ -9,12 +9,17 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-		onError:function(){
-			console.log("App Error")
+		onError:function(e){
+			console.log(e)
 		}
 	}
 </script>
 
 <style>
-	/*每个页面公共css */
+	.page{
+		width: 100%;
+		height: 100%;
+		position: relative;
+		background-color: #C8C7CC;
+	}
 </style>

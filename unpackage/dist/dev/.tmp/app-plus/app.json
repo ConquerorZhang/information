@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/myInfo/myInfo",
+    "pages/index/index",
+    "pages/interaction/interaction"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "nvueCompiler": "uni-app",
+  "renderer": "auto",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "H5CorpInformation",
+  "compilerVersion": "2.4.2",
+  "usingComponents": {}
+}

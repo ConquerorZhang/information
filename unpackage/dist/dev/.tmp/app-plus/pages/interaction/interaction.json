@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "uni-app",
+  "usingComponents": {
+    "uni-search-bar": "/components/uni-search-bar/uni-search-bar",
+    "wlradio": "/components/wl-group/wl-radio",
+    "intertction-filter": "/components/sl-filter/intertction-filter"
+  }
+}

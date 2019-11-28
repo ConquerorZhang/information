@@ -25,6 +25,28 @@
 				"navigationBarTitleText": "我的消息"
 			}
         }
+        ,{
+            "path" : "pages/interaction/publish",
+            "style" : {
+				"navigationBarTitleText": "发布问题",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+								"text": "发布",
+								"color":"#EB5248",
+								"fontSize":"15"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/interaction/publishSucceed",
+            "style" : {
+				"navigationBarTitleText": "发布问题"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

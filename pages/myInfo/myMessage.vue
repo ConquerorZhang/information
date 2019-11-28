@@ -39,6 +39,7 @@
 
 <style lang="scss">
 	.container {
+		height: 100%;
 		background: #F1F1F1;
 		padding-top: 20rpx;
 

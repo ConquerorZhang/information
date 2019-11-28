@@ -138,7 +138,6 @@
 		},
 		components: {
 			uniSearchBar,
-			wlradio,
 			intertctionFilter
 
 		},

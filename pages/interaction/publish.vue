@@ -231,7 +231,7 @@
 		.uni-uploader__input-box {
 			display: inline-block;
 			position: relative;
-			// margin:10upx;
+			margin:10upx;
 			width: 208upx;
 			height: 208upx;
 			border: 2upx solid #D9D9D9;

@@ -15,8 +15,7 @@
 		}, {
 			"path": "pages/interaction/interaction",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom"
 			}
 		}
         ,{

@@ -1,7 +1,6 @@
 <!-- 互动专区 -->
 <template>
 	<view class="page">
-
 		<view class="head">
 			<view class="statusBar"></view>
 			<view class="top">
@@ -16,12 +15,6 @@
 				</view>
 			</view>
 
-			<!-- <uni-fab :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
-		 @trigger="trigger"></uni-fab> -->
-			<!-- 区分类 -->
-			<!-- <wlradio :labelList="labelList" :name="name" class="sort-radio" :showsorticon="showsorticon_sort" @trigger_sort="trigger_sort"></wlradio> -->
-			<!-- 排序选择 -->
-			<!-- <wlradio :labelList="orderList" :name="name" class="order-radio" :showsorticon="showsorticon_order" @trigger_sort="trigger_sort"></wlradio> -->
 			<view class="filter">
 				<intertction-filter :independence="true" :color="titleColor" :themeColor="themeColor" :menuList.sync="menuList"
 				 @result="result"></intertction-filter>
@@ -66,7 +59,6 @@
 <script>
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
-
 	export default {
 		data() {
 			return {
@@ -139,7 +131,6 @@
 		components: {
 			uniSearchBar,
 			intertctionFilter
-
 		},
 		methods: {
 			trigger_sort(item) {
@@ -171,7 +162,10 @@
 		flex-direction: column;
 
 		.head {
+			position: fixed;
+			top: 0rpx;
 			width: 100%;
+			z-index: 500;
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
@@ -237,6 +231,7 @@
 		}
 
 		.list {
+			margin-top: 190rpx;
 			.item {
 
 				background: #FFFFFF;
@@ -282,11 +277,14 @@
 								margin-left: 20rpx;
 							}
 						}
-						.name{
+
+						.name {
 							color: #585858;
 							font-size: 20upx;
 						}
-						.time,.number{
+
+						.time,
+						.number {
 							color: #8D8D8D;
 							font-size: 15upx;
 						}
@@ -304,13 +302,13 @@
 					text-overflow: ellipsis;
 					-webkit-box-orient: vertical;
 				}
-				
-				.title{
+
+				.title {
 					color: #282828;
 					font-size: 27upx;
 				}
-				
-				.brief{
+
+				.brief {
 					color: #525252;
 					font-size: 20upx;
 				}

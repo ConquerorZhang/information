@@ -163,7 +163,11 @@
 
 		.head {
 			position: fixed;
+<<<<<<< HEAD
 			top: 0rpx;
+=======
+			z-index: 500;
+>>>>>>> 3427972a4e76bb10ff367c973712ed6b92010588
 			width: 100%;
 			z-index: 500;
 			background-image: linear-gradient(#D74819, #C7161E);
@@ -233,7 +237,6 @@
 		.list {
 			margin-top: 190rpx;
 			.item {
-
 				background: #FFFFFF;
 				margin: 20rpx 3rpx;
 				border-radius: 20rpx;

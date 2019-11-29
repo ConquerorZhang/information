@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<image class="successImage" src="../../static/logo.png" mode="scaleToFill"></image>
+		<image class="successImage" src="../../static/interaction/publishSucceed.png" mode="widthFix"></image>
 		<view class="title">发布成功</view>
 		<view class="subTitle">您的问题大家都能看到</view>
 		<view class="checkBtn" @click="checkMyPublish">查看我发布的</view>
@@ -30,8 +30,7 @@
 
 		.successImage {
 			padding: 200rpx 50rpx 25rpx;
-			width: 150rpx;
-			height: 150rpx;
+			width: 260rpx;
 		}
 		.title {
 			font-size: 56rpx;

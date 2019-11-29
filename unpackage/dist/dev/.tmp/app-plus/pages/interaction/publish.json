@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "发布问题",
+  "titleNView": {
+    "buttons": [
+      {
+        "text": "发布",
+        "color": "#EB5248",
+        "fontSize": "15"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

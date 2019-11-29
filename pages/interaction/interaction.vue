@@ -171,6 +171,8 @@
 		flex-direction: column;
 
 		.head {
+			position: fixed;
+			z-index: 500;
 			width: 100%;
 			background-image: linear-gradient(#D74819, #C7161E);
 
@@ -237,8 +239,8 @@
 		}
 
 		.list {
+			margin-top: 190rpx;
 			.item {
-
 				background: #FFFFFF;
 				margin: 20rpx 3rpx;
 				border-radius: 20rpx;

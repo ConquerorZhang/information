@@ -1,7 +1,6 @@
 <template>
 	<view class="totalContent">
-		<view class="settingTopBgView">
-			<image class="settingBtn" src="../../static/logo.png"></image>
+		<view class="settingTopBgView" :style="{background: 'url('+data.settingBGImage +')'}">
 			<view class="headBGView">
 				<image class="head" :src='data.head'></image>
 				<view class="nameInfo">
@@ -9,6 +8,7 @@
 					<view class="mail">{{data.mail}}</view>
 					<view class="phone">{{data.phone}}</view>
 				</view>
+				<image class="settingBtn" :src=data.settingImage></image>
 			</view>
 		</view>
 		<view class="myFunctionModel">
@@ -22,8 +22,9 @@
 			<view class="lineView"></view>
 			<view class="interactionPart">
 				<view class="content" v-for="(item,index) in data.interactionArr" :key="index">
-					<view class="interactionNumber">{{item.number}}</view>
-					<view class="interactionText">{{item.text}}</view>
+					<image class="interactionImage" :src="item.image" mode="scaleToFill" v-on:click="navigateToInter(index)"></image>
+					<view class="interactionText" v-on:click="navigateToInter(index)">{{item.text}}</view>
+					<view class="interactionDot" v-on:click="navigateToInter(index)">{{item.dot}}</view>
 				</view>
 			</view>
 		</view>
@@ -49,10 +50,14 @@
 		data() {
 			return {
 				data: {
+					settingBGImage: "../../static/logo.png",
+					settingImage: "../../static/logo.png",
 					head: "../../static/logo.png",
 					name: "哈哈",
 					mail: "1844@qq.com",
+					mailImage: "../../static/logo.png",
 					phone: "166",
+					phoneImage: "../../static/logo.png",
 					myFunctionArr: [{
 							"image": "../../static/logo.png",
 							"text": "我的收藏"
@@ -71,16 +76,19 @@
 						}
 					],
 					interactionArr: [{
-							"number": "11",
-							"text": "我的发表"
+							"image": "../../static/logo.png",
+							"text": "我的发表",
+							"dot": "10"
 						},
 						{
-							"number": "22",
-							"text": "我的回答"
+							"image": "../../static/logo.png",
+							"text": "我的回答",
+							"dot": "2"
 						},
 						{
-							"number": "33",
-							"text": "回复我的"
+							"image": "../../static/logo.png",
+							"text": "回复我的",
+							"dot": "99"
 						},
 					],
 					hotImage: "../../static/logo.png",
@@ -102,8 +110,8 @@
 		},
 		onLoad() {
 			API.loginInfo({
-					userName: 'name',
-					password: '123456'
+				userName: 'name',
+				password: '123456'
 			}).then(res => {
 				console.log(res);
 			}).catch(err => {
@@ -112,25 +120,52 @@
 		},
 		methods: {
 			navigateToFunc(index) {
-				switch (index){
-					case 0: {
-						
+				switch (index) {
+					case 0:
+						{
+
+							break;
+						}
+					case 1:
+						{
+
+							break;
+						}
+					case 2:
+						{
+
+							break;
+						}
+					case 3:
+						{
+							uni.navigateTo({
+								url: "myMessage"
+							})
+							break;
+						}
+					default:
 						break;
-					}
-					case 1: {
-						
-						break;
-					}
-					case 2: {
-						
-						break;
-					}
-					case 3: {
-						uni.navigateTo({
-							url:"myMessage"
-						})
-						break;
-					}
+				}
+			},
+			navigateToInter(index) {
+				switch (index) {
+					case 0:
+						{
+				
+							break;
+						}
+					case 1:
+						{
+				
+							break;
+						}
+					case 2:
+						{
+							uni.navigateTo({
+								url: "myMessage"
+							})
+							break;
+						}
 					default:
 						break;
 				}
@@ -141,26 +176,31 @@
 
 <style lang="scss">
 	.totalContent {
-		background: #C0C0C0;
+		background: #feffff;
 	}
 
 	.settingTopBgView {
 		background: #999999;
-
-		.settingBtn {
-			margin: 30rpx 20rpx 30rpx 680rpx;
-			width: 50rpx;
-			height: 50rpx;
-		}
+		padding-top: 80rpx;
+		padding-bottom: 100rpx;
 
 		.headBGView {
 			display: flex;
 
 			.head {
-				margin: 0 20rpx 50rpx;
+				margin: 0 20rpx;
 				width: 140rpx;
 				height: 140rpx;
 				border-radius: 70rpx;
+			}
+
+			.nameInfo {
+				width: 500rpx;
+			}
+
+			.settingBtn {
+				width: 50rpx;
+				height: 50rpx;
 			}
 		}
 
@@ -196,11 +236,15 @@
 	.myFunctionModel {
 		display: flex;
 		justify-content: space-between;
+		margin: -60rpx 20rpx 0;
+		border-radius: 40rpx;
 		height: 220rpx;
 		padding: 20rpx 20rpx;
 		background: #FFFFFF;
+		border: 2px solid #f0f1f2;
 
 		.content {
+			position: relative;
 			margin-top: 30rpx;
 			text-align: center;
 
@@ -220,6 +264,7 @@
 		height: 250rpx;
 		border-radius: 40rpx;
 		margin: 20rpx;
+		border: 2px solid #f0f1f2;
 
 		.interTitle {
 			padding: 20rpx 0 20rpx 20rpx;
@@ -237,6 +282,26 @@
 			height: 220rpx;
 			padding: 20rpx 20rpx;
 			color: $uni-text-color-placeholder;
+			
+			.content {
+				position: relative;
+				.interactionImage {
+					width: 50rpx;
+					height: 50rpx;
+				}
+				.interactionDot {
+					color: white;
+					background: red;
+					width: 34rpx;
+					height: 34rpx;
+					line-height: 34rpx;
+					border-radius: 17rpx;
+					font-size: 22rpx;
+					position: absolute;
+					right: 15rpx;
+					top: -10rpx;
+				}
+			}
 		}
 	}
 
@@ -263,6 +328,7 @@
 			background: #FFFFFF;
 			border-radius: 40rpx;
 			margin: 20rpx;
+			border: 2px solid #f0f1f2;
 
 			.hotListImage {
 				padding: 20rpx;

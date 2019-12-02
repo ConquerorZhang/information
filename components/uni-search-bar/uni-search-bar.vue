@@ -12,7 +12,7 @@
 			<input v-if="show" :focus="showSync" :placeholder="placeholder" @confirm="confirm" class="uni-searchbar__box-search-input"
 			 confirm-type="search" type="text" v-model="searchVal" />
 			<text v-else class="uni-searchbar__text-placeholder">{{ placeholder }}</text>
-			<view v-if="show && (clearButton==='always'||clearButton==='auto'&&searchVal!=='')" class="uni-searchbar__box-icon-clear">
+			<view v-if="show && (clearButton==='always'||(clearButton==='auto'&&searchVal!==''))" class="uni-searchbar__box-icon-clear" @click.stop="clear">
 				<uni-icons color="#999999" class="" size="24" type="clear" />
 			</view>
 		</view>
@@ -57,13 +57,15 @@
 		},
 		methods: {
 			searchClick() {
-				this.searchVal = ""
-				this.show = true;
+				// this.searchVal = ""
+				// this.show = true;
+				console.log('searchClick');
 				this.$nextTick(()=>{
 					this.showSync = true;
 				})
 			},
 			clear() {
+				console.log('clear');
 				this.searchVal = ""
 			},
 			cancel() {

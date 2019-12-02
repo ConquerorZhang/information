@@ -25,16 +25,17 @@
 
 			<!-- 底部 -->
 			<view class="bottom">
-				<view class="bottom-left">
+				<view class="bottom-left" @click="niubi('topicid')">
 					<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
 					<text class="bottom-text">520</text>
 				</view>
-				<view class="bottom-right">
+				<view class="bottom-right" @click="topiccomment('topicid')">
 					<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
 					<text class="bottom-text">520</text>
 				</view>
 			</view>
 		</view>
+		<!-- 评论 -->
 		<view class="comment-model">
 			<view class="commentTitle">用户评论</view>
 			<view class="commentBlock" v-for="(item,index) in commentList" :key="index">
@@ -68,7 +69,9 @@
 					<image class="image popcontent" src="/static/collection_success.png" mode="scaleToFill" />
 					<text class="pop-view-success popcontent">收藏成功</text>
 					<text class="pop-view-success-text popcontent">通过我的收藏里进行查看</text>
-					<text class="pop_bt popcontent">立即查看</text>
+					<view class="pop_bt popcontent">
+					<button class="pop_btn" @click="lookCollection">立即查看</button>
+					</view>
 				</view>
 		
 		
@@ -190,6 +193,20 @@
 				console.log("收藏成功");
 				this.togglePopup('center', 'image');
 			},
+			// 收藏成功后立即查看
+			lookCollection(o){
+				this.showimage = false;
+				
+			},
+			// 评论
+			topiccomment(topicid){
+				console.log(topicid);
+				
+			},
+			// 点赞
+			niubi(topicid){
+				console.log(topicid);
+			},
 			togglePopup(type, open) {
 				this.type = type
 				this['show' + open] = true
@@ -283,12 +300,13 @@
 		.popcontent {
 			width: 70vw;
 			background-color: #FFFFFF;
+			border: 0;
 		}
 	
 		.image {
 			width: 70vw;
 			height: 19vh;
-			background: #007AFF;
+			background: #FFFFFF;
 		}
 	
 		.pop-view-success {
@@ -299,6 +317,7 @@
 			font-weight: bold;
 			justify-content: center;
 			align-items: center;
+			border: 0;
 	
 		}
 	
@@ -317,6 +336,18 @@
 			padding: 10px 0 15px 0;
 			justify-content: center;
 			align-items: center;
+			border: 0;
+			.pop_btn{
+				display: flex;
+				height: 70upx;
+				width: 50%;
+				align-items: center;
+				justify-content: center;
+				color: #FFFFFF;
+				font-size: $uni-font-size-article-brief;
+				background-image: linear-gradient(left,#D74819, #C7161E);
+				border-radius: 40upx;
+			}
 		}
 	}
 	
@@ -372,13 +403,13 @@
 
 					.name {
 						color: #585858;
-						font-size: 20upx;
+						font-size: $uni-font-size-name;
 					}
 
 					.time,
 					.number {
 						color: #8D8D8D;
-						font-size: 15upx;
+						font-size: $uni-font-size-time;
 					}
 				}
 
@@ -420,12 +451,12 @@
 
 			.title {
 				color: #282828;
-				font-size: 27upx;
+				font-size: $uni-font-size-article-title;
 			}
 
 			.brief {
 				color: #525252;
-				font-size: 20upx;
+				font-size: $uni-font-size-article-brief;
 			}
 
 			.item-image {
@@ -463,7 +494,7 @@
 				.bottom-icon-right {
 					width: 25rpx;
 					height: 25rpx;
-					padding: $uni-spacing-row-base $uni-spacing-row-base;
+					padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
 				}
 
 				.bottom-text {

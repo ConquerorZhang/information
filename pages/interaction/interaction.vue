@@ -42,11 +42,11 @@
 				</view>
 				<!-- 底部 -->
 				<view class="bottom">
-					<view class="bottom-left">
+					<view class="bottom-left" @click.stop="niubi('topicid')">
 						<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
 						<text class="bottom-text">520</text>
 					</view>
-					<view class="bottom-right">
+					<view class="bottom-right" @click.stop="topiccomment('topicid')">
 						<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
 						<text class="bottom-text">520</text>
 					</view>
@@ -133,8 +133,18 @@
 			intertctionFilter
 		},
 		methods: {
-			trigger_sort(item) {
-				console.log("value的值为：" + item.value);
+			// 评论
+			topiccomment(topicid){
+				console.log(topicid);
+				
+			},
+			// 点赞
+			niubi(topicid){
+				console.log(topicid);
+			},
+			
+			// trigger_sort(item) {
+				// console.log("value的值为：" + item.value);
 				/* this.content[e.index].active = !e.item.active;
 				uni.showModal({
 					title: '提示',
@@ -147,17 +157,23 @@
 						}
 					}
 				}); */
-			},
+			// },
+			//筛选菜单返回结果
 			result(val) {
 				console.log('filter_result:' + JSON.stringify(val));
 				this.filterResult = JSON.stringify(val, null, 2)
 			},
+			//页面跳转到详情
 			navToDetailPage(item) {
 				
 				uni.navigateTo({
 					url:'/pages/interaction/interactionDetail'
 				})
 
+			},
+			//键盘触发搜索
+			search(key){
+				console.log(key);
 			}
 		}
 	}
@@ -287,13 +303,13 @@
 
 						.name {
 							color: #585858;
-							font-size: 20upx;
+							font-size: $uni-font-size-name;
 						}
 
 						.time,
 						.number {
 							color: #8D8D8D;
-							font-size: 15upx;
+							font-size: $uni-font-size-time;
 						}
 					}
 				}
@@ -312,12 +328,12 @@
 
 				.title {
 					color: #282828;
-					font-size: 27upx;
+					font-size: $uni-font-size-article-title;
 				}
 
 				.brief {
 					color: #525252;
-					font-size: 20upx;
+					font-size: $uni-font-size-article-brief;
 				}
 
 				.item-image {
@@ -355,7 +371,7 @@
 					.bottom-icon-right {
 						width: 25rpx;
 						height: 25rpx;
-						padding: $uni-spacing-row-base $uni-spacing-row-base;
+						padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
 					}
 
 					.bottom-text {

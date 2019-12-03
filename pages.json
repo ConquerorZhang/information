@@ -58,6 +58,32 @@
 				"navigationBarTitleText": "消息详情"
 			}
         }
+        ,{
+            "path" : "pages/myInfo/browseHistory",
+            "style" : {
+				"navigationBarTitleText": "浏览历史",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+								"text": "清空",
+								"color":"#575859",
+								"fontSize":"15"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/myInfo/myPublish",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/myInfo/myCollection",
+            "style" : {
+				"navigationBarTitleText": "我的收藏"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

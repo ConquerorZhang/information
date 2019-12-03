@@ -93,13 +93,12 @@
 			.subTitle {
 				font-size: 30rpx;
 				color: #999999;
-				padding: 20rpx 0;
+				margin: 10rpx 0;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 2;
-				max-height: 70rpx;
 			}
 
 			.time {

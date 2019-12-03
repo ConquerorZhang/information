@@ -21,10 +21,10 @@
 			<view class="interTitle">我的互动</view>
 			<view class="lineView"></view>
 			<view class="interactionPart">
-				<view class="content" v-for="(item,index) in data.interactionArr" :key="index">
-					<image class="interactionImage" :src="item.image" mode="scaleToFill" v-on:click="navigateToInter(index)"></image>
-					<view class="interactionText" v-on:click="navigateToInter(index)">{{item.text}}</view>
-					<view class="interactionDot" v-on:click="navigateToInter(index)">{{item.dot}}</view>
+				<view class="content" v-for="(item,index) in data.interactionArr" :key="index" v-on:click="navigateToInter(index)">
+					<image class="interactionImage" :src="item.image" mode="scaleToFill"></image>
+					<view class="interactionText">{{item.text}}</view>
+					<view class="interactionDot">{{item.dot}}</view>
 				</view>
 			</view>
 		</view>
@@ -50,7 +50,7 @@
 		data() {
 			return {
 				data: {
-					settingBGImage: "../../static/logo.png",
+					settingBGImage: "",
 					settingImage: "../../static/logo.png",
 					head: "../../static/logo.png",
 					name: "哈哈",
@@ -77,7 +77,7 @@
 					],
 					interactionArr: [{
 							"image": "../../static/logo.png",
-							"text": "我的发表",
+							"text": "我的发布",
 							"dot": "10"
 						},
 						{
@@ -123,7 +123,9 @@
 				switch (index) {
 					case 0:
 						{
-
+							uni.navigateTo({
+								url: "myCollection"
+							})
 							break;
 						}
 					case 1:
@@ -133,7 +135,9 @@
 						}
 					case 2:
 						{
-
+							uni.navigateTo({
+								url: "browseHistory"
+							})
 							break;
 						}
 					case 3:
@@ -151,18 +155,22 @@
 				switch (index) {
 					case 0:
 						{
-				
+							uni.navigateTo({
+								url: "myPublish?index=0"
+							})
 							break;
 						}
 					case 1:
 						{
-				
+							uni.navigateTo({
+								url: "myPublish?index=1"
+							})
 							break;
 						}
 					case 2:
 						{
 							uni.navigateTo({
-								url: "myMessage"
+								url: "myPublish?index=2"
 							})
 							break;
 						}
@@ -282,13 +290,15 @@
 			height: 220rpx;
 			padding: 20rpx 20rpx;
 			color: $uni-text-color-placeholder;
-			
+
 			.content {
 				position: relative;
+
 				.interactionImage {
 					width: 50rpx;
 					height: 50rpx;
 				}
+
 				.interactionDot {
 					color: white;
 					background: red;
@@ -296,7 +306,8 @@
 					height: 34rpx;
 					line-height: 34rpx;
 					border-radius: 17rpx;
-					font-size: 22rpx;
+					font-size: 25rpx;
+					font-weight: 900;
 					position: absolute;
 					right: 15rpx;
 					top: -10rpx;

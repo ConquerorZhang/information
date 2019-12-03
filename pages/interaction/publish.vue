@@ -41,6 +41,7 @@
 				titleText:"",
 				contentText:"",
 				imageList:[],
+				submitImageIdList:[],
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
@@ -88,7 +89,24 @@
 					sizeType: sizeType[this.sizeTypeIndex],
 					count: this.imageList.length + this.count[this.countIndex] > 6 ? 6 - this.imageList.length : this.count[this.countIndex],
 					success: (res) => {
-						var tmpPicList = this.imageList.concat(res.tempFilePaths);
+						const tempFilePaths = res.tempFilePaths;
+						// 上传图片操作
+						for (var i = 0; i < tempFilePaths.length; i++) {
+							uni.uploadFile({
+							            url: 'http://2e798028u0.zicp.vip:30384/file/fileupload?type=image', 
+							            filePath: tempFilePaths[i],
+							            name: 'file',
+							            formData: {
+							                'image': 'publishImage'
+							            },
+							            success: (uploadFileRes) => {
+							                console.log(uploadFileRes.data);
+											this.submitImageIdList.push(uploadFileRes.data.fileid);
+							            }
+							        });
+						}
+						
+						var tmpPicList = this.imageList.concat(tempFilePaths);
 						this.imageList = tmpPicList.length > 6 ? tmpPicList.splice(0,6) : tmpPicList;
 					},
 					fail: (err) => {

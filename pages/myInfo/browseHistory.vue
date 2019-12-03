@@ -7,108 +7,50 @@
         </scroll-view>
         <swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
             <swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
-				<!-- #ifdef APP-NVUE -->
-				<list class="scroll-v list" enableBackToTop="true" scroll-y loadmoreoffset="15" @loadmore="loadMore(index1)">
-					<refresh class="refresh" @refresh="onrefresh(index1)" @pullingdown="onpullingdown" :display="tab.refreshing ? 'show' : 'hide'">
-						<div class="refresh-view">
-							<image class="refresh-icon" :src="refreshIcon" :style="{width: (tab.refreshing || pulling) ? 0: '30px'}" :class="{'refresh-icon-active': tab.refreshFlag}"></image>
-							<loading-indicator class="loading-icon" animating="true" v-if="tab.refreshing"></loading-indicator>
-							<text class="loading-text">{{tab.refreshText}}</text>
-						</div>
-					</refresh>
-					<cell class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
-						<text class="loading-more-text">{{tab.loadingText}}</text>
-					</cell>
-				</list>
-				<!-- #endif -->
-				<!-- #ifndef APP-NVUE -->
-				<scroll-view class="scroll-v list" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
-					
+				<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
+					<view class="dayPart" v-for="(item,index) in tab.data" :key="index">
+						<view class="time">{{item.time}}</view>
+						<view class="detailPart">
+							<block v-for="(detail,detailIndex) in item.list" :key="detailIndex">
+								<view class="singleDetail">
+									<view class="detailRed"></view>
+									<view class="detailText">
+										<view class="title">{{detail.title}}</view>
+										<view class="subTitle">{{detail.subtitle}}</view>
+									</view>
+								</view>
+							</block>
+						</view>
+					</view>
 					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
 						<text class="loading-more-text">{{tab.loadingText}}</text>
 					</view>
 				</scroll-view>
-				<!-- #endif -->
             </swiper-item>
         </swiper>
     </view>
 </template>
 <script>
-
-    // 缓存每页最多
-    const MAX_CACHE_DATA = 100;
-    // 缓存页签数量
-    const MAX_CACHE_PAGE = 3;
-
-    const newsData = {
-        data0: {
-            "datetime": "40分钟前",
-            "article_type": 0,
-            "title": "uni-app行业峰会频频亮相，开发者反响热烈!",
-            "source": "DCloud",
-            "comment_count": 639
-        },
-        data1: {
-            "datetime": "一天前",
-            "article_type": 1,
-            "title": "DCloud完成B2轮融资，uni-app震撼发布!",
-            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
-            "source": "DCloud",
-            "comment_count": 11395
-        },
-        data2: {
-            "datetime": "一天前",
-            "article_type": 2,
-            "title": "中国技术界小奇迹：HBuilder开发者突破200万",
-            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
-            "source": "DCloud",
-            "comment_count": 11395
-        },
-        data3: {
-            "article_type": 3,
-            "image_list": [{
-                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
-                "width": 563,
-                "height": 316
-            }, {
-                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
-                "width": 641,
-                "height": 360
-            }, {
-                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
-                "width": 640,
-                "height": 360
-            }],
-            "datetime": "5分钟前",
-            "title": "uni-app 支持使用 npm 安装第三方包，生态更趋丰富",
-            "source": "DCloud",
-            "comment_count": 11
-        },
-        data4: {
-            "datetime": "2小时前",
-            "article_type": 4,
-            "title": "uni-app 支持原生小程序自定义组件，更开放、更自由",
-            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
-            "source": "DCloud",
-            "comment_count": 69
-        }
-    };
+	// 缓存每页最多
+	const MAX_CACHE_DATA = 100;
+	// 缓存页签数量
+	const MAX_CACHE_PAGE = 3;
 
     export default {
         data() {
             return {
                 newsList: [],
-                cacheTab: [],
+				cacheTab: [],
                 tabIndex: 0,
                 tabBars: [{
-                    name: '关注',
-                    id: 'guanzhu'
+                    name: '全部',
+                    id: 'quanbu'
                 }, {
-                    name: '推荐',
-                    id: 'tuijian'
+                    name: '产品',
+                    id: 'chanpin'
                 }, {
-                    name: '体育',
-                    id: 'tiyu'
+                    name: '动态',
+                    id: 'dongtai'
                 }],
                 scrollInto: "",
                 showTips: false,
@@ -132,16 +74,31 @@
         },
         methods: {
 			onNavigationBarButtonTap(e) {
-			    console.log(e);
+			    uni.showModal({
+			        content: '是否清空浏览历史？',
+			        success: (res) => {
+			            if (res.confirm) {
+							console.log(this.tabIndex);
+			                this.newsList[this.tabIndex].data = [];
+							// todozcc 提交删除接口
+							
+			            }
+			        }
+			    })
 			},
             getList(index) {
+				console.log(index);
                 let activeTab = this.newsList[index];
                 let list = [];
-                for (let i = 1; i <= 10; i++) {
-                    let item = Object.assign({}, newsData['data' + Math.floor(Math.random() * 5)]);
-                    item.id = this.newGuid();
-                    list.push(item);
-                }
+				// 制造的假数据
+				let tmpList = [[{'time':'今天','list':[{title:'中国电科相关资料',subtitle:'产品'},{title:'中国电科相关资料',subtitle:'动态'}]},
+								{'time':'2011-2-2','list':[{title:'哈哈哈哈哈',subtitle:'产品'},{title:'中国电科相关资料',subtitle:'动态'}]},
+								{'time':'2020-2-2','list':[{title:'中国电科相关资料',subtitle:'动态'}]},
+								{'time':'2030-2-2','list':[{title:'哈哈哈哈哈',subtitle:'产品'},{title:'中国电科相关资料',subtitle:'动态'}]},
+								{'time':'2040-2-2','list':[{title:'哈哈哈哈哈',subtitle:'产品'},{title:'中国电科相关资料',subtitle:'动态'}]}],
+				[{'time':'2011-2-2','list':[{title:'中国电科产品测试资料',subtitle:'产品'}]}],
+				[{'time':'2011-2-2','list':[{title:'中国电科动态测试资料',subtitle:'动态'}]}]];
+				list = tmpList[index];
                 activeTab.data = activeTab.data.concat(list);
             },
             goDetail(e) {
@@ -156,16 +113,6 @@
                     this.navigateFlag = false;
                 }, 200)
             },
-            close(index1, index2) {
-                uni.showModal({
-                    content: '是否删除本条信息？',
-                    success: (res) => {
-                        if (res.confirm) {
-                            this.newsList[index1].data.splice(index2, 1);
-                        }
-                    }
-                })
-            },
             loadMore(e) {
                 setTimeout(() => {
                     this.getList(this.tabIndex);
@@ -173,7 +120,7 @@
             },
             ontabtap(e) {
                 let index = e.target.dataset.current || e.currentTarget.dataset.current;
-                this.switchTab(index);
+				this.switchTab(index);
             },
             ontabchange(e) {
                 let index = e.target.current || e.detail.current;
@@ -214,6 +161,7 @@
             },
             refreshData() {},
             onrefresh(e) {
+				console.log('下拉刷新');
                 var tab = this.newsList[this.tabIndex];
                 if (!tab.refreshFlag) {
                     return;
@@ -244,40 +192,35 @@
                     tab.refreshFlag = false;
                     tab.refreshText = "下拉可以刷新";
                 }
-            },
-            newGuid() {
-                let s4 = function() {
-                    return (65536 * (1 + Math.random()) | 0).toString(16).substring(1);
-                }
-                return (s4() + s4() + "-" + s4() + "-4" + s4().substr(0, 3) + "-" + s4() + "-" + s4() + s4() + s4()).toUpperCase();
             }
         }
     }
 </script>
 
-<style>
+<style lang="scss">
     /* #ifndef APP-PLUS */
     page {
         width: 100%;
         min-height: 100%;
         display: flex;
     }
-
     /* #endif */
 
     .tabs {
         flex: 1;
         flex-direction: column;
         overflow: hidden;
-        background-color: #ffffff;
-        /* #ifdef MP-ALIPAY || MP-BAIDU */
-        height: 100vh;
-        /* #endif */
+        background-color: #eeeff0;
     }
+	
+	.tab-bar {
+		background: #FFFFFF;
+	}
 
     .scroll-h {
         width: 750upx;
         height: 80upx;
+		background: #FFFFFF;
         flex-direction: row;
         /* #ifndef APP-PLUS */
         white-space: nowrap;
@@ -286,11 +229,6 @@
         /* border-color: #cccccc;
 		border-bottom-style: solid;
 		border-bottom-width: 1px; */
-    }
-
-    .line-h {
-        height: 1upx;
-        background-color: #cccccc;
     }
 
     .uni-tab-item {
@@ -321,6 +259,7 @@
 
     .swiper-box {
         flex: 1;
+		height: 100%;
     }
 
     .swiper-item {
@@ -330,68 +269,48 @@
 
     .scroll-v {
         flex: 1;
+        width: 750upx;
+		height: 95%;
         /* #ifndef MP-ALIPAY */
         flex-direction: column;
         /* #endif */
-        width: 750upx;
     }
-
-    .update-tips {
-        position: absolute;
-        left: 0;
-        top: 41px;
-        right: 0;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        background-color: #FDDD9B;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
-    .update-tips-text {
-        font-size: 14px;
-        color: #ffffff;
-    }
-
-    .refresh {
-        width: 750upx;
-        height: 64px;
-        justify-content: center;
-    }
-
-    .refresh-view {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: center;
-    }
-
-	.refresh-icon {
-		width: 30px;
-		height: 30px;
-		transition-duration: .5s;
-		transition-property: transform;
-		transform: rotate(0deg);
-		transform-origin: 15px 15px;
+	
+	.dayPart {
+		margin: 20rpx;
+		.time {
+			color: #8e8282;
+			margin-bottom: 10rpx;
+		}
+		.detailPart {
+			border-radius: 15rpx;
+			background: #FFFFFF;
+			.singleDetail {
+				display: flex;
+				align-items: flex-start;
+				padding: 20rpx;
+				border-bottom: 1px solid #f0f1f2;
+				.detailRed {
+					background: #da2a37;
+					width: 16rpx;
+					height: 16rpx;
+					border-radius: 8rpx;
+					margin-top: 20rpx;
+					margin-left: 20rpx;
+					margin-right: 20rpx;
+				}
+				.detailText {
+					
+					.title {
+						color: #272829;
+					}
+					.subTitle {
+						color: #909192;
+					}
+				}
+			}
+		}
 	}
-
-	.refresh-icon-active {
-		transform: rotate(180deg);
-	}
-
-	.loading-icon {
-		width: 20px;
-		height: 20px;
-		margin-right: 5px;
-		color: #999999;
-	}
-
-    .loading-text {
-        margin-left: 2px;
-        font-size: 16px;
-        color: #999999;
-    }
 
     .loading-more {
         align-items: center;

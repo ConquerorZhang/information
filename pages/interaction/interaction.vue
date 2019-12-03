@@ -169,7 +169,6 @@
 				uni.navigateTo({
 					url:'/pages/interaction/interactionDetail'
 				})
-
 			},
 			//键盘触发搜索
 			search(key){

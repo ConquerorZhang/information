@@ -154,8 +154,8 @@
 			return {
 				down: 'sl-down',
 				up: 'sl-up',
-				arrow_down:'../../static/arrow_down.png',
-				arrow_order:'../../static/arrow_sort.png',
+				arrow_down:'../../static/arrow_down_black.png',
+				arrow_order:'../../static/arrow_sort_black.png',
 				tabHeight: 60,
 				statusList: [],
 				selectedIndex: '',
@@ -285,8 +285,8 @@
 	@import 'iconfont/iconfont.css';
 
 	.select-tab {
-		/* border-bottom: #C7161E 1px solid; */
-		/* background-color: #C7161E; */
+		border-bottom: #ffffff 1px solid;
+		background-color: #ffffff;
 		padding-bottom: 1px;
 		display: flex;
 		width: 100%;

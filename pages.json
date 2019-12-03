@@ -77,7 +77,9 @@
         }
         ,{
             "path" : "pages/myInfo/myPublish",
-            "style" : {}
+            "style" : {
+				"navigationStyle": "custom"
+			}
         }
         ,{
             "path" : "pages/myInfo/myCollection",

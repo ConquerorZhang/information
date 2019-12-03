@@ -16,10 +16,10 @@
 </script>
 
 <style>
-	.page{
+	 .page {
 		width: 100%;
 		height: 100%;
 		position: relative;
-		background-color: #C8C7CC;
+		background-color: #F1F1F1;
 	}
 </style>

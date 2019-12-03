@@ -370,16 +370,10 @@
 				flex-wrap: nowrap;
 				align-items: center;
 
-				.icon_head {
-					width: 50rpx;
-					height: 50rpx;
-					margin-left: 15rpx;
-					padding: $uni-spacing-row-base $uni-spacing-row-base;
-				}
-
 				.circleicon {
 					border-radius: 30px;
 					padding: 15rpx;
+					margin: 20rpx;
 					width: 50rpx;
 					height: 50rpx;
 					background: url("../../static/logo.png") no-repeat center;

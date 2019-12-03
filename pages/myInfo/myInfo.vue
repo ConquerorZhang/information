@@ -194,7 +194,6 @@
 
 		.headBGView {
 			display: flex;
-
 			.head {
 				margin: 0 20rpx;
 				width: 140rpx;

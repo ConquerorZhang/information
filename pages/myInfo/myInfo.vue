@@ -271,8 +271,8 @@
 		}
 
 		.lineView {
-			background: #C0C0C0;
-			height: 0.5rpx;
+			background: #DDDDDD;
+			height: 0.5px;
 		}
 
 		.interactionPart {

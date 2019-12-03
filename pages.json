@@ -52,6 +52,12 @@
 				"navigationBarTitleText": "问题详情"
 			}
         }
+        ,{
+            "path" : "pages/myInfo/MessageDetail",
+            "style" : {
+				"navigationBarTitleText": "消息详情"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

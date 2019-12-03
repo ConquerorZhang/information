@@ -1,6 +1,9 @@
 <template>
 	<view class="container">
-		<view class="message" v-for="(item,index) in dataList" :key="index">
+		<view class="empty" v-if="dataList.length < 1">
+			<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+		</view>
+		<view class="message" v-for="(item,index) in dataList" :key="index" v-on:click="navigateToDetail(item.id)">
 			<view class="titleRow">
 				<text class="title">{{item.title}}</text>
 				<text :class="item.state == 1 ? 'read' : 'unread'">{{item.state == 1 ? "已读" : "未读"}}</text>
@@ -21,27 +24,45 @@
 					subtitle: "哈哈哈后hi哦吼吼交流交流了解了哈哈哈后hi哦吼吼交流交流了解了哈哈哈后hi哦吼吼交流交流了解了哈哈哈后hi哦吼吼交流交流了解了哈哈哈后hi哦吼吼交流交流了解了哈哈哈后hi哦吼吼交流交流了解了",
 					state: '1',
 					image: '',
-					time: '2019-11-22'
+					time: '2019-11-22',
+					id:'1'
 				}, {
 					title: "叫姐姐斤斤计较斤斤计较",
 					subtitle: "哈哈哈后hi哦吼吼交流交流了解了",
 					state: '0',
 					image: '',
-					time: '2019-11-22'
+					time: '2019-11-22',
+					id:'2'
 				}]
 			}
 		},
 		methods: {
-
+			navigateToDetail(e) {
+				uni.navigateTo({
+					url:"MessageDetail?id="+e
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.container {
-		height: 100%;
+	page {
 		background: #F1F1F1;
+	}
+
+	.container {
+		position: relative;
+		height: 100%;
 		padding-top: 20rpx;
+
+		.empty {
+			text-align: center;
+			.emptyImage {
+				margin-top: 400rpx;
+				width: 300rpx;
+			}
+		}
 
 		.message {
 			margin: 0 20rpx 20rpx;

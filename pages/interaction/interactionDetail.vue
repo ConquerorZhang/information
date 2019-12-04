@@ -371,12 +371,11 @@
 				align-items: center;
 
 				.circleicon {
-					border-radius: 30px;
-					padding: 15rpx;
+					border-radius: 42.5rpx;
 					margin: 20rpx;
-					width: 50rpx;
-					height: 50rpx;
-					background: url("../../static/logo.png") no-repeat center;
+					width: 85rpx;
+					height: 85rpx;
+					// background: url("../../static/logo.png") no-repeat center;
 					background-size: 50px;
 				}
 

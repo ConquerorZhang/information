@@ -31,17 +31,17 @@
 		<scroll-view scroll-y="true" class="list">
 			<!-- 列表item  我的发布-->
 			<view class="item-one" v-if="data.type=='1'">
-				<view class="item" v-for="(item, index) in data.itemlist" :key="index" @click="navToDetailPage(item)">
-					<view class="item-top">
-						<image class="icon_head circleicon" mode="aspectFill" src="../../static/logo.png"></image>
-						<view class="info">
+				<view class="item" v-for="(item, index) in data.itemlist" :key="index">
+					<view class="item-top" >
+						<image class="icon_head circleicon" mode="aspectFill" src="../../static/logo.png" @click="navToDetailPage(item)"></image>
+						<view class="info" @click="navToDetailPage(item)">
 							<text class="item-text name">吕飞飞吕飞飞吕</text>
 							<view class="info-bottom">
 								<text class="item-text time">11-26</text>
 								<text class="item-text number">350浏览</text>
 							</view>
 						</view>
-						<view class="item-top-collect" @click.stop="collect">
+						<view class="item-top-collect" @click="collect">
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
@@ -69,31 +69,100 @@
 
 			<!-- 列表item  我的回答-->
 			<view class="item-two" v-else-if="data.type=='2'">
+				<view class="item" v-for="(item, index) in data.itemlist" :key="index" >
+					<view class="item-top">
+						<view class="item-head-icon" @click="navToDetailPage(item)">
+							<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+						</view>
+						<view class="info" @click="navToDetailPage(item)">
+							<text class="item-text name">吕飞飞吕飞飞吕</text>
+							<view class="info-bottom">
+								<text class="item-text content">这里是帖子内容，内容可能是很长的一段文字哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</text>
+							</view>
+						</view>
+						<view class="item-top-collect" @click="collect">
+							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
+						</view>
+					</view>
 
+					<view class="comment">
+						<view class="comment-title">
+							<text class="item-text title">我：</text>
+						</view>
+						<text class="item-text brief">这里是我的评论呀评论很长很长哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈 </text>
+					</view>
+
+					<view class="item-date">
+						<text class="item-date-text">2019-11-4</text>
+					</view>
+
+				</view>
 			</view>
 			<!-- 列表item  回复我的-->
-			<view class="item-two" v-else-if="data.type=='3'">
-			
+			<view class="item-three" v-else-if="data.type=='3'">
+
+				<view class="item" v-for="(item, index) in data.itemlist" :key="index" >
+					<view class="item-top" >
+						<view class="item-head-icon" @click="navToDetailPage(item)">
+							<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+						</view>
+						<view class="info" @click="navToDetailPage(item)">
+							<text class="item-text name">吕飞飞吕飞飞吕</text>
+							<view class="info-bottom">
+								<text class="item-text time">11-26</text>
+								<text class="item-text number" v-show="false">350浏览</text>
+							</view>
+						</view>
+						<view class="item-top-collect" @click="collect">
+							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
+						</view>
+					</view>
+
+					<view class="item-replycontent">
+						<text class="item-replycontent-text">这是回复我的内容</text>
+						<view class="item-reply-good">
+							<image class="bottom-icon-left" mode="aspectFit" src="../../static/respond_orange.png"></image>
+							<text class="bottom-text">赞了我的帖子</text>
+						</view>
+					</view>
+
+					<view class="comment">
+						<view class="comment-title">
+							<text class="item-text title">我的帖子：</text>
+						</view>
+						<text class="item-text brief">这里是我的评论呀评论很长很长哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈 </text>
+					</view>
+
+				</view>
 			</view>
 		</scroll-view>
-
-
+		<uni-popup :show="showpopup" type="bottom" @change="change">
+			<view class="bottom-pop">
+				<text class="popup-content delete" @click="delete_">删除该回复</text>
+				<text class="popup-content" @click="cancel">取消</text>
+			</view>
+			
+			
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import uniIcons from '@/components/lib/uni-icons/uni-icons.vue';
 	import myPublishfilter from '@/components/sl-filter/myPublish-filter.vue';
+	import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
 
 	export default {
 		components: {
 			uniIcons,
-			myPublishfilter
+			myPublishfilter,
+			uniPopup
 		},
 		data() {
 			return {
+				showpopup:false,
 				data: {
-					type: '1',
+					type: '2',
 					itemlist: [{}, {}, {}, {}, {}, {}]
 				},
 				labelName: '',
@@ -208,6 +277,7 @@
 			collect() {
 				console.log("收藏成功");
 				// this.togglePopup('center', 'image');
+				this.showpopup = true;
 			},
 			//页面跳转到详情
 			navToDetailPage(item) {
@@ -216,6 +286,24 @@
 					url: '/pages/interaction/interactionDetail'
 				})
 			},
+			//删除评论的弹窗变化
+			change(e) {
+				console.log('是否打开:' + e.show)
+				if (!e.show) {
+					this.showpopup = false
+				}
+			},
+			//删除回复
+			delete_(){
+				console.log('删除成功');
+				this.showpopup = false;
+			},
+			//去掉关闭弹窗
+			cancel(e){
+				console.log('取消');
+				console.log(e);
+				this.showpopup = false;
+			}
 		}
 	}
 </script>
@@ -308,12 +396,11 @@
 					align-items: center;
 
 					.circleicon {
-						border-radius: 30px;
-						padding: 15rpx;
+						border-radius: 42.5rpx;
 						margin: 20rpx;
-						width: 50rpx;
-						height: 50rpx;
-						background: url("../../static/logo.png") no-repeat center;
+						width: 85rpx;
+						height: 85rpx;
+						// background: url("../../static/logo.png") no-repeat center;
 						background-size: 50px;
 					}
 
@@ -426,6 +513,301 @@
 
 				}
 			}
+
+			// 我的回答布局样式
+			.item-two .item {
+
+				background: #FFFFFF;
+				margin: 20rpx 3rpx;
+				border-radius: 20rpx;
+				display: flex;
+				flex-direction: column;
+
+				.item-text {
+					display: block;
+				}
+
+				.item-top {
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					flex-direction: row;
+					align-items: flex-start;
+
+					.item-head-icon {
+						width: 100rpx;
+						height: 100rpx;
+
+						.circleicon {
+							border-radius: 42.5rpx;
+							margin: 20rpx;
+							width: 85rpx;
+							height: 85rpx;
+							flex-grow: 2;
+						}
+					}
+
+					.info {
+						display: flex;
+						padding: 15rpx 10rpx;
+						flex-direction: column;
+						flex-grow: 10;
+
+						.name {
+							margin-left: 10rpx;
+							color: #585858;
+							font-size: $uni-font-size-name;
+						}
+
+						.info-bottom {
+							display: flex;
+							flex-direction: row;
+
+							.content {
+								color: #585858;
+								font-size: $uni-font-size-name;
+								margin-left: 10rpx;
+								display: -webkit-box;
+								/** 对象作为伸缩盒子模型显示 **/
+								-webkit-line-clamp: 5;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								-webkit-box-orient: vertical;
+							}
+						}
+
+					}
+
+					.item-top-collect {
+						display: flex;
+						border-radius: 30upx;
+						width: 120upx;
+						height: 40upx;
+						align-items: center;
+						justify-content: center;
+						margin: 15upx 20upx 0 0;
+
+						.collect-icon {
+							width: 30upx;
+							height: 30upx;
+							margin-right: 5upx;
+						}
+					}
+				}
+
+				.comment {
+					display: flex;
+					flex-direction: row;
+					align-items: flex-start;
+					margin: 0 20rpx 20rpx 20rpx;
+					border-radius: 10rpx;
+					background: #F1F1F1;
+					padding: 15rpx;
+
+					.comment-title {
+						width: 200rpx;
+
+						.title {
+							color: #007AFF;
+							line-height: 1.6em;
+							font-size: $uni-font-size-article-brief;
+						}
+					}
+
+					.brief {
+						line-height: 1.6em;
+						display: -webkit-box;
+						/** 对象作为伸缩盒子模型显示 **/
+						-webkit-line-clamp: 5;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						-webkit-box-orient: vertical;
+					}
+
+
+
+					.brief {
+						color: #525252;
+						font-size: $uni-font-size-article-brief;
+					}
+
+				}
+
+				.item-date {
+					margin: 0 20rpx 20rpx 35rpx;
+
+					.item-date-text {
+						color: #8D8D8D;
+						font-size: $uni-font-size-time;
+					}
+				}
+			}
+
+			//回复我的布局样式
+			.item-three .item {
+				background: #FFFFFF;
+				margin: 20rpx 3rpx;
+				border-radius: 20rpx;
+				display: flex;
+				flex-direction: column;
+
+				.item-text {
+					display: block;
+				}
+
+				.item-top {
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					flex-direction: row;
+					align-items: flex-start;
+
+					.item-head-icon {
+						width: 100rpx;
+						height: 100rpx;
+
+						.circleicon {
+							border-radius: 42.5rpx;
+							margin: 20rpx;
+							width: 85rpx;
+							height: 85rpx;
+							flex-grow: 2;
+						}
+					}
+
+
+					.info {
+						display: flex;
+						padding: 15rpx 10rpx;
+						flex-direction: column;
+						flex-grow: 10;
+
+						.info-bottom {
+							display: flex;
+							flex-direction: row;
+
+							.number {
+								margin-left: 20rpx;
+							}
+						}
+
+						.name {
+							color: #585858;
+							font-size: $uni-font-size-name;
+						}
+
+						.time,
+						.number {
+							color: #8D8D8D;
+							font-size: $uni-font-size-time;
+						}
+					}
+
+					.item-top-collect {
+						display: flex;
+						border-radius: 30upx;
+						width: 120upx;
+						height: 40upx;
+						align-items: center;
+						justify-content: center;
+						margin: 15upx 20upx 0 0;
+
+						.collect-icon {
+							width: 30upx;
+							height: 30upx;
+							margin-right: 5upx;
+						}
+					}
+				}
+
+				.item-replycontent {
+					margin: 0 20rpx 20rpx 25rpx;
+					display: flex;
+					flex-direction: column;
+
+
+					.item-replycontent-text {
+						color: #333333;
+						font-size: $uni-font-size-name;
+					}
+
+					.item-reply-good {
+						display: flex;
+						flex-direction: row;
+						margin-left: -10rpx;
+						align-items: center;
+
+						.bottom-icon-left {
+							width: 40rpx;
+							height: 40rpx;
+							padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
+						}
+
+						.bottom-text {
+							font-size: $uni-font-size-name;
+							color: #525252;
+						}
+					}
+				}
+
+				.comment {
+					display: flex;
+					flex-direction: row;
+					align-items: flex-start;
+					margin: 0 20rpx 20rpx 20rpx;
+					padding: 15rpx;
+					border-radius: 10rpx;
+					background: #F1F1F1;
+
+					.comment-title {
+						width: 280rpx;
+
+						.title {
+							color: #525252;
+							line-height: 1.6em;
+							font-size: $uni-font-size-article-brief;
+						}
+					}
+
+					.brief {
+						margin: 0 0 15rpx 0;
+						line-height: 1.6em;
+						display: -webkit-box;
+						/** 对象作为伸缩盒子模型显示 **/
+						-webkit-line-clamp: 5;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						-webkit-box-orient: vertical;
+						font-size: $uni-font-size-article-brief;
+						color: #007AFF;
+					}
+
+				}
+
+			}
 		}
+		
+		.bottom-pop{
+			display: flex;
+			flex-direction: column;
+			background: #f1f1f1;
+			
+			.popup-content {
+				/* #ifndef APP-NVUE */
+				display: block;
+				/* #endif */
+				background-color: #fff;
+				padding: 15px;
+				font-size: $uni-font-size-name;
+				text-align: center;
+			}
+			
+			.delete{
+				color: #C7161E;
+				margin-bottom: 10rpx;
+			}
+			
+		}
+		
 	}
 </style>

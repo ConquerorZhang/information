@@ -16,8 +16,9 @@
 	content: "\E61C";
 }
 .select-tab {
-	border-bottom: #C7161E 1px solid;
-	background-color: #C7161E;
+	/* border-bottom: #C7161E 1px solid; */
+	/* background-color: #C7161E; */
+	padding-bottom: 1px;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -25,7 +26,7 @@
 	width: 100%;
 }
 .select-tab-fixed-top {
-	border-bottom: #F7F7F7 1px solid;
+	/* border-bottom: #F7F7F7 1px solid; */
 	background-color: #FFFFFF;
 	display: -webkit-box;
 	display: -webkit-flex;

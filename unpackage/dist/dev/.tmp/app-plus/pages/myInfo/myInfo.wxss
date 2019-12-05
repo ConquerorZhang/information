@@ -25,15 +25,12 @@
 /* 透明度 */
 /* 文章场景相关 */
 .totalContent {
-  background: #C0C0C0;
+  background: #feffff;
 }
 .settingTopBgView {
   background: #999999;
-}
-.settingTopBgView .settingBtn {
-    margin: 30rpx 20rpx 30rpx 680rpx;
-    width: 50rpx;
-    height: 50rpx;
+  padding-top: 80rpx;
+  padding-bottom: 100rpx;
 }
 .settingTopBgView .headBGView {
     display: -webkit-box;
@@ -42,10 +39,17 @@
     display: flex;
 }
 .settingTopBgView .headBGView .head {
-      margin: 0 20rpx 50rpx;
+      margin: 0 20rpx;
       width: 140rpx;
       height: 140rpx;
       border-radius: 70rpx;
+}
+.settingTopBgView .headBGView .nameInfo {
+      width: 500rpx;
+}
+.settingTopBgView .headBGView .settingBtn {
+      width: 50rpx;
+      height: 50rpx;
 }
 .settingTopBgView .mail {
     display: -webkit-box;
@@ -86,11 +90,15 @@
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  margin: -60rpx 20rpx 0;
+  border-radius: 40rpx;
   height: 220rpx;
   padding: 20rpx 20rpx;
   background: #FFFFFF;
+  border: 2px solid #f0f1f2;
 }
 .myFunctionModel .content {
+    position: relative;
     margin-top: 30rpx;
     text-align: center;
 }
@@ -106,13 +114,14 @@
   height: 250rpx;
   border-radius: 40rpx;
   margin: 20rpx;
+  border: 2px solid #f0f1f2;
 }
 .interactionModel .interTitle {
     padding: 20rpx 0 20rpx 20rpx;
 }
 .interactionModel .lineView {
-    background: #C0C0C0;
-    height: 0.5rpx;
+    background: #DDDDDD;
+    height: 0.5px;
 }
 .interactionModel .interactionPart {
     display: -webkit-box;
@@ -127,6 +136,26 @@
     height: 220rpx;
     padding: 20rpx 20rpx;
     color: #808080;
+}
+.interactionModel .interactionPart .content {
+      position: relative;
+}
+.interactionModel .interactionPart .content .interactionImage {
+        width: 50rpx;
+        height: 50rpx;
+}
+.interactionModel .interactionPart .content .interactionDot {
+        color: white;
+        background: red;
+        width: 34rpx;
+        height: 34rpx;
+        line-height: 34rpx;
+        border-radius: 17rpx;
+        font-size: 25rpx;
+        font-weight: 900;
+        position: absolute;
+        right: 15rpx;
+        top: -10rpx;
 }
 .hotTitle {
   display: -webkit-box;
@@ -160,6 +189,7 @@
   background: #FFFFFF;
   border-radius: 40rpx;
   margin: 20rpx;
+  border: 2px solid #f0f1f2;
 }
 .hotListModel .hotList .hotListImage {
     padding: 20rpx;

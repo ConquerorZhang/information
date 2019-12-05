@@ -6,7 +6,13 @@
     "pages/myInfo/myMessage",
     "pages/interaction/publish",
     "pages/interaction/publishSucceed",
-    "pages/interaction/interactionDetail"
+    "pages/interaction/interactionDetail",
+    "pages/myInfo/MessageDetail",
+    "pages/myInfo/browseHistory",
+    "pages/myInfo/myPublish",
+    "pages/myInfo/myCollection",
+    "pages/search/homeSearch",
+    "pages/search/HM-search"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -22,5 +28,9 @@
   },
   "appname": "H5CorpInformation",
   "compilerVersion": "2.4.2",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-popup": "/components/lib/uni-popup/uni-popup",
+    "uni-icons": "/components/lib/uni-icons/uni-icons",
+    "uni-search-bar": "/components/lib/uni-search-bar/uni-search-bar"
+  }
 }

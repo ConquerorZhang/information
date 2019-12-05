@@ -1,5 +1,8 @@
 {
   "navigationStyle": "custom",
   "navigationBarTitleText": "uni-app",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-popup": "/components/lib/uni-popup/uni-popup",
+    "uni-icons": "/components/lib/uni-icons/uni-icons"
+  }
 }

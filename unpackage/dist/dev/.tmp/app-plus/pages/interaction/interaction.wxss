@@ -206,12 +206,12 @@
 }
 .page .list .item .item-top .info .name {
             color: #585858;
-            font-size: 20rpx;
+            font-size: 40rpx;
 }
 .page .list .item .item-top .info .time,
           .page .list .item .item-top .info .number {
             color: #8D8D8D;
-            font-size: 15rpx;
+            font-size: 25rpx;
 }
 .page .list .item .title,
       .page .list .item .brief {
@@ -227,11 +227,11 @@
 }
 .page .list .item .title {
         color: #282828;
-        font-size: 27rpx;
+        font-size: 40rpx;
 }
 .page .list .item .brief {
         color: #525252;
-        font-size: 20rpx;
+        font-size: 30rpx;
 }
 .page .list .item .item-image {
         display: -webkit-box;
@@ -295,7 +295,7 @@
         .page .list .item .bottom .bottom-icon-right {
           width: 25rpx;
           height: 25rpx;
-          padding: 20rpx 20rpx;
+          padding: 20rpx 5rpx 20rpx 20rpx;
 }
 .page .list .item .bottom .bottom-text {
           font-size: 20rpx;

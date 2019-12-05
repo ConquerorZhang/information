@@ -1,8 +1,8 @@
 {
   "navigationBarTitleText": "问题详情",
   "usingComponents": {
-    "chat-input": "/components/comment/chatinput",
     "uni-popup": "/components/lib/uni-popup/uni-popup",
-    "uni-icons": "/components/lib/uni-icons/uni-icons"
+    "uni-icons": "/components/lib/uni-icons/uni-icons",
+    "chat-input": "/components/comment/chatinput"
   }
 }

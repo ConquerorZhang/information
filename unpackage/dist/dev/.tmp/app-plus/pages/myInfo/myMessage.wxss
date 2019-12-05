@@ -24,10 +24,20 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.container {
-  height: 100%;
+page {
   background: #F1F1F1;
+}
+.container {
+  position: relative;
+  height: 100%;
   padding-top: 20rpx;
+}
+.container .empty {
+    text-align: center;
+}
+.container .empty .emptyImage {
+      margin-top: 400rpx;
+      width: 300rpx;
 }
 .container .message {
     margin: 0 20rpx 20rpx;
@@ -63,14 +73,13 @@
 .container .message .subTitle {
       font-size: 30rpx;
       color: #999999;
-      padding: 20rpx 0;
+      margin: 10rpx 0;
       overflow: hidden;
       -o-text-overflow: ellipsis;
          text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      max-height: 70rpx;
 }
 .container .message .time {
       font-size: 30rpx;

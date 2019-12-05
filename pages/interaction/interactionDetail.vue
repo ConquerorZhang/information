@@ -86,13 +86,13 @@
 
 <script>
 	import chatInput from '../../components/comment/chatinput.vue'; //input框
-	import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
-	import uniIcons from '@/components/lib/uni-icons/uni-icons.vue'
+	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
+	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue'
 	export default {
 		components: {
 			chatInput,
-			uniPopup,
-			uniIcons
+			// uniPopup,
+			// uniIcons
 		},
 		data() {
 			return {

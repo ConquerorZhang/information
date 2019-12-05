@@ -138,7 +138,7 @@
 		</scroll-view>
 		<uni-popup :show="showpopup" type="bottom" @change="change">
 			<view class="bottom-pop">
-				<text class="popup-content delete" @click="delete_">删除该回复</text>
+				<text class="popup-content delete" @click="delete_" id="789">删除该回复</text>
 				<text class="popup-content" @click="cancel">取消</text>
 			</view>
 			
@@ -148,15 +148,17 @@
 </template>
 
 <script>
-	import uniIcons from '@/components/lib/uni-icons/uni-icons.vue';
+	
 	import myPublishfilter from '@/components/sl-filter/myPublish-filter.vue';
-	import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
+	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
+	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue';
 
 	export default {
 		components: {
-			uniIcons,
-			myPublishfilter,
-			uniPopup
+			
+			myPublishfilter
+			// uniIcons,
+			// uniPopup
 		},
 		data() {
 			return {
@@ -294,9 +296,10 @@
 				}
 			},
 			//删除回复
-			delete_(){
+			 delete_:function (e) {
 				console.log('删除成功');
 				this.showpopup = false;
+				console.log(e)
 			},
 			//去掉关闭弹窗
 			cancel(e){
@@ -326,7 +329,7 @@
 			flex-direction: column;
 
 			.statusBar {
-				height: 40upx;
+				height: 45upx;
 				width: 100%;
 				background-color: #FFFFFF;
 			}

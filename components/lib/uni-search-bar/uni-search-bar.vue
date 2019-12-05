@@ -15,7 +15,7 @@
 				<uni-icons color="#999999" class="" size="24" type="clear" />
 			</view>
 		</view>
-		<text @click="cancel" class="uni-searchbar__cancel" v-if="show">取消</text>
+		<uni-icons @click="cancel" class="uni-searchbar__cancel" v-if="show" color="#333333" size="40" type="closeempty" />
 	</view>
 </template>
 
@@ -119,6 +119,7 @@
 		border-style: solid;
 		border-color: #e5e5e5;
 		border-radius: 5px;
+		background: #F1F1F1;
 	}
 
 	.uni-searchbar__box-icon-search {
@@ -136,6 +137,7 @@
 		flex: 1;
 		font-size: 28rpx;
 		color: #333;
+		background: #F1F1F1;
 	}
 
 	.uni-searchbar__box-icon-clear {

@@ -1,22 +1,581 @@
 <template>
-	<view>
-		
+	<view class="tabs">
+		<uni-nav-bar id="collectionBar" left-icon="back" :rightText="rightBtnText" title="我的收藏" @clickLeft="back" @clickRight="clickRightBtn"></uni-nav-bar>
+		<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+			<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
+				<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+			</view>
+		</scroll-view>
+		<swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
+			<swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
+				<scroll-view class="scroll-v" :class="showCheckBox ? 'scroll-v-height1' : 'scroll-v-height2'" enableBackToTop="true"
+				 scroll-y @scrolltolower="loadMore(index1)">
+					<block v-if="index1 == 0">
+						<checkbox-group @change="checkboxChange0">
+							<view class="productPart" v-for="(item,index) in tab.data" :key="index">
+								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
+								<view class="detailPart" v-on:click="navigateToProduct(item.id)">
+									<image class="imagePart" :src="item.image" mode="scaleToFill"></image>
+									<view class="textPart">
+										<view class="title">{{item.title}}</view>
+										<view class="subTitle">{{item.subtitle}}</view>
+										<view class="time">{{item.time}}</view>
+									</view>
+									<view class="look">查看</view>
+								</view>
+							</view>
+						</checkbox-group>
+					</block>
+					<block v-else>
+						<checkbox-group @change="checkboxChange1">
+							<view class="cardPart" v-for="(item,index) in tab.data" :key="index">
+								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
+								<view class="detailPart">
+									<view class="item-top">
+										<image class="circleicon" mode="scaleToFill" :src="item.head"></image>
+										<view class="info">
+											<view class="name">{{item.name}}</view>
+											<view class="time">{{item.time}}</view>
+										</view>
+									</view>
+									<text class="title">{{item.title}}</text>
+									<text class="brief">{{item.content}}</text>
+									<view class="item-image">
+										<block v-for="(itemImage,indexImage) in item.imageList" :key="indexImage">
+											<image class="item-image-image" mode="scaleToFill" :src="itemImage"></image>
+										</block>
+									</view>
+								</view>
+							</view>
+						</checkbox-group>
+					</block>
+					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4" v-on:click="loadMore(index1)">
+						<text class="loading-more-text">{{tab.loadingText}}</text>
+					</view>
+				</scroll-view>
+
+				<view class='bottomBar' v-show="showCheckBox">
+					<checkbox-group @change="checkboxChange2">
+						<checkbox :value="'all'" :checked="allChecked[tabIndex]" color="#ee3847" />
+						<view>全选</view>
+					</checkbox-group>
+					<view class='delete' :class="selectedIdArr[tabIndex].length > 0 ? 'redDelete' : 'gragDelete'" v-on:click="clickDelete">删除</view>
+				</view>
+			</swiper-item>
+		</swiper>
 	</view>
 </template>
 
 <script>
+	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+
 	export default {
+		components: {
+			uniNavBar
+		},
 		data() {
 			return {
-				
+				allChecked: {
+					'0': false,
+					'1': false
+				},
+				showCheckBox: false,
+				rightBtnText: '管理',
+				scrollHeight: 300,
+				newsList: [],
+				tabIndex: 0,
+				tabBars: [{
+					name: '产品',
+					id: 'chanpin'
+				}, {
+					name: '帖子',
+					id: 'tiezi'
+				}],
+				selectedIdArr: [
+					[],
+					[]
+				],
+				scrollInto: "",
+				showTips: false,
+				navigateFlag: false,
 			}
 		},
+		onLoad() {
+			setTimeout(() => {
+				this.tabBars.forEach((tabBar) => {
+					this.newsList.push({
+						data: [],
+						isLoading: false,
+						refreshText: "",
+						loadingText: '加载更多...'
+					});
+				});
+				this.getList(0);
+			}, 350)
+		},
 		methods: {
-			
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			clickRightBtn(e) {
+				this.showCheckBox = !this.showCheckBox;
+				this.rightBtnText = this.showCheckBox ? '完成' : '管理';
+
+			},
+			getList(index) {
+				console.log(index);
+				let activeTab = this.newsList[index];
+				let list = [];
+				// 制造的假数据
+				let tmpList = [
+					[{
+						image: '../../static/logo.png',
+						title: '中国电科相关资料',
+						subtitle: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						time: '2011-2-22',
+						id: '11'
+					}, {
+						image: '../../static/logo.png',
+						title: '中国电科相关资料',
+						subtitle: '的点点滴滴',
+						time: '2013-2-22',
+						id: '12'
+					}, {
+						image: '../../static/logo.png',
+						title: '中国电科相关资料',
+						subtitle: '的点点滴滴',
+						time: '2013-2-22',
+						id: '13'
+					}, {
+						image: '../../static/logo.png',
+						title: '中国电科相关资料',
+						subtitle: '的点点滴滴',
+						time: '2013-2-22',
+						id: '14'
+					}, {
+						image: '../../static/logo.png',
+						title: '中国电科相关资料',
+						subtitle: '的点点滴滴',
+						time: '2013-2-22',
+						id: '15'
+					}],
+					[{
+						head: '../../static/logo.png',
+						name: '樊重霄',
+						time: '2011-2-22',
+						title: '测试文章标题，很新颖的标题',
+						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						imageList:[],
+						id: '21'
+					},
+					{
+						head: '../../static/logo.png',
+						name: '吕飞飞',
+						time: '2011-2-22',
+						title: '测试文章标题，很新颖的标题',
+						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						imageList:['../../static/logo.png','../../static/logo.png'],
+						id: '22'
+					}, {
+						head: '../../static/logo.png',
+						name: '樊重霄',
+						time: '2011-2-22',
+						title: '测试文章标题，很新颖的标题',
+						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						imageList:['../../static/logo.png','../../static/logo.png','../../static/logo.png'],
+						id: '23'
+					},
+					{
+						head: '../../static/logo.png',
+						name: '吕飞飞',
+						time: '2011-2-22',
+						title: '测试文章标题，很新颖的标题',
+						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						imageList:['../../static/logo.png','../../static/logo.png','../../static/logo.png','../../static/logo.png'],
+						id: '24'
+					}, {
+						head: '../../static/logo.png',
+						name: '樊重霄',
+						time: '2011-2-22',
+						title: '测试文章标题，很新颖的标题',
+						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+						imageList:[],
+						id: '25'
+					}]
+				];
+
+				list = tmpList[index];
+				activeTab.data = activeTab.data.concat(list);
+
+				// 更新全选按钮状态
+				if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+					this.allChecked[this.tabIndex] = true;
+				} else {
+					this.allChecked[this.tabIndex] = false;
+				}
+			},
+			goDetail(e) {
+				if (this.navigateFlag) {
+					return;
+				}
+				this.navigateFlag = true;
+				uni.navigateTo({
+					url: './detail/detail?title=' + e.title
+				});
+				setTimeout(() => {
+					this.navigateFlag = false;
+				}, 200)
+			},
+			loadMore(e) {
+				setTimeout(() => {
+					this.getList(this.tabIndex);
+				}, 500)
+			},
+			ontabtap(e) {
+				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				this.switchTab(index);
+			},
+			ontabchange(e) {
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+			},
+			switchTab(index) {
+				if (this.newsList[index].data.length === 0) {
+					this.getList(index);
+				}
+
+				if (this.tabIndex === index) {
+					return;
+				}
+
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
+			},
+			clearTabData(e) {
+				this.newsList[e].data.length = 0;
+				this.newsList[e].loadingText = "加载更多...";
+			},
+			checkboxChange0: function(e) {
+				this.selectedIdArr[this.tabIndex] = e.detail.value; //无法刷新
+				// 强制刷新删除按钮颜色
+				this.$forceUpdate();
+				// console.log(this.selectedIdArr);
+				if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+					this.allChecked[this.tabIndex] = true;
+				} else {
+					this.allChecked[this.tabIndex] = false;
+				}
+			},
+			checkboxChange1: function(e) {
+				this.selectedIdArr[this.tabIndex] = e.detail.value;
+				// 强制刷新删除按钮颜色
+				this.$forceUpdate();
+				console.log(this.selectedIdArr);
+				if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+					this.allChecked[this.tabIndex] = true;
+				} else {
+					this.allChecked[this.tabIndex] = false;
+				}
+			},
+			checkboxChange2: function(e) {
+				this.allChecked[this.tabIndex] = !this.allChecked[this.tabIndex];
+				this.selectedIdArr[this.tabIndex] = [];
+
+				for (var i = 0; i < this.newsList[this.tabIndex].data.length; i++) {
+					this.newsList[this.tabIndex].data[i].checked = this.allChecked[this.tabIndex];
+					if (this.allChecked[this.tabIndex]) {
+						this.selectedIdArr[this.tabIndex].push(this.newsList[this.tabIndex].data[i].id)
+					}
+				}
+			},
+			clickDelete: function(e) {
+				uni.showModal({
+				    content: '确认删除吗？',
+				    success: (res) => {
+				        if (res.confirm) {
+							console.log(this.selectedIdArr[this.tabIndex]);
+							// todozcc 提交删除接口
+							
+							// 更新数据
+				        }
+				    }
+				})
+			},
+			navigateToProduct(e) {
+				console.log(e);
+			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+	}
 
+	/* #endif */
+
+	.tabs {
+		flex: 1;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: #eeeff0;
+	}
+
+	.tab-bar {
+		background: #FFFFFF;
+	}
+
+	.scroll-h {
+		width: 750upx;
+		height: 80upx;
+		background: #FFFFFF;
+		flex-direction: row;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+		/* flex-wrap: nowrap; */
+		/* border-color: #cccccc;
+		border-bottom-style: solid;
+		border-bottom-width: 1px; */
+	}
+
+	.uni-tab-item {
+		/* #ifndef APP-PLUS */
+		display: inline-block;
+		/* #endif */
+		flex-wrap: nowrap;
+		padding-left: 34upx;
+		padding-right: 34upx;
+	}
+
+	.uni-tab-item-title {
+		color: #555;
+		font-size: 30upx;
+		height: 80upx;
+		line-height: 80upx;
+		flex-wrap: nowrap;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+
+	.uni-tab-item-title-active {
+		color: #dc2937;
+		padding-bottom: 10rpx;
+		border-bottom: 1px solid #dc2937;
+	}
+
+	.swiper-box {
+		flex: 1;
+		height: 100%;
+	}
+
+	.swiper-item {
+		flex: 1;
+		flex-direction: row;
+	}
+
+	.scroll-v {
+		flex: 1;
+		width: 750upx;
+		// height: calc(100% - 180rpx);
+		// height: calc(100% - 60rpx);
+		/* #ifndef MP-ALIPAY */
+		flex-direction: column;
+		/* #endif */
+	}
+
+	.scroll-v-height1 {
+		height: calc(100% - 270rpx);
+	}
+
+	.scroll-v-height2 {
+		height: calc(100% - 170rpx);
+	}
+
+	.productPart {
+		display: flex;
+		margin-top: 30rpx;
+		margin-left: 20rpx;
+
+		checkbox {
+			margin-right: 15rpx;
+		}
+
+		.detailPart {
+			display: flex;
+			background: #FFFFFF;
+			border-radius: 30rpx;
+			width: 710rpx;
+
+			.imagePart {
+				margin: 30rpx 20rpx;
+				width: 200rpx;
+				height: 170rpx;
+			}
+
+			.textPart {
+				margin-top: 25rpx;
+				width: 390rpx;
+
+				.title {
+					color: #3f4041;
+					font-size: $uni-font-size-lg;
+				}
+
+				.subTitle {
+					font-size: $uni-font-size-base;
+					color: #6b6c6d;
+					height: 80rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
+				}
+
+				.time {
+					color: #8f9091;
+				}
+			}
+
+			.look {
+				align-self: flex-end;
+				margin-bottom: 35rpx;
+				color: #9fa0a1;
+				font-size: 30rpx;
+				white-space: nowrap;
+			}
+		}
+	}
+
+	.cardPart {
+		display: flex;
+		margin-top: 30rpx;
+		margin-left: 20rpx;
+
+		checkbox {
+			margin-right: 15rpx;
+		}
+
+		.detailPart {
+			background: #FFFFFF;
+			border-radius: 30rpx;
+			width: 710rpx;
+			padding-bottom: 10rpx;
+
+			.item-top {
+				display: flex;
+				flex-wrap: nowrap;
+				align-items: center;
+
+				.circleicon {
+					border-radius: 50%;
+					margin: 20rpx;
+					width: 80rpx;
+					height: 80rpx;
+				}
+
+				.info {
+					padding: 15rpx 0;
+
+					.name {
+						color: #585858;
+						font-size: $uni-font-size-name;
+					}
+
+					.time {
+						color: #8D8D8D;
+						font-size: $uni-font-size-time;
+					}
+				}
+			}
+
+			.title,
+			.brief {
+				margin: 0 20rpx;
+				line-height: 1.6em;
+				display: -webkit-box;
+				/** 对象作为伸缩盒子模型显示 **/
+				-webkit-line-clamp: 5;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				-webkit-box-orient: vertical;
+			}
+
+			.title {
+				color: #282828;
+				font-size: $uni-font-size-article-title;
+			}
+
+			.brief {
+				color: #525252;
+				font-size: $uni-font-size-article-brief;
+			}
+
+			.item-image {
+				display: flex;
+				flex-wrap: wrap;
+				margin: 10rpx 20rpx;
+
+				.item-image-image {
+					padding: 10rpx 11rpx;
+					width: 200rpx;
+					height: 200rpx;
+				}
+			}
+		}
+	}
+
+	.bottomBar {
+		display: flex;
+		justify-content: space-between;
+		background: #FFFFFF;
+		height: 100rpx;
+		align-items: center;
+
+		checkbox-group {
+			display: flex;
+		}
+
+		checkbox {
+			margin-left: 20rpx;
+		}
+
+		.delete {
+			color: #FFFFFF;
+			background: #b7b8b9;
+			text-align: center;
+			height: 100rpx;
+			line-height: 100rpx;
+			width: 180rpx;
+		}
+
+		.redDelete {
+			background: #d7061f;
+		}
+
+		.grayDelete {
+			background: #b7b8b9;
+		}
+	}
+
+	.loading-more {
+		align-items: center;
+		justify-content: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: center;
+	}
+
+	.loading-more-text {
+		font-size: 28upx;
+		color: #999;
+	}
 </style>

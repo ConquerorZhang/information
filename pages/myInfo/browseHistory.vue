@@ -32,15 +32,14 @@
 </template>
 <script>
 	// 缓存每页最多
-	const MAX_CACHE_DATA = 100;
+	// const MAX_CACHE_DATA = 100;
 	// 缓存页签数量
-	const MAX_CACHE_PAGE = 3;
+	// const MAX_CACHE_PAGE = 3;
 
     export default {
         data() {
             return {
                 newsList: [],
-				cacheTab: [],
                 tabIndex: 0,
                 tabBars: [{
                     name: '全部',
@@ -136,63 +135,29 @@
                 }
 
                 // 缓存 tabId
-                if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
-                    let isExist = this.cacheTab.indexOf(this.tabIndex);
-                    if (isExist < 0) {
-                        this.cacheTab.push(this.tabIndex);
-                        //console.log("cache index:: " + this.tabIndex);
-                    }
-                }
-
-                this.tabIndex = index;
-                this.scrollInto = this.tabBars[index].id;
+                // if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
+                //     let isExist = this.cacheTab.indexOf(this.tabIndex);
+                //     if (isExist < 0) {
+                //         this.cacheTab.push(this.tabIndex);
+                //         //console.log("cache index:: " + this.tabIndex);
+                //     }
+                // }
 
                 // 释放 tabId
-                if (this.cacheTab.length > MAX_CACHE_PAGE) {
-                    let cacheIndex = this.cacheTab[0];
-                    this.clearTabData(cacheIndex);
-                    this.cacheTab.splice(0, 1);
-                    //console.log("remove cache index:: " + cacheIndex);
-                }
+                // if (this.cacheTab.length > MAX_CACHE_PAGE) {
+                //     let cacheIndex = this.cacheTab[0];
+                //     this.clearTabData(cacheIndex);
+                //     this.cacheTab.splice(0, 1);
+                //     //console.log("remove cache index:: " + cacheIndex);
+                // }
+				
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
             },
             clearTabData(e) {
                 this.newsList[e].data.length = 0;
                 this.newsList[e].loadingText = "加载更多...";
             },
-            refreshData() {},
-            onrefresh(e) {
-				console.log('下拉刷新');
-                var tab = this.newsList[this.tabIndex];
-                if (!tab.refreshFlag) {
-                    return;
-                }
-                tab.refreshing = true;
-                tab.refreshText = "正在刷新...";
-
-                setTimeout(() => {
-                    this.refreshData();
-                    this.pulling = true;
-                    tab.refreshing = false;
-					tab.refreshFlag = false;
-                    tab.refreshText = "已刷新";
-                    setTimeout(() => { // TODO fix ios和Android 动画时间相反问题
-                        this.pulling = false;
-                    }, 500);
-                }, 2000);
-            },
-            onpullingdown(e) {
-                var tab = this.newsList[this.tabIndex];
-                if (tab.refreshing || this.pulling) {
-                    return;
-                }
-                if (Math.abs(e.pullingDistance) > Math.abs(e.viewHeight)) {
-                    tab.refreshFlag = true;
-                    tab.refreshText = "释放立即刷新";
-                } else {
-                    tab.refreshFlag = false;
-                    tab.refreshText = "下拉可以刷新";
-                }
-            }
         }
     }
 </script>

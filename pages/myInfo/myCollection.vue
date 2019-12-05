@@ -12,6 +12,9 @@
 				 scroll-y @scrolltolower="loadMore(index1)">
 					<block v-if="index1 == 0">
 						<checkbox-group @change="checkboxChange0">
+							<view class="empty" v-if="tab.data.length < 1">
+								<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+							</view>
 							<view class="productPart" v-for="(item,index) in tab.data" :key="index">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
 								<view class="detailPart" v-on:click="navigateToProduct(item.id)">
@@ -28,6 +31,9 @@
 					</block>
 					<block v-else>
 						<checkbox-group @change="checkboxChange1">
+							<view class="empty" v-if="tab.data.length < 1">
+								<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+							</view>
 							<view class="cardPart" v-for="(item,index) in tab.data" :key="index">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
 								<view class="detailPart">
@@ -81,7 +87,6 @@
 				},
 				showCheckBox: false,
 				rightBtnText: '管理',
-				scrollHeight: 300,
 				newsList: [],
 				tabIndex: 0,
 				tabBars: [{
@@ -162,48 +167,49 @@
 						id: '15'
 					}],
 					[{
-						head: '../../static/logo.png',
-						name: '樊重霄',
-						time: '2011-2-22',
-						title: '测试文章标题，很新颖的标题',
-						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						imageList:[],
-						id: '21'
-					},
-					{
-						head: '../../static/logo.png',
-						name: '吕飞飞',
-						time: '2011-2-22',
-						title: '测试文章标题，很新颖的标题',
-						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						imageList:['../../static/logo.png','../../static/logo.png'],
-						id: '22'
-					}, {
-						head: '../../static/logo.png',
-						name: '樊重霄',
-						time: '2011-2-22',
-						title: '测试文章标题，很新颖的标题',
-						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						imageList:['../../static/logo.png','../../static/logo.png','../../static/logo.png'],
-						id: '23'
-					},
-					{
-						head: '../../static/logo.png',
-						name: '吕飞飞',
-						time: '2011-2-22',
-						title: '测试文章标题，很新颖的标题',
-						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						imageList:['../../static/logo.png','../../static/logo.png','../../static/logo.png','../../static/logo.png'],
-						id: '24'
-					}, {
-						head: '../../static/logo.png',
-						name: '樊重霄',
-						time: '2011-2-22',
-						title: '测试文章标题，很新颖的标题',
-						content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						imageList:[],
-						id: '25'
-					}]
+							head: '../../static/logo.png',
+							name: '樊重霄',
+							time: '2011-2-22',
+							title: '测试文章标题，很新颖的标题',
+							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+							imageList: [],
+							id: '21'
+						},
+						{
+							head: '../../static/logo.png',
+							name: '吕飞飞',
+							time: '2011-2-22',
+							title: '测试文章标题，很新颖的标题',
+							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+							imageList: ['../../static/logo.png', '../../static/logo.png'],
+							id: '22'
+						}, {
+							head: '../../static/logo.png',
+							name: '樊重霄',
+							time: '2011-2-22',
+							title: '测试文章标题，很新颖的标题',
+							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+							imageList: ['../../static/logo.png', '../../static/logo.png', '../../static/logo.png'],
+							id: '23'
+						},
+						{
+							head: '../../static/logo.png',
+							name: '吕飞飞',
+							time: '2011-2-22',
+							title: '测试文章标题，很新颖的标题',
+							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+							imageList: ['../../static/logo.png', '../../static/logo.png', '../../static/logo.png', '../../static/logo.png'],
+							id: '24'
+						}, {
+							head: '../../static/logo.png',
+							name: '樊重霄',
+							time: '2011-2-22',
+							title: '测试文章标题，很新颖的标题',
+							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
+							imageList: [],
+							id: '25'
+						}
+					]
 				];
 
 				list = tmpList[index];
@@ -292,15 +298,18 @@
 			},
 			clickDelete: function(e) {
 				uni.showModal({
-				    content: '确认删除吗？',
-				    success: (res) => {
-				        if (res.confirm) {
+					content: '确认删除吗？',
+					success: (res) => {
+						if (res.confirm) {
 							console.log(this.selectedIdArr[this.tabIndex]);
 							// todozcc 提交删除接口
-							
+
 							// 更新数据
-				        }
-				    }
+							this.newsList[this.tabIndex].data = [];
+							// 强制刷新删除按钮颜色
+							this.$forceUpdate();
+						}
+					}
 				})
 			},
 			navigateToProduct(e) {
@@ -452,6 +461,15 @@
 				font-size: 30rpx;
 				white-space: nowrap;
 			}
+		}
+	}
+
+	.empty {
+		text-align: center;
+
+		.emptyImage {
+			margin-top: 400rpx;
+			width: 300rpx;
 		}
 	}
 

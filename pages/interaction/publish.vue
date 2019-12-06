@@ -25,6 +25,8 @@
 </template>
 
 <script>
+	const API = require('../../common/api.js')
+	
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -54,7 +56,26 @@
 		},
 		methods: {
 			onNavigationBarButtonTap(e) {
-			    console.log(this.titleText);
+				console.log(this.submitImageIdList);
+				
+				uni.showModal({
+					content: '确认发布吗？',
+					success: (res) => {
+						if (res.confirm) {
+							API.interPublish({
+								title: this.titleText,
+								contents: this.contentText,
+								pics: this.submitImageIdList,
+								type: parseInt(this.selectedIndex) + 1,
+							}).then(res => {
+								console.log(res);
+							}).catch(err => {
+								console.log(err);
+								console.log('测试网络请求');
+							})
+						}
+					}
+				})
 			},
 			previewImage: function(e) {
 				var current = e.target.dataset.src
@@ -90,18 +111,20 @@
 					count: this.imageList.length + this.count[this.countIndex] > 6 ? 6 - this.imageList.length : this.count[this.countIndex],
 					success: (res) => {
 						const tempFilePaths = res.tempFilePaths;
+						// console.log(res);
 						// 上传图片操作
 						for (var i = 0; i < tempFilePaths.length; i++) {
 							uni.uploadFile({
-							            url: 'http://2e798028u0.zicp.vip:30384/file/fileupload?type=image', 
+							            url: 'http://2e798028u0.zicp.vip:46856/file/fileupload?type=image', 
 							            filePath: tempFilePaths[i],
 							            name: 'file',
 							            formData: {
 							                'image': 'publishImage'
 							            },
 							            success: (uploadFileRes) => {
-							                console.log(uploadFileRes.data);
-											this.submitImageIdList.push(uploadFileRes.data.fileid);
+											var obj = JSON.parse(uploadFileRes.data);
+											this.submitImageIdList.push(obj.data.fileid);
+											console.log(this.submitImageIdList);
 							            }
 							        });
 						}

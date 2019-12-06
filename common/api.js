@@ -25,10 +25,10 @@ const MyAPI = (url, needSubDomain, method, data) => {
 	let ttl = Date.parse(new Date()) / 1000;
 	let sign = SIGN.sign(url, guid, nonce, ttl, token, data);
 
-	data['guid'] = guid;
-	data['nonce'] = nonce;
-	data['sign'] = sign;
-	data['ttl'] = ttl;
+	// data['guid'] = guid;
+	// data['nonce'] = nonce;
+	// data['sign'] = sign;
+	// data['ttl'] = ttl;
 
 	http.setConfig((config) => { /* config 为默认全局配置*/
 		config.baseUrl = api_BASE_URL; /* 根域名 */
@@ -47,9 +47,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 
 	if (method == "GET") {
 		return new Promise((resolve, reject) => {
-			http.get(_url, {
-					params: data
-				})
+			http.get(_url, data)
 				.then(res => {
 					resolve(res)
 				}).catch(err => {
@@ -58,9 +56,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		});
 	} else if (method == "POST") {
 		return new Promise((resolve, reject) => {
-			http.post(_url, {
-					params: data
-				})
+			http.post(_url, data)
 				.then(res => {
 					resolve(res)
 				}).catch(err => {
@@ -74,5 +70,8 @@ module.exports = {
 	MyAPI,
 	loginInfo: (data) => {
 		return MyAPI('login/regUserlogin', false, 'GET', data)
+	},
+	interPublish: (data) => {
+		return MyAPI('interact/issue/publish', false, 'POST', data)
 	},
 }

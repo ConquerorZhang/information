@@ -7,9 +7,10 @@
 		
 		<view class="search-box">
 			<!-- mSearch组件 如果使用原样式，删除组件元素-->
-			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
+			 <!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 			
 			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearchhha" confirm-type="search"></uni-search-bar>
+			
 			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
 			<!-- <view class="input-box">
@@ -82,7 +83,6 @@
 
 <script>
 	//引用mSearch组件，如不需要删除即可
-	import mSearch from '@/components/mehaotian-search-revision/mehaotian-search-revision.vue';
 	export default {
 		data() {
 			return {
@@ -100,7 +100,6 @@
 		},
 		components: {
 			//引用mSearch组件，如不需要删除即可
-			mSearch
 		},
 		methods: {
 			init() {
@@ -135,7 +134,8 @@
 			//监听输入
 			inputChange(event) {
 				//兼容引入组件时传入参数情况
-				var keyword = event.detail ? event.detail.value : event;
+				var keyword = event ? event.value : event;
+				console.log(event.value);
 				if (!keyword) {
 					this.keywordList = [];
 					this.isShowKeywordList = false;
@@ -159,7 +159,7 @@
 				for (var i = 0; i < len; i++) {
 					var row = keywords[i];
 					//定义高亮#9f9f9f
-					var html = row[0].replace(keyword, "<span style='color: #9f9f9f;'>" + keyword + "</span>");
+					var html = row[0].replace(keyword, "<span style='color: #C7161E;'>" + keyword + "</span>");
 					html = '<div>' + html + '</div>';
 					var tmpObj = {
 						keyword: row[0],
@@ -197,7 +197,7 @@
 			//执行搜索
 			doSearch(key) {
 				key = key ? key : this.keyword ? this.keyword : this.defaultKeyword;
-				this.keyword = key.value;
+				// this.keyword = key.value;
 				this.saveKeyword(key); //保存为历史 
 				uni.showToast({
 					title: key,
@@ -213,10 +213,7 @@
 				//#endif
 			},
 			doSearchhha(){
-				console.log(this.keyword);
-				console.log(this.keyword);
-				console.log(this.keyword);
-				console.log(this.keyword);
+				// console.log(event.target.value);
 				this.doSearch(this.keyword);
 			},
 			//保存关键字到历史记录

@@ -11,8 +11,7 @@
     "pages/myInfo/browseHistory",
     "pages/myInfo/myPublish",
     "pages/myInfo/myCollection",
-    "pages/search/homeSearch",
-    "pages/search/HM-search"
+    "pages/search/homeSearch"
   ],
   "window": {
     "navigationBarTextStyle": "black",

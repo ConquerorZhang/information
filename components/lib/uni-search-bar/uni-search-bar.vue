@@ -89,6 +89,10 @@
 				this.$emit("confirm", {
 					value: this.searchVal
 				})
+				//HM修改 触发组件confirm事件
+				// triggerConfirm(){
+				// 	this.$emit('confirm', false);
+				// }
 			}
 		}
 	};

@@ -48,7 +48,7 @@
 									<text class="brief">{{item.content}}</text>
 									<view class="item-image">
 										<block v-for="(itemImage,indexImage) in item.imageList" :key="indexImage">
-											<image class="item-image-image" mode="scaleToFill" :src="itemImage"></image>
+											<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(item.imageList,indexImage)"></image>
 										</block>
 									</view>
 								</view>
@@ -314,7 +314,13 @@
 			},
 			navigateToProduct(e) {
 				console.log(e);
-			}
+			},
+			previewImage(imageList,indexImage) { //预览图片
+			    uni.previewImage({
+			        urls: imageList,
+					current:imageList[indexImage]
+			    });
+			},
 		}
 	}
 </script>

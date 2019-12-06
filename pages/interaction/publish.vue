@@ -197,6 +197,9 @@
 </script>
 
 <style lang="scss">
+	page {
+		background: #FFFFFF;
+	}
 	.container {
 		padding: 20rpx 10rpx 0;
 		.title {

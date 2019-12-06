@@ -1,11 +1,13 @@
 <template>
-	<view class="container" @touchmove.stop = "">
-		<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80"></uni-search-bar>
-		<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
-			<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
-				<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
-			</view>
-		</scroll-view>
+	<view class="container">
+		<view class="searchFilterContainer">
+			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80"></uni-search-bar>
+			<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+				<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
+					<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+				</view>
+			</scroll-view>
+		</view>
 		<swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
 			<swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
 				<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
@@ -314,56 +316,61 @@
 	/* #endif */
 
 	.container {
+		display: flex;
+		flex-direction: column;
 		
-		.searchBar {
-			padding: 40rpx 20rpx 20rpx;
-			background: #FFFFFF;
+		.searchFilterContainer {
+			
+			.searchBar {
+				padding: 40rpx 20rpx 20rpx;
+				background: #FFFFFF;
+			}
+			
+			.tab-bar {
+				background: #FFFFFF;
+			}
+			
+			.scroll-h {
+				width: 750upx;
+				height: 80upx;
+				background: #FFFFFF;
+				flex-direction: row;
+				/* #ifndef APP-PLUS */
+				white-space: nowrap;
+				/* #endif */
+				/* flex-wrap: nowrap; */
+				/* border-color: #cccccc;
+				border-bottom-style: solid;
+				border-bottom-width: 1px; */
+			}
+			
+			.uni-tab-item {
+				/* #ifndef APP-PLUS */
+				display: inline-block;
+				/* #endif */
+				flex-wrap: nowrap;
+				padding-left: 34upx;
+				padding-right: 34upx;
+			}
+			
+			.uni-tab-item-title {
+				color: #555;
+				font-size: 30upx;
+				height: 80upx;
+				line-height: 80upx;
+				flex-wrap: nowrap;
+				/* #ifndef APP-PLUS */
+				white-space: nowrap;
+				/* #endif */
+			}
+			
+			.uni-tab-item-title-active {
+				color: #dc2937;
+				padding-bottom: 10rpx;
+				border-bottom: 1px solid #dc2937;
+			}
 		}
-
-		.tab-bar {
-			background: #FFFFFF;
-		}
-
-		.scroll-h {
-			width: 750upx;
-			height: 80upx;
-			background: #FFFFFF;
-			flex-direction: row;
-			/* #ifndef APP-PLUS */
-			white-space: nowrap;
-			/* #endif */
-			/* flex-wrap: nowrap; */
-			/* border-color: #cccccc;
-			border-bottom-style: solid;
-			border-bottom-width: 1px; */
-		}
-
-		.uni-tab-item {
-			/* #ifndef APP-PLUS */
-			display: inline-block;
-			/* #endif */
-			flex-wrap: nowrap;
-			padding-left: 34upx;
-			padding-right: 34upx;
-		}
-
-		.uni-tab-item-title {
-			color: #555;
-			font-size: 30upx;
-			height: 80upx;
-			line-height: 80upx;
-			flex-wrap: nowrap;
-			/* #ifndef APP-PLUS */
-			white-space: nowrap;
-			/* #endif */
-		}
-
-		.uni-tab-item-title-active {
-			color: #dc2937;
-			padding-bottom: 10rpx;
-			border-bottom: 1px solid #dc2937;
-		}
-
+		
 		.swiper-box {
 			flex: 1;
 			height: 100%;
@@ -377,7 +384,8 @@
 		.scroll-v {
 			flex: 1;
 			width: 750upx;
-			height: calc(100% - 170rpx);
+			// height: calc(100% - 170rpx);
+			height: 100%;
 			/* #ifndef MP-ALIPAY */
 			flex-direction: column;
 			/* #endif */

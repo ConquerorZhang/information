@@ -17,38 +17,40 @@
 
 			<view class="filter">
 				<intertction-filter :independence="true" :color="titleColor" :themeColor="themeColor" :menuList.sync="menuList"
-				 @result="result"></intertction-filter>
+				 @result="result" @sortresult="sortresult"></intertction-filter>
 			</view>
 		</view>
 		<scroll-view scroll-y="true" class="list">
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in itemlist" :key="index" @click="navToDetailPage(item)">
 				<view class="item-top">
-					<image class="icon_head circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+					<image class="circleicon" mode="aspectFit" src="../../static/logo.png"></image>
 					<view class="info">
-						<text class="item-text name">吕飞飞吕飞飞吕</text>
+						<text class="item-text name">{{item.createName}} {{type}}{{orderBy}}</text>
 						<view class="info-bottom">
-							<text class="item-text time">11-26</text>
-							<text class="item-text number">350浏览</text>
+							<text class="item-text time">{{item.createTime}}</text>
+							<text class="item-text number">{{item.visitCount}}</text>
 						</view>
 					</view>
 				</view>
-				<text class="item-text title">文章标题</text>
-				<text class="item-text brief">文章简介简短的简介哦放假奥</text>
+				<text class="item-text title">{{item.title}}</text>
+				<text class="item-text brief">{{item.contents}}</text>
 				<view class="item-image">
+					<image v-for="(pic,index) in item.pics" :key="index" class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+					<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->
+					
 				</view>
 				<!-- 底部 -->
 				<view class="bottom">
 					<view class="bottom-left" @click.stop="niubi('topicid')">
 						<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
-						<text class="bottom-text">520</text>
+						<text class="bottom-text">{{item.favourCount}}</text>
 					</view>
 					<view class="bottom-right" @click.stop="topiccomment('topicid')">
 						<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
-						<text class="bottom-text">520</text>
+						<text class="bottom-text">{{item.replyCount}}</text>
 					</view>
 				</view>
 			</view>
@@ -57,18 +59,26 @@
 </template>
 
 <script>
+	const API = require('../../common/api.js');
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
 	export default {
 		data() {
 			return {
+				type:'',
+				searchKey:'',
+				limit:'10',
+				page:'0',
+				orderBy:'',
+				isAsc:'asc',
+				datalsit:[],
 				itemlist: [{}, {}, {}, {}, {}, {}],
 				themeColor: '#C7161E',
 				titleColor: '#ffffff',
 				filterResult: '',
 				menuList: [{
 						'title': '全部',
-						'key': 'sort',
+						'key': 'part',
 						'isSort': true,
 						'reflexTitle': true,
 						'detailList': [{
@@ -77,15 +87,15 @@
 							},
 							{
 								'title': '业务资讯区',
-								'value': 'add_time'
+								'value': '1'
 							},
 							{
 								'title': '需求资讯区',
-								'value': 'wages_up'
+								'value': '2'
 							},
 							{
 								'title': '经验分享区',
-								'value': 'location'
+								'value': '3'
 							}
 						]
 					}, {
@@ -93,7 +103,7 @@
 						'detailTitle': '请选择职位类型（可多选）',
 						'isMutiple': false,
 						'isSort': false,
-						'key': 'jobType',
+						'key': 'sort',
 						'value': '123',
 						'detailList': [{
 							'title': '全部',
@@ -103,8 +113,8 @@
 					},
 					{
 						'title': '按时间',
-						'key': 'salary',
-						'value': '456',
+						'key': 'sort',
+						'value': 'createTime',
 						'isMutiple': false,
 						'isSort': false,
 						'detailList': [{
@@ -115,8 +125,8 @@
 					},
 					{
 						'title': '按回复数',
-						'key': 'single',
-						'value': '789',
+						'key': 'sort',
+						'value': 'response',
 						'isMutiple': false,
 						'isSort': false,
 						'reflexTitle': true,
@@ -160,8 +170,20 @@
 			// },
 			//筛选菜单返回结果
 			result(val) {
-				console.log('filter_result:' + JSON.stringify(val));
-				this.filterResult = JSON.stringify(val, null, 2)
+				// console.log('filter_result:' + JSON.stringify(val));
+				// this.filterResult = JSON.stringify(val, null, 2);
+				// console.log(Object.keys(JSON.stringify(val))[0].value);
+				// this.type = this.filterResult.value;
+				// console.log(val.part);
+				this.type = val.part;
+				//重新执行搜索函数
+				this.getlistdata();
+			},
+			//排序菜单返回结果
+			sortresult(val){
+				// console.log('filter_result:' + JSON.stringify(val));
+				this.orderBy = val.sort;
+				this.getlistdata();
 			},
 			//页面跳转到详情
 			navToDetailPage(item) {
@@ -173,8 +195,50 @@
 			//键盘触发搜索
 			search(key){
 				console.log(key);
+				this.getlistdata();
+			},
+			getlistdata(){
+				API.interactionList({
+					searchKey: this.searchKey,
+					type: this.type,
+					limit: this.limit,
+					page: this.page,
+					orderBy: this.orderBy,
+					isAsc: this.isAsc,
+					// contents: this.contentText,
+					// pics: this.submitImageIdList,
+					// type: parseInt(this.selectedIndex) + 1,
+				}).then(res => {
+					console.log(res);
+					this.datalsit = res.data.data;
+					console.log(this.datalsit)
+				}).catch(err => {
+					console.log(err);
+				})
 			}
+		},
+		onLoad() {
+			// API.interactionList({
+			// 	searchKey: this.searchKey,
+			// 	type: this.type,
+			// 	limit: this.limit,
+			// 	page: this.page,
+			// 	orderBy: this.orderBy,
+			// 	isAsc: this.isAsc,
+			// 	// contents: this.contentText,
+			// 	// pics: this.submitImageIdList,
+			// 	// type: parseInt(this.selectedIndex) + 1,
+			// }).then(res => {
+			// 	console.log(res);
+			// 	this.datalsit = res.data.data;
+			// 	console.log(this.datalsit)
+			// }).catch(err => {
+			// 	console.log(err);
+			// })
+			
+			this.getlistdata();
 		}
+		
 	}
 </script>
 
@@ -270,19 +334,19 @@
 					padding-top: 5rpx;
 					align-items: center;
 
-					.icon_head {
-						width: 50rpx;
-						height: 50rpx;
-						margin-left: 15rpx;
-						padding: $uni-spacing-row-base $uni-spacing-row-base;
-					}
+					// .icon_head {
+					// 	width: 50rpx;
+					// 	height: 50rpx;
+					// 	margin-left: 15rpx;
+					// 	padding: $uni-spacing-row-base $uni-spacing-row-base;
+					// }
 
 					.circleicon {
-						border-radius: 30px;
-						padding: 15rpx;
-						width: 50rpx;
-						height: 50rpx;
-						background: url("../../static/logo.png") no-repeat center;
+						border-radius: 42.5rpx;
+						margin: 20rpx;
+						width: 85rpx;
+						height: 85rpx;
+						// background: url("../../static/logo.png") no-repeat center;
 						background-size: 50px;
 					}
 

@@ -4,13 +4,14 @@
 <template>
 	<view class="page">
 		<view class="statusBar"></view>
-		
+
 		<view class="search-box">
 			<!-- mSearch组件 如果使用原样式，删除组件元素-->
-			 <!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
-			
-			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearchhha" confirm-type="search"></uni-search-bar>
-			
+			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
+
+			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword"
+			 @confirm="doSearchhha" confirm-type="search"></uni-search-bar>
+
 			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
 			<!-- <view class="input-box">
@@ -18,7 +19,7 @@
 				 placeholder-class="placeholder-class" confirm-type="search">
 			</view>
 			<view class="search-btn" @tap="doSearch(false)">搜索</view> -->
-		
+
 			<!-- 原样式 end -->
 		</view>
 		<view class="search-keyword" @touchstart="blur">
@@ -33,7 +34,7 @@
 				</view>
 			</scroll-view>
 			<scroll-view class="keyword-box" v-show="!isShowKeywordList" scroll-y>
-				
+
 				<view class="keyword-block">
 					<view class="keyword-list-header">
 						<view>大家都在搜</view>
@@ -48,34 +49,35 @@
 						<view>当前搜热门搜索已隐藏</view>
 					</view>
 				</view>
-				
+
 				<view class="keyword-block" v-if="oldKeywordList.length>0">
 					<view class="keyword-list-header">
 						<view>搜索历史</view>
 						<view>
 							<!-- <image @tap="oldDelete" src="/static/HM-search/delete.png"></image> -->
-							<text @tap="oldDelete" class="oldDelete" >清空历史</text>
+							<text @tap="oldDelete" class="oldDelete">清空历史</text>
 						</view>
 					</view>
 					<!-- <view class="keyword">
 						<view v-for="(keyword,index) in oldKeywordList" @tap="doSearch(keyword)" :key="index">{{keyword}}</view>
 					</view> -->
-					
+
 					<scroll-view class="keyword-list-box" v-show="oldKeywordList.length>0" scroll-y>
 						<view class="keyword-entry" hover-class="keyword-entry-tap" v-for="(keyword,index) in oldKeywordList" :key="index">
 							<view class="keyword-img" @tap="setkeyword(keyword)">
-								<image mode="aspectFit" src="/static/respond_orange.png"></image>
+								<!-- <image mode="aspectFit" src="/static/respond_orange.png"></image> -->
+								<uni-icons color="#999999" class="uni-searchbar__box-icon-search" size="18" type="search" />
 							</view>
 							<view class="keyword-text" @tap="doSearch(keyword)">
 								<rich-text :nodes="keyword"></rich-text>
 							</view>
-							
+
 						</view>
 					</scroll-view>
-					
-					
+
+
 				</view>
-				
+
 			</scroll-view>
 		</view>
 	</view>
@@ -106,7 +108,7 @@
 				this.loadDefaultKeyword();
 				this.loadOldKeyword();
 				this.loadHotKeyword();
-	
+
 			},
 			blur() {
 				uni.hideKeyboard()
@@ -189,6 +191,7 @@
 						}
 					}
 				});
+				
 			},
 			//热门搜索开关
 			hotToggle() {
@@ -212,7 +215,7 @@
 				window.location.href = 'taobao://s.taobao.com/search?q=' + key
 				//#endif
 			},
-			doSearchhha(){
+			doSearchhha() {
 				// console.log(event.target.value);
 				this.doSearch(this.keyword);
 			},
@@ -259,11 +262,11 @@
 		width: 100%;
 		background-color: #FFFFFF;
 	}
-	
+
 	view {
 		display: block;
 	}
-	
+
 	.search-box {
 		width: 95%;
 		background-color: #FFFFFF;
@@ -271,11 +274,11 @@
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.search-box .mSearch-input-box {
 		width: 100%;
 	}
-	
+
 	.search-box .input-box {
 		width: 85%;
 		flex-shrink: 1;
@@ -283,7 +286,7 @@
 		justify-content: center;
 		align-items: center;
 	}
-	
+
 	.search-box .search-btn {
 		width: 15%;
 		margin: 0 0 0 2%;
@@ -296,7 +299,7 @@
 		background: linear-gradient(to right, #ff9801, #ff570a);
 		border-radius: 60upx;
 	}
-	
+
 	.search-box .input-box>input {
 		width: 100%;
 		height: 60upx;
@@ -310,27 +313,27 @@
 		margin: 0;
 		background-color: #ffffff;
 	}
-	
+
 	.placeholder-class {
 		color: #9e9e9e;
 	}
-	
+
 	.search-keyword {
 		width: 100%;
 		background-color: rgb(242, 242, 242);
 	}
-	
+
 	.keyword-list-box {
 		height: calc(100vh - 110upx);
 		padding-top: 10upx;
 		border-radius: 20upx 20upx 0 0;
 		background-color: #fff;
 	}
-	
+
 	.keyword-entry-tap {
 		background-color: #eee;
 	}
-	
+
 	.keyword-entry {
 		width: 94%;
 		height: 80upx;
@@ -342,39 +345,50 @@
 		align-items: center;
 		border-bottom: solid 1upx #e7e7e7;
 	}
-	
+
 	.keyword-entry image {
 		width: 60upx;
 		height: 60upx;
 	}
-	
+
 	.keyword-entry .keyword-text,
 	.keyword-entry .keyword-img {
 		height: 80upx;
 		display: flex;
 		align-items: center;
+
+		.uni-searchbar__box-icon-search {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			/* #endif */
+			flex-direction: row;
+			width: 32px;
+			justify-content: center;
+			align-items: center;
+			color: #808080;
+		}
 	}
-	
+
 	.keyword-entry .keyword-text {
 		width: 90%;
 	}
-	
+
 	.keyword-entry .keyword-img {
 		width: 40rpx;
 		height: 20rpx;
 		justify-content: center;
 	}
-	
+
 	.keyword-box {
 		height: calc(100vh - 110upx);
 		border-radius: 20upx 20upx 0 0;
 		background-color: #fff;
 	}
-	
+
 	.keyword-box .keyword-block {
 		padding: 10upx 0;
 	}
-	
+
 	.keyword-box .keyword-block .keyword-list-header {
 		width: 94%;
 		padding: 10upx 3%;
@@ -382,17 +396,17 @@
 		color: #333;
 		display: flex;
 		justify-content: space-between;
-		
-		.oldDelete{
+
+		.oldDelete {
 			color: #C7161E;
 		}
 	}
-	
+
 	.keyword-box .keyword-block .keyword-list-header image {
 		width: 40upx;
 		height: 40upx;
 	}
-	
+
 	.keyword-box .keyword-block .keyword {
 		width: 94%;
 		padding: 3px 3%;
@@ -400,14 +414,14 @@
 		flex-flow: wrap;
 		justify-content: flex-start;
 	}
-	
+
 	.keyword-box .keyword-block .hide-hot-tis {
 		display: flex;
 		justify-content: center;
 		font-size: 28upx;
 		color: #6b6b6b;
 	}
-	
+
 	.keyword-box .keyword-block .keyword>view {
 		display: flex;
 		justify-content: center;

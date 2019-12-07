@@ -2,7 +2,7 @@
 	<view class="page">
 		<view class="item">
 			<view class="item-top">
-				<image class="icon_head circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+				<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
 				<view class="info">
 					<text class="item-text name">吕飞飞吕飞飞吕</text>
 					<view class="info-bottom">

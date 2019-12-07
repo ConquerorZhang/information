@@ -74,4 +74,8 @@ module.exports = {
 	interPublish: (data) => {
 		return MyAPI('interact/issue/publish', false, 'POST', data)
 	},
+	//互动区首页列表
+	interactionList: (data) => {
+		return MyAPI('/interact/issue/list', false, 'GET', data)
+	},
 }

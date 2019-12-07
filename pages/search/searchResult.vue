@@ -132,11 +132,6 @@
 			}, 350)
 		},
 		methods: {
-			back() {
-				uni.navigateBack({
-					delta: 1
-				})
-			},
 			getList(index) {
 				console.log(index);
 				let activeTab = this.newsList[index];

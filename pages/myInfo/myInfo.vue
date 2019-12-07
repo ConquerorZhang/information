@@ -1,12 +1,18 @@
 <template>
 	<view class="totalContent">
-		<view class="settingTopBgView" :style="{background: 'url('+data.settingBGImage +')'}">
+		<view class="settingTopBgView"><!-- :style="{background: 'url('+data.settingBGImage +')'}"> -->
 			<view class="headBGView">
 				<image class="head" :src='data.head'></image>
 				<view class="nameInfo">
 					<view class="name">{{data.name}}</view>
-					<view class="mail">{{data.mail}}</view>
-					<view class="phone">{{data.phone}}</view>
+					<view class="mailPart">
+						<image src="../../static/mine/main/mail.png" mode="scaleToFill"></image>
+						<view class="mail">{{data.mail}}</view>
+					</view>
+					<view class="phonePart">
+						<image src="../../static/mine/main/phone.png" mode="scaleToFill"></image>
+						<view class="phone">{{data.phone}}</view>
+					</view>
 				</view>
 				<image class="settingBtn" :src=data.settingImage></image>
 			</view>
@@ -22,13 +28,13 @@
 			<view class="lineView"></view>
 			<view class="interactionPart">
 				<view class="content" v-for="(item,index) in data.interactionArr" :key="index" v-on:click="navigateToInter(index)">
-					<image class="interactionImage" :src="item.image" mode="scaleToFill"></image>
+					<image class="interactionImage" :src="item.image" mode="widthFix"></image>
 					<view class="interactionText">{{item.text}}</view>
 					<view class="interactionDot">{{item.dot}}</view>
 				</view>
 			</view>
 		</view>
-		<view class="hotTitle">热门收藏</view>
+		<!-- <view class="hotTitle">热门收藏</view>
 		<view class="hotListModel">
 			<view class="hotList" v-for="item in data.hotList" :key="item.id">
 				<image class="hotListImage" :src="item.image" mode="scaleToFill"></image>
@@ -38,7 +44,7 @@
 					<view class="time">{{item.time}}</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -50,73 +56,59 @@
 		data() {
 			return {
 				data: {
-					settingBGImage: "",
-					settingImage: "../../static/logo.png",
+					// settingBGImage: "../../static/mine/main/setting.png",
+					settingImage: "../../static/mine/main/setting.png",
 					head: "../../static/logo.png",
 					name: "哈哈",
 					mail: "1844@qq.com",
-					mailImage: "../../static/logo.png",
+					mailImage: "../../static/mine/main/mail.png",
 					phone: "166",
-					phoneImage: "../../static/logo.png",
+					phoneImage: "../../static/mine/main/phone.png",
 					myFunctionArr: [{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/collection.png",
 							"text": "我的收藏"
 						},
 						{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/download.png",
 							"text": "我的下载"
 						},
 						{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/history.png",
 							"text": "历史记录"
 						},
 						{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/message.png",
 							"text": "消息中心"
 						}
 					],
 					interactionArr: [{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/myPublish.png",
 							"text": "我的发布",
 							"dot": "10"
 						},
 						{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/myAnswer.png",
 							"text": "我的回答",
 							"dot": "2"
 						},
 						{
-							"image": "../../static/logo.png",
+							"image": "../../static/mine/main/answerMe.png",
 							"text": "回复我的",
 							"dot": "99"
 						},
-					],
-					hotImage: "../../static/logo.png",
-					hotList: [{
-							"image": "../../static/logo.png",
-							"title": "你是我的眼带我领略浩瀚的书海你是我的眼",
-							"subTitle": "1234567890987654321234567890啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦将垃圾垃圾垃圾垃圾1234567890",
-							"time": "2019-11-22",
-						},
-						{
-							"image": "../../static/logo.png",
-							"title": "你是我的眼带我领略浩瀚的书海你是我的眼",
-							"subTitle": "1234567890987654321234567890啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦将垃圾垃圾垃圾垃圾1234567890",
-							"time": "2019-11-22",
-						}
 					],
 				}
 			}
 		},
 		onLoad() {
-			API.loginInfo({
-				userName: 'name',
-				password: '123456'
-			}).then(res => {
-				console.log(res);
-			}).catch(err => {
-				console.log('测试网络请求');
-			})
+			// API.loginInfo({
+			// 	userName: 'name',
+			// 	password: '123456'
+			// }).then(res => {
+			// 	console.log(res);
+			// }).catch(err => {
+			// 	console.log('测试网络请求');
+			// })
 		},
 		methods: {
 			navigateToFunc(index) {
@@ -183,12 +175,16 @@
 </script>
 
 <style lang="scss">
+	page {
+		background: #FFFFFF;
+	}
+	
 	.totalContent {
 		background: #feffff;
 	}
 
 	.settingTopBgView {
-		background: #999999;
+		background: #e13221;
 		padding-top: 80rpx;
 		padding-bottom: 100rpx;
 
@@ -202,7 +198,27 @@
 			}
 
 			.nameInfo {
+				color: #FFFFFF;
 				width: 500rpx;
+				.mailPart {
+					display: flex;
+					align-items: center;
+					image {
+						width: 27rpx;
+						height: 22rpx;
+						margin-right: 15rpx;
+					}
+				}
+				.phonePart {
+					display: flex;
+					align-items: center;
+					image {
+						width: 20rpx;
+						height: 29rpx;
+						margin-right: 15rpx;
+						margin-left: 5rpx;
+					}
+				}
 			}
 
 			.settingBtn {
@@ -215,28 +231,8 @@
 			display: flex;
 		}
 
-		.mail::before {
-			content: '';
-			display: inline-block;
-			width: 20px;
-			height: 20px;
-			background-image: url('~@/static/logo.png');
-			background-size: cover;
-			margin-right: 10rpx;
-		}
-
 		.phone {
 			display: flex;
-		}
-
-		.phone::before {
-			content: '';
-			display: inline-block;
-			width: 20px;
-			height: 20px;
-			background-image: url('~@/static/logo.png');
-			background-size: cover;
-			margin-right: 10rpx;
 		}
 	}
 
@@ -245,7 +241,7 @@
 		justify-content: space-between;
 		margin: -60rpx 20rpx 0;
 		border-radius: 40rpx;
-		height: 220rpx;
+		height: 160rpx;
 		padding: 20rpx 20rpx;
 		background: #FFFFFF;
 		border: 2px solid #f0f1f2;
@@ -256,8 +252,8 @@
 			text-align: center;
 
 			.myFunctionImage {
-				width: 120rpx;
-				height: 120rpx;
+				width: 60rpx;
+				height: 60rpx;
 			}
 
 			.myFunctionImageLabel {
@@ -295,7 +291,6 @@
 
 				.interactionImage {
 					width: 50rpx;
-					height: 50rpx;
 				}
 
 				.interactionDot {

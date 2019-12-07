@@ -69,9 +69,11 @@
 								type: parseInt(this.selectedIndex) + 1,
 							}).then(res => {
 								console.log(res);
+								uni.navigateTo({
+									url:"publishSucceed"
+								})
 							}).catch(err => {
 								console.log(err);
-								console.log('测试网络请求');
 							})
 						}
 					}

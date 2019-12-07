@@ -22,21 +22,21 @@
 		</view>
 		<scroll-view scroll-y="true" class="list">
 			<!-- 列表item -->
-			<view class="item" v-for="(item, index) in itemlist" :key="index" @click="navToDetailPage(item)">
+			<view class="item" v-for="(item, index) in datalsit" :key="index" @click="navToDetailPage(item)">
 				<view class="item-top">
-					<image class="circleicon" mode="aspectFit" src="../../static/logo.png"></image>
+					<image class="circleicon" mode="aspectFit" :src="item.avatarUrl"></image>
 					<view class="info">
 						<text class="item-text name">{{item.createName}} {{type}}{{orderBy}}</text>
 						<view class="info-bottom">
-							<text class="item-text time">{{item.createTime}}</text>
-							<text class="item-text number">{{item.visitCount}}</text>
+							<text class="item-text time">{{item.createTimeShow}}</text>
+							<text class="item-text number">{{item.visitCountShow}}</text>
 						</view>
 					</view>
 				</view>
 				<text class="item-text title">{{item.title}}</text>
 				<text class="item-text brief">{{item.contents}}</text>
 				<view class="item-image">
-					<image v-for="(pic,index) in item.pics" :key="index" class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+					<image v-for="(pic,index) in item.pics" :key="index" class="item-image-image" mode="aspectFit" :src="pic"></image>
 					<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->
@@ -45,7 +45,7 @@
 				<!-- 底部 -->
 				<view class="bottom">
 					<view class="bottom-left" @click.stop="niubi('topicid')">
-						<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
+						<image class="bottom-icon-left" mode="aspectFit" :src="item.favour?'../../static/zan_sec.png': '../../static/zan.png'"></image>
 						<text class="bottom-text">{{item.favourCount}}</text>
 					</view>
 					<view class="bottom-right" @click.stop="topiccomment('topicid')">
@@ -104,7 +104,7 @@
 						'isMutiple': false,
 						'isSort': false,
 						'key': 'sort',
-						'value': '123',
+						'value': 'multipleSort',
 						'detailList': [{
 							'title': '全部',
 							'value': '123'
@@ -114,7 +114,7 @@
 					{
 						'title': '按时间',
 						'key': 'sort',
-						'value': 'createTime',
+						'value': 'createTime ',
 						'isMutiple': false,
 						'isSort': false,
 						'detailList': [{
@@ -126,7 +126,7 @@
 					{
 						'title': '按回复数',
 						'key': 'sort',
-						'value': 'response',
+						'value': 'visitCount',
 						'isMutiple': false,
 						'isSort': false,
 						'reflexTitle': true,
@@ -205,6 +205,7 @@
 					page: this.page,
 					orderBy: this.orderBy,
 					isAsc: this.isAsc,
+					
 					// contents: this.contentText,
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,

@@ -76,6 +76,6 @@ module.exports = {
 	},
 	//互动区首页列表
 	interactionList: (data) => {
-		return MyAPI('/interact/issue/list', false, 'GET', data)
+		return MyAPI('interact/issue/list', false, 'GET', data)
 	},
 }

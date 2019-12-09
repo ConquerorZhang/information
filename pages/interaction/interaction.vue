@@ -21,7 +21,7 @@
 			</view>
 		</view>
 
-		<view class="top-zhanwei"></view>
+		<!-- <view class="top-zhanwei"></view> -->
 		<scroll-view scroll-y="true" class="list" enableBackToTop="true" @scrolltolower="loadMore(page)">
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item)">
@@ -222,7 +222,7 @@
 				this.getlistdata(1);
 			},
 			getlistdata(page) {
-				console.log('page----' + page);
+				// console.log('page----' + page);
 				API.interactionList({
 					searchKey: this.searchKey,
 					type: this.type,
@@ -235,25 +235,22 @@
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
-					if (this.data.datalsit.length < 1) {
-						this.data.datalsit = res.data.data;
-					} else {
-						if (res.data.data.length < this.page) {
+						if (res.data.data.length < this.limit) {
 							this.data.loadingText = "没有更多数据了"
-							// this.page = page - 1;
 							this.data.hasmore = false;
 						} else {
 							this.page = page + 1;
 							this.data.hasmore = true;
 						}
 						this.data.datalsit = this.data.datalsit.concat(res.data.data);
-					}
-					console.log(this.data.datalsit);
+					// console.log(res.data.data);
+					// console.log(this.data.datalsit);
 				}).catch(err => {
 					console.log(err);
 				})
 			},
 			loadMore(currentpage) {
+				console.log("加载更多")
 				if (this.data.hasmore) {
 					this.getlistdata(this.page);
 				}
@@ -301,6 +298,7 @@
 	.page {
 		display: flex;
 		flex-direction: column;
+		height: 100%;
 		
 		.head {
 			position: fixed;
@@ -371,12 +369,12 @@
 			}
 		}
 
-		.top-zhanwei {
-			height: 190rpx;
-		}
+		// .top-zhanwei {
+		// 	height: 190rpx;
+		// }
 
 		.list {
-			// margin-top: 190rpx;
+			margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
 

@@ -11,6 +11,9 @@
 				</view>
 			</view>
 		</uni-popup>
+		<scroll-view class="scroll-view" scroll-y="true" enableBackToTop="true" @scrolltolower="loweraaa">
+			<view  v-for="(item,index) in 100" :key="index">第几个：{{index}}</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -34,6 +37,9 @@
 			console.log(this.iStatusBarHeight)
 		},
 		methods: {
+			loweraaa(){
+				console.log("加载更多");
+			},
 			collect() {
 				console.log("收藏成功");
 				this.togglePopup('center', 'image');
@@ -71,7 +77,11 @@ togglePopup(type, open) {
 	}
 </script>
 
-<style>
+<style lang="scss">
+	
+	page{
+		height: 100%;
+	}
 	
 	/* 插屏广告 */
 	.uni-image {
@@ -94,6 +104,11 @@ togglePopup(type, open) {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		height: 100%;
+		
+		.scroll-view{
+			height: 100%;
+		}
 	}
 
 	.logo {

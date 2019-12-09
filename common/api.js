@@ -41,6 +41,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 			version: Vue.config.configDic.version,
 			verCode: Vue.config.configDic.verCode,
 			appCode: Vue.config.configDic.appCode,
+			'content-type':'application/x-www-form-urlencoded',
 		}
 		return config
 	})
@@ -76,6 +77,6 @@ module.exports = {
 	},
 	//互动区首页列表
 	interactionList: (data) => {
-		return MyAPI('interact/issue/list', false, 'GET', data)
+		return MyAPI('interact/issue/list', false, 'POST', data)
 	},
 }

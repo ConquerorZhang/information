@@ -164,7 +164,7 @@
 			return {
 				showpopup:false,
 				data: {
-					type: '3',
+					type: '2',
 					itemlist: [{}, {}, {}, {}, {}, {}]
 				},
 				labelName: '',

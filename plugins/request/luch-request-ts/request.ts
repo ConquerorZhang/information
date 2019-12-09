@@ -98,7 +98,8 @@ export default class Request {
   config: config = {
     baseUrl: '',
     header: {
-      'content-type': 'application/json;charset=UTF-8'
+      // 'content-type': 'application/json;charset=UTF-8'
+	  'content-type': 'application/x-www-form-urlencoded'
     },
     method: 'GET',
     dataType: 'json',

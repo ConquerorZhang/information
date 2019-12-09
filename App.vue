@@ -17,6 +17,7 @@
 
 <style>
 	page{
+		height: 100%;
 		background: #F1F1F1;
 	}
 </style>

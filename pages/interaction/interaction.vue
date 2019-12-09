@@ -1,4 +1,4 @@
-<!-- 互动专区 -->
+<!-- 互动专区首页 -->
 <template>
 	<view class="page">
 		<view class="head">
@@ -204,9 +204,8 @@
 			},
 			//页面跳转到详情
 			navToDetailPage(item) {
-
 				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail'
+					url: '/pages/interaction/interactionDetail?id='+item.id
 				})
 			},
 			//页面跳转到发布

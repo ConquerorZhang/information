@@ -2,12 +2,12 @@
 	<view class="page">
 		<view class="item">
 			<view class="item-top">
-				<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+				<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl"></image>
 				<view class="info">
-					<text class="item-text name">吕飞飞吕飞飞吕</text>
+					<text class="item-text name">{{detailData.createName}}</text>
 					<view class="info-bottom">
-						<text class="item-text time">11-26</text>
-						<text class="item-text number">350浏览</text>
+						<text class="item-text time">{{detailData.createTime}}</text>
+						<text class="item-text number">{{detailData.visitCountShow}}</text>
 					</view>
 				</view>
 				<view class="item-top-collect" @click="collect">
@@ -15,8 +15,8 @@
 					<text class="collect-text">收藏</text>
 				</view>
 			</view>
-			<text class="item-text title">文章标题</text>
-			<text class="item-text brief">文章简介简短的简介哦放假奥</text>
+			<text class="item-text title">{{detailData.title}}</text>
+			<text class="item-text brief">{{detailData.contents}}</text>
 			<view class="item-image">
 				<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 				<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
@@ -27,11 +27,11 @@
 			<view class="bottom">
 				<view class="bottom-left" @click="niubi('topicid')">
 					<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
-					<text class="bottom-text">520</text>
+					<text class="bottom-text">{{detailData.favourCount}}</text>
 				</view>
 				<view class="bottom-right" @click="topiccomment('topicid')">
 					<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
-					<text class="bottom-text">520</text>
+					<text class="bottom-text">{{detailData.replyCount}}</text>
 				</view>
 			</view>
 		</view>
@@ -56,8 +56,8 @@
 				</view>
 			</view>
 		</view>
-		
-		
+
+
 		<view class="foot" v-show="showInput">
 			<chat-input @send-message="send_comment" @blur="blur" :focus="focus" :placeholder="input_placeholder"></chat-input>
 		</view>
@@ -70,21 +70,23 @@
 					<text class="pop-view-success popcontent">收藏成功</text>
 					<text class="pop-view-success-text popcontent">通过我的收藏里进行查看</text>
 					<view class="pop_bt popcontent">
-					<button class="pop_btn" @click="lookCollection">立即查看</button>
+						<button class="pop_btn" @click="lookCollection">立即查看</button>
 					</view>
 				</view>
-		
-		
+
+
 				<view class="uni-image-close" @click="cancel('image')">
 					<uni-icons type="clear" color="#fff" size="30" />
 				</view>
 			</view>
 		</uni-popup>
-		
+
 	</view>
 </template>
 
 <script>
+	const API = require('../../common/api.js')
+	
 	import chatInput from '../../components/comment/chatinput.vue'; //input框
 	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
 	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue'
@@ -96,6 +98,8 @@
 		},
 		data() {
 			return {
+				id: '',
+				detailData: {},
 				showimage: false,
 				type: '',
 				content: '顶部弹 popup',
@@ -166,7 +170,8 @@
 				],
 			};
 		},
-		onLoad() {
+		onLoad(option) {
+			this.id = '1202867518841044993'; //option.id; todozcc
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
 					this.screenHeight = res.screenHeight;
@@ -174,6 +179,16 @@
 				}
 			});
 			uni.startPullDownRefresh();
+
+			// 请求数据
+			API.interDetail({
+				id: this.id
+			}).then(res => {
+				console.log(res);
+				this.detailData = res.data.data;
+			}).catch(err => {
+				console.log(err);
+			})
 		},
 		onShow() {
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
@@ -194,17 +209,17 @@
 				this.togglePopup('center', 'image');
 			},
 			// 收藏成功后立即查看
-			lookCollection(o){
+			lookCollection(o) {
 				this.showimage = false;
-				
+
 			},
 			// 评论
-			topiccomment(topicid){
+			topiccomment(topicid) {
 				console.log(topicid);
-				
+
 			},
 			// 点赞
-			niubi(topicid){
+			niubi(topicid) {
 				console.log(topicid);
 			},
 			togglePopup(type, open) {
@@ -292,23 +307,23 @@
 		position: relative;
 		z-index: 9999;
 	}
-	
+
 	.pop_view {
 		display: flex;
 		flex-direction: column;
-	
+
 		.popcontent {
 			width: 70vw;
 			background-color: #FFFFFF;
 			border: 0;
 		}
-	
+
 		.image {
 			width: 70vw;
 			height: 19vh;
 			background: #FFFFFF;
 		}
-	
+
 		.pop-view-success {
 			display: flex;
 			height: 80px;
@@ -318,9 +333,9 @@
 			justify-content: center;
 			align-items: center;
 			border: 0;
-	
+
 		}
-	
+
 		.pop-view-success-text {
 			display: flex;
 			color: #666666;
@@ -328,7 +343,7 @@
 			justify-content: center;
 			align-items: center;
 		}
-	
+
 		.pop_bt {
 			display: flex;
 			color: #666666;
@@ -337,7 +352,8 @@
 			justify-content: center;
 			align-items: center;
 			border: 0;
-			.pop_btn{
+
+			.pop_btn {
 				display: flex;
 				height: 70upx;
 				width: 50%;
@@ -345,19 +361,20 @@
 				justify-content: center;
 				color: #FFFFFF;
 				font-size: $uni-font-size-article-brief;
-				background-image: linear-gradient(left,#D74819, #C7161E);
+				background-image: linear-gradient(left, #D74819, #C7161E);
 				border-radius: 40upx;
 			}
 		}
 	}
-	
-	
+
+
 	.uni-image-close {
 		margin-top: 20px;
 		text-align: center;
 	}
+
 	.page {
-	
+
 		.item {
 			background: #FFFFFF;
 

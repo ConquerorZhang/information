@@ -11,13 +11,16 @@
 	export default {
 		data() {
 			return {
-
+				id:''
 			}
+		},
+		onLoad(option) {
+			this.id = option.id;
 		},
 		methods: {
 			checkMyPublish() {
 				uni.navigateTo({
-					url: "publish"
+					url: "interactionDetail?id="+this.id
 				})
 			}
 		}

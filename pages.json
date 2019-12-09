@@ -93,7 +93,13 @@
 				"navigationBarTitleText": "电科动态"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/main/newsDetail",
+            "style" : {
+				"navigationBarTitleText": "动态详情"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

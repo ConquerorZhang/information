@@ -1,40 +1,48 @@
 <template>
 	<view class="container">
 		<view class="searchFilterContainer">
-			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80"></uni-search-bar>
+			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" @confirm="search" @input="input" @cancel="cancel"></uni-search-bar>
 		</view>
 		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
 			<view class="empty" v-if="newsList.length < 1">
 				<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
 			</view>
-			<view class="newsPart" v-for="(item,index) in newsList" :key="index">
+			<view class="newsPart" v-for="(item,index) in newsList" :key="index" v-on:click="goDetail(item)">
 				<view class="textPart">
 					<view class="title">
 						<text>{{item.title}}</text>
 					</view>
 					<view class="timePart">
-						<text class="time">{{item.time}}</text>
-						<text class="address">{{item.address}}</text>
+						<text class="time">{{item.createTime}}</text>
+						<text class="address">{{item.location}}</text>
 					</view>
 				</view>
-				<image :src="item.image" mode="scaleToFill"></image>
+				<image :src="item.imgUrl" mode="scaleToFill"></image>
 			</view>
 
-			<view class="loading-more" v-if="isLoading || newsList.length > 4" v-on:click="loadMore()">
-				<text class="loading-more-text">{{loadingText}}</text>
+			<view class="loading-more" v-if="currentNewsList.length >= this.pageLimit" v-on:click="loadMore()">
+				<text class="loading-more-text">加载更多...</text>
+			</view>
+			<view class="loading-more" v-else>
+				<text class="loading-more-text">没有更多了...</text>
 			</view>
 		</scroll-view>
 	</view>
 </template>
 
 <script>
+	const API = require('../../common/api.js')
+	
 	export default {
 		data() {
 			return {
 				newsList: [],
-				isLoading: false,
+				currentNewsList: [],
 				refreshText: "",
-				loadingText: '加载更多...'
+				keyword: "",
+				pageIndex: 1,
+				pageLimit: 10,
+				canLoad: true,
 			}
 		},
 		onLoad() {
@@ -42,57 +50,54 @@
 		},
 		methods: {
 			getList() {
-				// 制造的假数据
-				let list = [{
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						time: '2011-2-22',
-						address: '北京',
-						id: '01'
-					},
-					{
-						image: '../../static/logo.png',
-						title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-						time: '2011-2-22',
-						address: '北京',
-						id: '02'
-					},
-					{
-						image: '../../static/logo.png',
-						title: '中国电科相放松放松放松放松放松饭舒服舒服关资料',
-						time: '2011-2-22',
-						address: '北京',
-						id: '03'
-					},
-					{
-						image: '../../static/logo.png',
-						title: '中国电科相放松放松放松放松放松饭舒服舒服关资料',
-						time: '2011-2-22',
-						address: '北京',
-						id: '04'
-					},
-					{
-						image: '../../static/logo.png',
-						title: '中国电科相放松放松放松放松放松饭舒服舒服关资料',
-						time: '2011-2-22',
-						address: '北京',
-						id: '04'
-					}
-				];
-
-				this.newsList = this.newsList.concat(list);
-			},
-			goDetail(e) {
-				if (this.navigateFlag) {
+				if(!this.canLoad) {
 					return;
 				}
-				this.navigateFlag = true;
+				
+				API.newsList({
+					title: this.keyword,
+					limit: this.pageLimit,
+					page: this.pageIndex,
+				}).then(res => {
+					console.log(res);
+					this.pageIndex++;
+					this.currentNewsList = res.data.data;
+					this.newsList = this.newsList.concat(this.currentNewsList);
+					
+					// scrollView上拉不加载标志
+					this.canLoad = this.currentNewsList.length > 0 ? true : false;
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			goDetail(item) {
 				uni.navigateTo({
-					url: './detail/detail?title=' + e.title
+					url: 'newsDetail?id='+item.id+'&keyword='+this.keyword
 				});
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
+			},
+			search(res) {
+				this.pageIndex = 1;
+				API.newsList({
+					title: this.keyword,
+					limit: this.pageLimit,
+					page: this.pageIndex,
+				}).then(res => {
+					console.log(res);
+					this.pageIndex++;
+					this.currentNewsList = res.data.data;
+					this.newsList = this.newsList.concat(this.currentNewsList);
+					
+					// scrollView上拉不加载标志
+					this.canLoad = this.currentNewsList.length > 0 ? true : false;
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			input(res) {
+				this.keyword = res.value
+			},
+			cancel(res) {
+				
 			},
 			loadMore(e) {
 				setTimeout(() => {
@@ -104,14 +109,10 @@
 </script>
 
 <style lang="scss">
-	/* #ifndef APP-PLUS */
 	page {
 		width: 100%;
-		min-height: 100%;
-		display: flex;
+		height: 100%;
 	}
-
-	/* #endif */
 	
 	.container {
 		display: flex;
@@ -119,7 +120,6 @@
 		height: 100%;
 
 		.searchFilterContainer {
-			// flex: 1;
 			.searchBar {
 				padding: 40rpx 20rpx 20rpx;
 				background: #FFFFFF;
@@ -129,7 +129,7 @@
 		.scroll-v {
 			flex: 1;
 			width: 750upx;
-			height: 100%;
+			height: 80%;
 			/* #ifndef MP-ALIPAY */
 			flex-direction: column;
 			/* #endif */
@@ -180,6 +180,7 @@
 				image {
 					width: 300rpx;
 					height: 200rpx;
+					background: #D3D3D3;
 				}
 			}
 		}

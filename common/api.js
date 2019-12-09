@@ -41,13 +41,20 @@ const MyAPI = (url, needSubDomain, method, data) => {
 			version: Vue.config.configDic.version,
 			verCode: Vue.config.configDic.verCode,
 			appCode: Vue.config.configDic.appCode,
+			'content-type': 'application/x-www-form-urlencoded'
 		}
 		return config
 	})
-
+	
 	if (method == "GET") {
+		// url拼接参数
+		_url = _url + '?'
+		for (var key in data) {
+			var item = data[key];
+			_url = _url + key + '=' + item + '&'
+		}
 		return new Promise((resolve, reject) => {
-			http.get(_url, data)
+			http.get(_url)
 				.then(res => {
 					resolve(res)
 				}).catch(err => {
@@ -71,11 +78,21 @@ module.exports = {
 	loginInfo: (data) => {
 		return MyAPI('login/regUserlogin', false, 'GET', data)
 	},
+	// 互动区发表
 	interPublish: (data) => {
 		return MyAPI('interact/issue/publish', false, 'POST', data)
 	},
-	//互动区首页列表
+	// 互动区首页列表
 	interactionList: (data) => {
 		return MyAPI('interact/issue/list', false, 'GET', data)
+	},
+	
+	// 电科动态列表
+	newsList: (data) => {
+		return MyAPI('infos/dynamic/list', false, 'GET', data)
+	},
+	// 电科动态详情
+	newsDetail: (data) => {
+		return MyAPI('infos/dynamic/detail', false, 'GET', data)
 	},
 }

@@ -18,9 +18,9 @@
 			<text class="item-text title">{{detailData.title}}</text>
 			<text class="item-text brief">{{detailData.contents}}</text>
 			<view class="item-image">
-				<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-				<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-				<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+				<block v-for="(itemImage,indexImage) in detailData.pics" :key="indexImage">
+					<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(detailData.pics,indexImage)"></image>
+				</block>
 			</view>
 
 			<!-- 底部 -->
@@ -204,6 +204,12 @@
 			});
 		},
 		methods: {
+			previewImage(imageList,indexImage) { //预览图片
+			    uni.previewImage({
+			        urls: imageList,
+					current:imageList[indexImage]
+			    });
+			},
 			collect() {
 				console.log("收藏成功");
 				this.togglePopup('center', 'image');
@@ -470,13 +476,13 @@
 			}
 
 			.item-image {
-
 				display: flex;
-				flex-direction: row;
-
+				flex-wrap: wrap;
+				margin: 10rpx 20rpx;
+			
 				.item-image-image {
-					margin: 0 20rpx;
-					width: 30%;
+					padding: 10rpx 11rpx;
+					width: 200rpx;
 					height: 200rpx;
 				}
 			}

@@ -1,6 +1,6 @@
 <!-- 互动专区首页 -->
 <template>
-	<view class="page">
+	<view class="page zcc">
 		<view class="head">
 			<view class="statusBar"></view>
 			<view class="top">

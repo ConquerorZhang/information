@@ -20,13 +20,15 @@
 				 @result="result" @sortresult="sortresult"></intertction-filter>
 			</view>
 		</view>
-		<scroll-view scroll-y="true" class="list">
+
+		<view class="top-zhanwei"></view>
+		<scroll-view scroll-y="true" class="list" enableBackToTop="true" @scrolltolower="loadMore(page)">
 			<!-- 列表item -->
-			<view class="item" v-for="(item, index) in datalsit" :key="index" @click="navToDetailPage(item)">
+			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item)">
 				<view class="item-top">
 					<image class="circleicon" mode="aspectFit" :src="item.avatarUrl"></image>
 					<view class="info">
-						<text class="item-text name">{{item.createName}} {{type}}{{orderBy}}</text>
+						<text class="item-text name">{{item.createName}}</text>
 						<view class="info-bottom">
 							<text class="item-text time">{{item.createTimeShow}}</text>
 							<text class="item-text number">{{item.visitCountShow}}</text>
@@ -40,7 +42,7 @@
 					<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 					<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->
-					
+
 				</view>
 				<!-- 底部 -->
 				<view class="bottom">
@@ -54,7 +56,14 @@
 					</view>
 				</view>
 			</view>
+			<view class="loading-more" v-if="data.isLoading || data.datalsit.length > 4">
+				<text class="loading-more-text">{{data.loadingText}}</text>
+			</view>
 		</scroll-view>
+		<cover-view class="cover-view" @click="navToPublish">
+			<image class="cover-view-image" src="../../static/interaction/publish_go.png"></image>
+			<text class="cover-view-text">我要发布</text>
+		</cover-view>
 	</view>
 </template>
 
@@ -65,14 +74,20 @@
 	export default {
 		data() {
 			return {
-				type:'',
-				searchKey:'',
-				limit:'10',
-				page:'0',
-				orderBy:'',
-				isAsc:'asc',
-				datalsit:[],
-				itemlist: [{}, {}, {}, {}, {}, {}],
+				type: '',
+				searchKey: '',
+				limit: '10',
+				page: 1,
+				orderBy: '',
+				isAsc: 'desc',
+				data: {
+					isLoading: false,
+					hasmore: true,
+					refreshText: "",
+					loadingText: '加载更多...',
+					datalsit: [],
+				},
+				itemlist: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
 				themeColor: '#C7161E',
 				titleColor: '#ffffff',
 				filterResult: '',
@@ -144,29 +159,29 @@
 		},
 		methods: {
 			// 评论
-			topiccomment(topicid){
+			topiccomment(topicid) {
 				console.log(topicid);
-				
+
 			},
 			// 点赞
-			niubi(topicid){
+			niubi(topicid) {
 				console.log(topicid);
 			},
-			
+
 			// trigger_sort(item) {
-				// console.log("value的值为：" + item.value);
-				/* this.content[e.index].active = !e.item.active;
-				uni.showModal({
-					title: '提示',
-					content: `您${this.content[e.index].active?'选中了':'取消了'}${e.item.text}`,
-					success: function(res) {
-						if (res.confirm) {
-							console.log('用户点击确定');
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
+			// console.log("value的值为：" + item.value);
+			/* this.content[e.index].active = !e.item.active;
+			uni.showModal({
+				title: '提示',
+				content: `您${this.content[e.index].active?'选中了':'取消了'}${e.item.text}`,
+				success: function(res) {
+					if (res.confirm) {
+						console.log('用户点击确定');
+					} else if (res.cancel) {
+						console.log('用户点击取消');
 					}
-				}); */
+				}
+			}); */
 			// },
 			//筛选菜单返回结果
 			result(val) {
@@ -177,77 +192,117 @@
 				// console.log(val.part);
 				this.type = val.part;
 				//重新执行搜索函数
-				this.getlistdata();
+				this.resetData();
+				this.getlistdata(1);
 			},
 			//排序菜单返回结果
-			sortresult(val){
+			sortresult(val) {
 				// console.log('filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
-				this.getlistdata();
+				this.resetData();
+				this.getlistdata(1);
 			},
 			//页面跳转到详情
 			navToDetailPage(item) {
-				
+
 				uni.navigateTo({
-					url:'/pages/interaction/interactionDetail'
+					url: '/pages/interaction/interactionDetail'
+				})
+			},
+			//页面跳转到发布
+			navToPublish(item) {
+
+				uni.navigateTo({
+					url: '/pages/interaction/publish'
 				})
 			},
 			//键盘触发搜索
-			search(key){
+			search(key) {
 				console.log(key);
-				this.getlistdata();
+				this.resetData();
+				this.getlistdata(1);
 			},
-			getlistdata(){
+			getlistdata(page) {
+				console.log('page----' + page);
 				API.interactionList({
 					searchKey: this.searchKey,
 					type: this.type,
 					limit: this.limit,
-					page: this.page,
+					page: page,
 					orderBy: this.orderBy,
 					isAsc: this.isAsc,
-					
+
 					// contents: this.contentText,
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
-					console.log(res);
-					this.datalsit = res.data.data;
-					console.log(this.datalsit)
+					if (this.data.datalsit.length < 1) {
+						this.data.datalsit = res.data.data;
+					} else {
+						if (res.data.data.length < this.page) {
+							this.data.loadingText = "没有更多数据了"
+							// this.page = page - 1;
+							this.data.hasmore = false;
+						} else {
+							this.page = page + 1;
+							this.data.hasmore = true;
+						}
+						this.data.datalsit = this.data.datalsit.concat(res.data.data);
+					}
+					console.log(this.data.datalsit);
 				}).catch(err => {
 					console.log(err);
 				})
+			},
+			loadMore(currentpage) {
+				if (this.data.hasmore) {
+					this.getlistdata(this.page);
+				}
+			},
+			resetData() {
+				this.data = {
+					isLoading: false,
+					hasmore: true,
+					refreshText: "",
+					loadingText: '加载更多...',
+					datalsit: [],
+				};
+				this.page = 1;
 			}
 		},
+
 		onLoad() {
-			// API.interactionList({
-			// 	searchKey: this.searchKey,
-			// 	type: this.type,
-			// 	limit: this.limit,
-			// 	page: this.page,
-			// 	orderBy: this.orderBy,
-			// 	isAsc: this.isAsc,
-			// 	// contents: this.contentText,
-			// 	// pics: this.submitImageIdList,
-			// 	// type: parseInt(this.selectedIndex) + 1,
-			// }).then(res => {
-			// 	console.log(res);
-			// 	this.datalsit = res.data.data;
-			// 	console.log(this.datalsit)
-			// }).catch(err => {
-			// 	console.log(err);
-			// })
-			
-			this.getlistdata();
-		}
-		
+			// setTimeout(()=>{
+			// 	this.getlistdata(1);
+			// },350)
+			this.getlistdata(1);
+		},
+		// onLoad() {
+		//     setTimeout(()=>{
+		//       this.tabBars.forEach((tabBar) => {
+		//           this.newsList.push({
+		//               data: [],
+		//               isLoading: false,
+		//               refreshText: "",
+		//               loadingText: '加载更多...'
+		//           });
+		//       });
+		//       this.getList(0);
+		//     },350)
+		// },
+
 	}
 </script>
 
 <style lang="scss">
+	page {
+		height: 100%;
+	}
+
 	.page {
 		display: flex;
 		flex-direction: column;
-
+		
 		.head {
 			position: fixed;
 			top: 0rpx;
@@ -317,8 +372,14 @@
 			}
 		}
 
+		.top-zhanwei {
+			height: 190rpx;
+		}
+
 		.list {
-			margin-top: 190rpx;
+			// margin-top: 190rpx;
+			height: 100%;
+			width: 100%;
 
 			.item {
 				background: #FFFFFF;
@@ -444,6 +505,52 @@
 					}
 
 				}
+			}
+
+			.loading-more {
+				align-items: center;
+				justify-content: center;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				text-align: center;
+
+				.loading-more-text {
+					font-size: 28upx;
+					color: #999;
+				}
+			}
+
+
+		}
+
+		.cover-view {
+			position: fixed;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			bottom: 60rpx;
+			width: 40%;
+			height: 70rpx;
+			left: 0;
+			right: 0;
+			text-align: center;
+			margin: auto;
+			z-index: 99999;
+			border-radius: 10rpx;
+			background-image: linear-gradient(left, #D74819, #C7161E);
+
+			.cover-view-image {
+				height: 40rpx;
+				width: 40rpx;
+				text-align: center;
+				margin-right: 5rpx;
+			}
+
+			.cover-view-text {
+				color: #FFFFFF;
+				font-size: 24rpx;
+				margin-left: 5rpx;
 			}
 		}
 	}

@@ -41,7 +41,8 @@ const MyAPI = (url, needSubDomain, method, data) => {
 			version: Vue.config.configDic.version,
 			verCode: Vue.config.configDic.verCode,
 			appCode: Vue.config.configDic.appCode,
-			'content-type':method == "GET" ? 'application/x-www-form-urlencoded' : 'application/json;charset=UTF-8',
+			'content-type':'application/x-www-form-urlencoded',
+			// 'content-type':method == "GET" ? 'application/x-www-form-urlencoded' : 'application/json;charset=UTF-8',
 		}
 		return config
 	})
@@ -84,7 +85,7 @@ module.exports = {
 	},
 	// 互动区首页列表
 	interactionList: (data) => {
-		return MyAPI('interact/issue/list', false, 'POST', data)
+		return MyAPI('interact/issue/list', false, 'GET', data)
 	},
 	// 互动区问题详情
 	interDetail: (data) => {

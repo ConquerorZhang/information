@@ -222,7 +222,7 @@
 				this.getlistdata(1);
 			},
 			getlistdata(page) {
-				// console.log('page----' + page);
+				console.log('page----' + page);
 				API.interactionList({
 					searchKey: this.searchKey,
 					type: this.type,
@@ -235,6 +235,7 @@
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
+					console.log(res)
 						if (res.data.data.length < this.limit) {
 							this.data.loadingText = "没有更多数据了"
 							this.data.hasmore = false;
@@ -243,8 +244,8 @@
 							this.data.hasmore = true;
 						}
 						this.data.datalsit = this.data.datalsit.concat(res.data.data);
-					// console.log(res.data.data);
-					// console.log(this.data.datalsit);
+					console.log(res.data.data);
+					console.log(this.data.datalsit);
 				}).catch(err => {
 					console.log(err);
 				})

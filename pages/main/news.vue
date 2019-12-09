@@ -32,7 +32,7 @@
 
 <script>
 	const API = require('../../common/api.js')
-	
+
 	export default {
 		data() {
 			return {
@@ -50,10 +50,10 @@
 		},
 		methods: {
 			getList() {
-				if(!this.canLoad) {
+				if (!this.canLoad) {
 					return;
 				}
-				
+
 				API.newsList({
 					title: this.keyword,
 					limit: this.pageLimit,
@@ -63,7 +63,7 @@
 					this.pageIndex++;
 					this.currentNewsList = res.data.data;
 					this.newsList = this.newsList.concat(this.currentNewsList);
-					
+
 					// scrollView上拉不加载标志
 					this.canLoad = this.currentNewsList.length > 0 ? true : false;
 				}).catch(err => {
@@ -72,11 +72,12 @@
 			},
 			goDetail(item) {
 				uni.navigateTo({
-					url: 'newsDetail?id='+item.id+'&keyword='+this.keyword
+					url: 'newsDetail?id=' + item.id + '&keyword=' + this.keyword
 				});
 			},
 			search(res) {
 				this.pageIndex = 1;
+				this.newsList = [];
 				API.newsList({
 					title: this.keyword,
 					limit: this.pageLimit,
@@ -86,7 +87,7 @@
 					this.pageIndex++;
 					this.currentNewsList = res.data.data;
 					this.newsList = this.newsList.concat(this.currentNewsList);
-					
+
 					// scrollView上拉不加载标志
 					this.canLoad = this.currentNewsList.length > 0 ? true : false;
 				}).catch(err => {
@@ -97,7 +98,7 @@
 				this.keyword = res.value
 			},
 			cancel(res) {
-				
+
 			},
 			loadMore(e) {
 				setTimeout(() => {
@@ -113,7 +114,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	.container {
 		display: flex;
 		flex-direction: column;

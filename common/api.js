@@ -95,6 +95,10 @@ module.exports = {
 	interCommentList: (data) => {
 		return MyAPI('interact/commonlist', false, 'GET', data)
 	},
+	// 互动区问题回复
+	interCommentReply: (data) => {
+		return MyAPI('interact/addcomment', false, 'POST', data)
+	},
 	
 	// 电科动态列表
 	newsList: (data) => {

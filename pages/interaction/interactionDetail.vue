@@ -10,8 +10,9 @@
 						<text class="item-text number">{{detailData.visitCountShow}}</text>
 					</view>
 				</view>
-				<view class="item-top-collect" @click="collect">
-					<image class="collect-icon" mode="aspectFit" src="../../static/sc_sec.png"></image>
+				<view class="item-top-collect" :class="detailData.collect ? 'item-top-collect-color' : 'item-top-uncollect-color'"
+				 @click="collect">
+					<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/sc_sec.png" : "../../static/sc.png"'></image>
 					<text class="collect-text">收藏</text>
 				</view>
 			</view>
@@ -25,11 +26,11 @@
 
 			<!-- 底部 -->
 			<view class="bottom">
-				<view class="bottom-left" @click="niubi('topicid')">
-					<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
-					<text class="bottom-text">{{detailData.favourCount}}</text>
+				<view class="bottom-left" @click="niubi()">
+					<image class="bottom-icon-left" mode="aspectFit" :src='detailData.favour ? "../../static/zan_sec.png" : "../../static/zan.png"'></image>
+					<text class="bottom-text" :class="detailData.favour ? 'bottom-red-text' : 'bottom-gray-text'">{{detailData.favourCount}}</text>
 				</view>
-				<view class="bottom-right" @click="topiccomment('topicid')">
+				<view class="bottom-right" @click="comment(-1)">
 					<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
 					<text class="bottom-text">{{detailData.replyCount}}</text>
 				</view>
@@ -38,25 +39,28 @@
 		<!-- 评论 -->
 		<view class="comment-model">
 			<view class="commentTitle">用户评论</view>
+			<view class="emptyView" v-if="commentList.length == 0">
+				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+				<view class="emptyText">还没有人评论哦～</view>
+			</view>
 			<view class="commentBlock" v-for="(item,index) in commentList" :key="index">
 				<view class="headModel" :id="'commentList-'+index">
-					<image class="headImage" :src="item.headImage" mode="scaleToFill"></image>
+					<image class="headImage" :src="item.avatarUrl" mode="scaleToFill"></image>
 					<view class="headPart">
-						<view class="headPartName">{{item.title}}</view>
-						<view class="headPartTime">{{item.time}}</view>
+						<view class="headPartName">{{item.createName}}</view>
+						<view class="headPartTime">{{item.createTime}}</view>
 					</view>
-					<image class="replyImage" :src="item.commentImage" mode="scaleToFill" @tap="reply(index,item.title)"></image>
+					<image class="replyImage" src="../../static/message_black.png" mode="scaleToFill" @tap="reply(index,item.id,item.title)"></image>
 				</view>
-				<view class="replyContent">{{item.content}}</view>
-				<view v-if="item.subComment.length > 0" class="subContent">
-					<view v-for="(subItem,subIndex) in item.subComment" :key="subIndex">
-						<text class="subContentName">{{subItem.name}}</text>
-						<text class="subContentContent">：{{subItem.content}}</text>
+				<view class="replyContent">{{item.contents}}</view>
+				<view v-if="item.subComments.length > 0" class="subContent">
+					<view v-for="(subItem,subIndex) in item.subComments" :key="subIndex">
+						<text class="subContentName">{{subItem.createName}}</text>
+						<text class="subContentContent">：{{subItem.createTime}}</text>
 					</view>
 				</view>
 			</view>
 		</view>
-
 
 		<view class="foot" v-show="showInput">
 			<chat-input @send-message="send_comment" @blur="blur" :focus="focus" :placeholder="input_placeholder"></chat-input>
@@ -86,7 +90,7 @@
 
 <script>
 	const API = require('../../common/api.js')
-	
+
 	import chatInput from '../../components/comment/chatinput.vue'; //input框
 	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
 	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue'
@@ -110,68 +114,12 @@
 				index: '-1',
 				// comment_index: '',
 
-				commentList: [{
-						headImage: "../../static/logo.png",
-						title: '我是书生',
-						time: '11-14 15:26:25',
-						commentImage: '../../static/message_black.png',
-						content: '我觉得你图片发少了觉得你图片发少了觉得你图片发1234567890087654432245567787866了觉得你图片发少了觉得你图片发少了觉得你图片发少了',
-						subComment: [],
-					},
-					{
-						headImage: "../../static/logo.png",
-						title: '解决了',
-						time: '11-14 15:26:25',
-						commentImage: '../../static/message_black.png',
-						content: '我觉787866了觉得你图片发少了觉得你图片发少了觉得你图片发少了',
-						subComment: [{
-								name: '哈哈哈',
-								content: '123京津冀哦哦哦哈哈哈哦哦哦哈哈哈哦哦哦哈哈哈'
-							},
-							{
-								name: '啦啦啦',
-								content: '哦哦哦哈哈哈'
-							},
-						],
-					},
-					{
-						headImage: "../../static/logo.png",
-						title: '你哈哈哈',
-						time: '11-14 15:26:25',
-						commentImage: '../../static/message_black.png',
-						content: '我觉得你图片发少了觉得你图片发32245567787866了觉得你图片发少了觉得你图片发少了觉得你图片发少了',
-						subComment: [{
-							name: '哈哈哈',
-							content: '123京津冀哦哦哦哈哈哈哦哦哦哈哈哈哦哦哦哈哈哈'
-						}, ],
-					},
-					{
-						headImage: "../../static/logo.png",
-						title: '啊啊啊啊啊',
-						time: '11-14 15:26:25',
-						commentImage: '../../static/message_black.png',
-						content: '我觉得你图片发少了觉得你图片发32245567787866了觉得你图片发少了觉得你图片发少了觉得你图片发少了',
-						subComment: [{
-							name: '哈哈哈',
-							content: '123京津冀哦哦哦哈哈哈哦哦哦哈哈哈哦哦哦哈哈哈'
-						}, ],
-					},
-					{
-						headImage: "../../static/logo.png",
-						title: '呃呃呃呃',
-						time: '11-14 15:26:25',
-						commentImage: '../../static/message_black.png',
-						content: '我觉得你图片发少了觉得你图片发32245567787866了觉得你图片发少了觉得你图片发少了觉得你图片发少了',
-						subComment: [{
-							name: '哈哈哈',
-							content: '123京津冀哦哦哦哈哈哈哦哦哦哈哈哈哦哦哦哈哈哈'
-						}, ],
-					}
-				],
+				commentList: [],
+				parentId: '', //如果是评论帖子，则为空，如果是评论评论，那位被评论的id
 			};
 		},
 		onLoad(option) {
-			this.id = '1202867518841044993'; //option.id; todozcc
+			this.id = option.id;
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
 					this.screenHeight = res.screenHeight;
@@ -184,11 +132,14 @@
 			API.interDetail({
 				id: this.id
 			}).then(res => {
-				console.log(res);
+				// console.log(res);
 				this.detailData = res.data.data;
 			}).catch(err => {
 				console.log(err);
 			})
+
+			// 评论列表
+			this.commentData();
 		},
 		onShow() {
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
@@ -204,11 +155,23 @@
 			});
 		},
 		methods: {
-			previewImage(imageList,indexImage) { //预览图片
-			    uni.previewImage({
-			        urls: imageList,
-					current:imageList[indexImage]
-			    });
+			commentData() {
+				// 评论列表
+				API.interCommentList({
+					issueid: this.id
+				}).then(res => {
+					console.log(res);
+					this.commentList = res.data.data;
+				
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			previewImage(imageList, indexImage) { //预览图片
+				uni.previewImage({
+					urls: imageList,
+					current: imageList[indexImage]
+				});
 			},
 			collect() {
 				console.log("收藏成功");
@@ -219,18 +182,15 @@
 				this.showimage = false;
 
 			},
-			// 评论
-			topiccomment(topicid) {
-				console.log(topicid);
-
-			},
 			// 点赞
-			niubi(topicid) {
-				console.log(topicid);
+			niubi() {
+				this.detailData.favour = !this.detailData.favour;
 			},
 			togglePopup(type, open) {
 				this.type = type
 				this['show' + open] = true
+
+				this.detailData.collect = !this.detailData.collect;
 			},
 			cancel(type) {
 				this['show' + type] = false
@@ -240,14 +200,6 @@
 				if (!e.show) {
 					this.showimage = false
 				}
-			},
-			comment(index) {
-				this.showInput = true; //调起input框
-				this.is_reply = false; //
-				this.showInput = true; //调起input框
-				this.input_placeholder = '编辑评论';
-				this.index = index; //回复索引
-				this.focus = true;
 			},
 			adjust() { //当弹出软键盘发生评论动作时,调整页面位置pageScrollTo
 				return;
@@ -270,7 +222,15 @@
 				// 		}).exec();
 				// 	}).exec();
 			},
-			reply(index, subReplyName) {
+			comment(index) {
+				this.showInput = true; //调起input框
+				this.is_reply = false; //
+				this.showInput = true; //调起input框
+				this.input_placeholder = '编辑评论';
+				this.index = index; //回复索引
+				this.focus = true;
+			},
+			reply(index, parentId, subReplyName) {
 				this.is_reply = true; //回复中
 				this.showInput = true; //调起input框
 				this.input_placeholder = '回复' + subReplyName;
@@ -288,12 +248,32 @@
 						content: message.content,
 					};
 
-					console.log(this.commentList[this.index].subComment);
-					this.commentList[this.index].subComment.push(replyDic);
-					console.log(this.commentList[this.index].subComment);
+					API.interCommentReply({
+						commentType: 'issue',
+						contents: message.content,
+						bizKey: this.id,
+						parentId: this.parentId,
+					}).then(res => {
+						console.log(res);
+
+						this.commentList[this.index].subComments.push(replyDic);
+					}).catch(err => {
+						console.log(err);
+					})
 				} else {
 					// 总评论 （调接口）
-					// var comment_content = message.content;
+					API.interCommentReply({
+						commentType: 'issue',
+						contents: message.content,
+						bizKey: this.id,
+						parentId: '',
+					}).then(res => {
+						console.log(res);
+						
+						this.commentData();
+					}).catch(err => {
+						console.log(err);
+					})
 				}
 				this.init_input();
 			},
@@ -308,6 +288,10 @@
 </script>
 
 <style lang="scss">
+	page {
+		background: #FFFFFF;
+	}
+
 	/* 插屏广告 */
 	.uni-image {
 		position: relative;
@@ -431,7 +415,6 @@
 
 				.item-top-collect {
 					display: flex;
-					border: 1px solid #D74819;
 					border-radius: 30upx;
 					width: 120upx;
 					height: 40upx;
@@ -447,9 +430,18 @@
 
 					.collect-text {
 						font-size: 25upx;
-						color: #D74819;
 						margin-left: 5upx;
 					}
+				}
+
+				.item-top-collect-color {
+					border: 1px solid #D74819;
+					color: #D74819;
+				}
+
+				.item-top-uncollect-color {
+					border: 1px solid #909192;
+					color: #909192;
 				}
 			}
 
@@ -479,7 +471,7 @@
 				display: flex;
 				flex-wrap: wrap;
 				margin: 10rpx 20rpx;
-			
+
 				.item-image-image {
 					padding: 10rpx 11rpx;
 					width: 200rpx;
@@ -515,9 +507,15 @@
 
 				.bottom-text {
 					font-size: 20upx;
-					color: #525252;
 				}
 
+				.bottom-red-text {
+					color: #D74819;
+				}
+
+				.bottom-gray-text {
+					color: #525252;
+				}
 			}
 		}
 	}
@@ -525,13 +523,27 @@
 	.comment-model {
 		margin-bottom: 90rpx;
 		background: #FFFFFF;
+		border-top: 6px solid #eeeff0;
 
 		.commentTitle {
 			padding: 30rpx 20rpx 20rpx;
+			border-bottom: 1px solid #eeeff0;
+		}
+
+		.emptyView {
+			margin: 80rpx 0 200rpx;
+			text-align: center;
+
+			.emptyImage {
+				width: 600rpx;
+			}
+
+			.emptyText {
+				color: #969798;
+			}
 		}
 
 		.commentBlock {
-			border-top: 1px solid #EFEFEF;
 			padding: 30rpx;
 
 			.headModel {

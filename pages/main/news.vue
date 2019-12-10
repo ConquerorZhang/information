@@ -21,10 +21,10 @@
 			</view>
 
 			<view class="loading-more" v-if="currentNewsList.length >= this.pageLimit" v-on:click="loadMore()">
-				<text class="loading-more-text">加载更多...</text>
+				<text class="loading-more-text">加载更多数据</text>
 			</view>
 			<view class="loading-more" v-else>
-				<text class="loading-more-text">没有更多了...</text>
+				<text class="loading-more-text">没有更多数据了</text>
 			</view>
 		</scroll-view>
 	</view>

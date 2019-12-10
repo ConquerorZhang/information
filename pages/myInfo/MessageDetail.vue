@@ -1,18 +1,30 @@
 <template>
 	<view>
-		<text>{{id}}</text>
+		<view class="contentView" v-html="content">{{content}}</view>
 	</view>
 </template>
 
 <script>
+	const API = require('../../common/api.js')
+	
 	export default {
 		data() {
 			return {
-				id:''
+				id:'',
+				content: '',
 			}
 		},
 		onLoad: function (option) {
 			this.id = option.id
+			
+			API.myMessageDetail({
+				id: this.id,
+			}).then(res => {
+				console.log(res);
+				this.content = res.data.data.contents;
+			}).catch(err => {
+				console.log(err);
+			})
 		},
 		methods: {
 			

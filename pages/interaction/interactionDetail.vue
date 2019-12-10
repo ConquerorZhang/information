@@ -121,6 +121,9 @@
 			};
 		},
 		onLoad(option) {
+			// console.log(option)
+			// 	let data = JSON.parse(option);
+			// 	console.log(data.id);
 			this.id = option.id;
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {

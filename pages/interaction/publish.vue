@@ -217,6 +217,11 @@
 			chooseBtn(index) {
 				this.selectedIndex = index;
 			}
+		},
+		onLoad() {
+			//商品数据
+			let data = JSON.parse(option.data);
+			console.log(data);
 		}
 	}
 </script>

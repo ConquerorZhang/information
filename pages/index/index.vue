@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view :style="{ height: iStatusBarHeight + 'px'}"></view>
-		<view @click="collect"> 状态栏下的文字 </view>
+		<view :class="getTextColor" @click="changeTextState"> 状态栏下的文字 </view>
 		<!-- 插屏弹窗 -->
 		<uni-popup class="popopopopopop" :show="showimage" :type="type" :mask-click="true" @change="change">
 			<view class="uni-image">
@@ -11,9 +11,6 @@
 				</view>
 			</view>
 		</uni-popup>
-		<scroll-view class="scroll-view" scroll-y="true" enableBackToTop="true" @scrolltolower="loweraaa">
-			<view  v-for="(item,index) in 100" :key="index">第几个：{{index}}</view>
-		</scroll-view>
 	</view>
 </template>
 
@@ -23,6 +20,14 @@
 		components:{
 			uniPopup
 		},
+		computed:{
+			getTextColor(){
+				return this.isactive?'textRed':'textBlack';
+			},
+			 computedClassObject () {
+			                return { textBlack: this.isActive }
+			            }
+		},
 		data() {
 			return {
 				iStatusBarHeight: 0,
@@ -30,6 +35,7 @@
 				showimage: false,
 				type: '',
 				content: '顶部弹 popup',
+				isactive:false,
 			}
 		},
 		onLoad() {
@@ -37,6 +43,10 @@
 			console.log(this.iStatusBarHeight)
 		},
 		methods: {
+			changeTextState(){
+				console.log("改变文字状态")
+				this.isactive = !this.isactive;
+			},
 			loweraaa(){
 				console.log("加载更多");
 			},
@@ -79,9 +89,9 @@ togglePopup(type, open) {
 
 <style lang="scss">
 	
-	page{
-		height: 100%;
-	}
+	// page{
+	// 	height: 100%;
+	// }
 	
 	/* 插屏广告 */
 	.uni-image {
@@ -106,8 +116,12 @@ togglePopup(type, open) {
 		justify-content: center;
 		height: 100%;
 		
-		.scroll-view{
-			height: 100%;
+		.textRed{
+			color: #FF0000;
+		}
+		
+		.textBlack{
+			color: #000000;
 		}
 	}
 

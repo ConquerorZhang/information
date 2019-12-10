@@ -128,4 +128,8 @@ module.exports = {
 	myMessageDetail: (data) => {
 		return MyAPI('infos/notice/detail', false, 'GET', data)
 	},
+	// 我的收藏
+	myCollect: (data) => {
+		return MyAPI('interact/mycollect', false, 'GET', data)
+	},
 }

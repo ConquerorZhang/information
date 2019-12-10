@@ -5,7 +5,8 @@
 		</view>
 		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
 			<view class="empty" v-if="newsList.length < 1">
-				<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+				<view class="emptyText">没有找到相关动态～</view>
 			</view>
 			<view class="newsPart" v-for="(item,index) in newsList" :key="index" v-on:click="goDetail(item)">
 				<view class="textPart">
@@ -23,7 +24,7 @@
 			<view class="loading-more" v-if="currentNewsList.length >= this.pageLimit" v-on:click="loadMore()">
 				<text class="loading-more-text">加载更多数据</text>
 			</view>
-			<view class="loading-more" v-else>
+			<view class="loading-more" v-else-if="newsList.length > 0">
 				<text class="loading-more-text">没有更多数据了</text>
 			</view>
 		</scroll-view>
@@ -139,8 +140,11 @@
 				text-align: center;
 
 				.emptyImage {
-					margin-top: 400rpx;
-					width: 300rpx;
+					margin-top: 300rpx;
+					width: 500rpx;
+				}
+				.emptyText {
+					color: #969798;
 				}
 			}
 

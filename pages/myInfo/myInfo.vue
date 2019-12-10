@@ -1,6 +1,7 @@
 <template>
 	<view class="totalContent">
-		<view class="settingTopBgView"><!-- :style="{background: 'url('+data.settingBGImage +')'}"> -->
+		<view class="settingTopBgView">
+			<!-- :style="{background: 'url('+data.settingBGImage +')'}"> -->
 			<view class="headBGView">
 				<image class="head" :src='data.head'></image>
 				<view class="nameInfo">
@@ -122,7 +123,9 @@
 						}
 					case 1:
 						{
-
+							uni.navigateTo({
+								url: "../interaction/interaction"
+							})
 							break;
 						}
 					case 2:
@@ -178,7 +181,7 @@
 	page {
 		background: #FFFFFF;
 	}
-	
+
 	.totalContent {
 		background: #feffff;
 	}
@@ -190,6 +193,7 @@
 
 		.headBGView {
 			display: flex;
+
 			.head {
 				margin: 0 20rpx;
 				width: 140rpx;
@@ -200,18 +204,22 @@
 			.nameInfo {
 				color: #FFFFFF;
 				width: 500rpx;
+
 				.mailPart {
 					display: flex;
 					align-items: center;
+
 					image {
 						width: 27rpx;
 						height: 22rpx;
 						margin-right: 15rpx;
 					}
 				}
+
 				.phonePart {
 					display: flex;
 					align-items: center;
+
 					image {
 						width: 20rpx;
 						height: 29rpx;

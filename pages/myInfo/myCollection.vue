@@ -13,9 +13,10 @@
 					<block v-if="index1 == 0">
 						<checkbox-group @change="checkboxChange0">
 							<view class="empty" v-if="tab.data.length < 1">
-								<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+								<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+								<view class="emptyText">您还没有收藏任何产品哦～</view>
 							</view>
-							<view class="productPart" v-for="(item,index) in tab.data" :key="index">
+							<view class="productPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.id)">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
 								<view class="detailPart" v-on:click="navigateToProduct(item.id)">
 									<image class="imagePart" :src="item.image" mode="scaleToFill"></image>
@@ -32,31 +33,35 @@
 					<block v-else>
 						<checkbox-group @change="checkboxChange1">
 							<view class="empty" v-if="tab.data.length < 1">
-								<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+								<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+								<view class="emptyText">您还没有收藏任何帖子哦～</view>
 							</view>
-							<view class="cardPart" v-for="(item,index) in tab.data" :key="index">
+							<view class="cardPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.id)">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
 								<view class="detailPart">
 									<view class="item-top">
-										<image class="circleicon" mode="scaleToFill" :src="item.head"></image>
+										<image class="circleicon" mode="scaleToFill" :src="item.userImgUrl"></image>
 										<view class="info">
-											<view class="name">{{item.name}}</view>
-											<view class="time">{{item.time}}</view>
+											<view class="name">{{item.userName}}</view>
+											<view class="time">{{item.createTime}}</view>
 										</view>
 									</view>
 									<text class="title">{{item.title}}</text>
-									<text class="brief">{{item.content}}</text>
+									<text class="brief">{{item.contents}}</text>
 									<view class="item-image">
-										<block v-for="(itemImage,indexImage) in item.imageList" :key="indexImage">
-											<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(item.imageList,indexImage)"></image>
+										<block v-for="(itemImage,indexImage) in item.imgs" :key="indexImage">
+											<image class="item-image-image" mode="scaleToFill" :src="itemImage.url" @tap="previewImage(item.imgs,indexImage)"></image>
 										</block>
 									</view>
 								</view>
 							</view>
 						</checkbox-group>
 					</block>
-					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4" v-on:click="loadMore(index1)">
-						<text class="loading-more-text">{{tab.loadingText}}</text>
+					<view class="loading-more" v-if="currentList[index1].length >= 10" v-on:click="loadMore(index1)">
+						<text class="loading-more-text">加载更多数据</text>
+					</view>
+					<view class="loading-more" v-else-if="newsList[index1].data.length > 0">
+						<text class="loading-more-text">没有更多数据了</text>
 					</view>
 				</scroll-view>
 
@@ -73,6 +78,8 @@
 </template>
 
 <script>
+	const API = require('../../common/api.js')
+
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
@@ -103,6 +110,13 @@
 				scrollInto: "",
 				showTips: false,
 				navigateFlag: false,
+				pageLimit: 10,
+				pageIndex: [1, 1],
+				currentList: [
+					[],
+					[]
+				],
+				canLoad: [true, true]
 			}
 		},
 		onLoad() {
@@ -110,9 +124,6 @@
 				this.tabBars.forEach((tabBar) => {
 					this.newsList.push({
 						data: [],
-						isLoading: false,
-						refreshText: "",
-						loadingText: '加载更多...'
 					});
 				});
 				this.getList(0);
@@ -130,12 +141,16 @@
 
 			},
 			getList(index) {
+				if (!this.canLoad[index]) {
+					return;
+				}
+				
 				console.log(index);
 				let activeTab = this.newsList[index];
-				let list = [];
-				// 制造的假数据
-				let tmpList = [
-					[{
+
+				// 待产品的接口
+				if (index == 0) {
+					this.currentList[index] = [{
 						image: '../../static/logo.png',
 						title: '中国电科相关资料',
 						subtitle: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
@@ -147,92 +162,54 @@
 						subtitle: '的点点滴滴',
 						time: '2013-2-22',
 						id: '12'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '13'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '14'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '15'
-					}],
-					[{
-							head: '../../static/logo.png',
-							name: '樊重霄',
-							time: '2011-2-22',
-							title: '测试文章标题，很新颖的标题',
-							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-							imageList: [],
-							id: '21'
-						},
-						{
-							head: '../../static/logo.png',
-							name: '吕飞飞',
-							time: '2011-2-22',
-							title: '测试文章标题，很新颖的标题',
-							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-							imageList: ['../../static/logo.png', '../../static/logo.png'],
-							id: '22'
-						}, {
-							head: '../../static/logo.png',
-							name: '樊重霄',
-							time: '2011-2-22',
-							title: '测试文章标题，很新颖的标题',
-							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-							imageList: ['../../static/logo.png', '../../static/logo.png', '../../static/logo.png'],
-							id: '23'
-						},
-						{
-							head: '../../static/logo.png',
-							name: '吕飞飞',
-							time: '2011-2-22',
-							title: '测试文章标题，很新颖的标题',
-							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-							imageList: ['../../static/logo.png', '../../static/logo.png', '../../static/logo.png', '../../static/logo.png'],
-							id: '24'
-						}, {
-							head: '../../static/logo.png',
-							name: '樊重霄',
-							time: '2011-2-22',
-							title: '测试文章标题，很新颖的标题',
-							content: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-							imageList: [],
-							id: '25'
+					}];
+					
+					activeTab.data = activeTab.data.concat(this.currentList[index]);
+					// 更新全选按钮状态
+					if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+						this.allChecked[this.tabIndex] = true;
+					} else {
+						this.allChecked[this.tabIndex] = false;
+					}
+				} else if (index == 1) {
+					// 我收藏的帖子列表接口
+					API.myCollect({
+						limit: this.pageLimit,
+						page: this.pageIndex[index],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[index]++;
+						this.currentList[index] = res.data.data;
+
+						// scrollView上拉不加载标志
+						this.canLoad[index] = this.currentList[index].length > 0 ? true : false;
+						
+						activeTab.data = activeTab.data.concat(this.currentList[index]);
+						// 更新全选按钮状态
+						if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+							this.allChecked[this.tabIndex] = true;
+						} else {
+							this.allChecked[this.tabIndex] = false;
 						}
-					]
-				];
-
-				list = tmpList[index];
-				activeTab.data = activeTab.data.concat(list);
-
-				// 更新全选按钮状态
-				if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
-					this.allChecked[this.tabIndex] = true;
-				} else {
-					this.allChecked[this.tabIndex] = false;
+					}).catch(err => {
+						console.log(err);
+					})
 				}
+			
 			},
-			goDetail(e) {
-				if (this.navigateFlag) {
-					return;
+			interDetail(index1,id) {
+				console.log(index1);
+				console.log(id);
+				if (index1 == 0) {
+					// uni.navigateTo({
+					// 	url: ''
+					// });
 				}
-				this.navigateFlag = true;
-				uni.navigateTo({
-					url: './detail/detail?title=' + e.title
-				});
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
+				else {
+					uni.navigateTo({
+						url: '/pages/interaction/interactionDetail?id='+id
+					});
+				}
 			},
 			loadMore(e) {
 				setTimeout(() => {
@@ -261,7 +238,6 @@
 			},
 			clearTabData(e) {
 				this.newsList[e].data.length = 0;
-				this.newsList[e].loadingText = "加载更多...";
 			},
 			checkboxChange0: function(e) {
 				this.selectedIdArr[this.tabIndex] = e.detail.value; //无法刷新
@@ -315,11 +291,11 @@
 			navigateToProduct(e) {
 				console.log(e);
 			},
-			previewImage(imageList,indexImage) { //预览图片
-			    uni.previewImage({
-			        urls: imageList,
-					current:imageList[indexImage]
-			    });
+			previewImage(imageList, indexImage) { //预览图片
+				uni.previewImage({
+					urls: imageList,
+					current: imageList[indexImage]
+				});
 			},
 		}
 	}
@@ -332,7 +308,6 @@
 		min-height: 100%;
 		display: flex;
 	}
-
 	/* #endif */
 
 	.tabs {
@@ -474,8 +449,12 @@
 		text-align: center;
 
 		.emptyImage {
-			margin-top: 400rpx;
-			width: 300rpx;
+			margin-top: 300rpx;
+			width: 500rpx;
+		}
+
+		.emptyText {
+			color: #969798;
 		}
 	}
 
@@ -596,10 +575,11 @@
 		padding-top: 10px;
 		padding-bottom: 10px;
 		text-align: center;
+		
+		.loading-more-text {
+			font-size: 28upx;
+			color: #999;
+		}
 	}
 
-	.loading-more-text {
-		font-size: 28upx;
-		color: #999;
-	}
 </style>

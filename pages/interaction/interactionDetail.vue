@@ -103,7 +103,9 @@
 		data() {
 			return {
 				id: '',
-				detailData: {},
+				detailData: {
+					favour:false
+				},
 				showimage: false,
 				type: '',
 				content: '顶部弹 popup',
@@ -132,7 +134,7 @@
 			API.interDetail({
 				id: this.id
 			}).then(res => {
-				// console.log(res);
+				console.log(res);
 				this.detailData = res.data.data;
 			}).catch(err => {
 				console.log(err);
@@ -184,6 +186,7 @@
 			},
 			// 点赞
 			niubi() {
+				console.log(this.detailData.favour);
 				this.detailData.favour = !this.detailData.favour;
 			},
 			togglePopup(type, open) {
@@ -395,6 +398,9 @@
 					.info-bottom {
 						display: flex;
 						flex-direction: row;
+						align-items: center;
+						height: 30rpx;
+						line-height: 30rpx;
 
 						.number {
 							margin-left: 20rpx;
@@ -500,13 +506,13 @@
 
 				.bottom-icon-left,
 				.bottom-icon-right {
-					width: 25rpx;
-					height: 25rpx;
+					width: 30rpx;
+					height: 35rpx;
 					padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
 				}
 
 				.bottom-text {
-					font-size: 20upx;
+					font-size: 30upx;
 				}
 
 				.bottom-red-text {

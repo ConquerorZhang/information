@@ -70,7 +70,7 @@
 							}).then(res => {
 								console.log(res);
 								uni.navigateTo({
-									url:"publishSucceed?id=" + res.data.id
+									url:"publishSucceed?id=" + res.data.data.id
 								})
 							}).catch(err => {
 								console.log(err);

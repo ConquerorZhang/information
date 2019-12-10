@@ -60,6 +60,11 @@ const MyAPI = (url, needSubDomain, method, data) => {
 					resolve(res)
 				}).catch(err => {
 					reject(err)
+					// uni.showModal({
+					// 	title: '提示',
+					// 	content: err.errMsg,
+					// 	showCancel: false
+					// })
 				});
 		});
 	} else if (method == "POST") {
@@ -69,6 +74,11 @@ const MyAPI = (url, needSubDomain, method, data) => {
 					resolve(res)
 				}).catch(err => {
 					reject(err)
+					// uni.showModal({
+					// 	title: '提示',
+					// 	content: err.errMsg,
+					// 	showCancel: false
+					// })
 				});
 		});
 	}
@@ -93,7 +103,7 @@ module.exports = {
 	},
 	// 互动区问题详情的回复列表
 	interCommentList: (data) => {
-		return MyAPI('interact/commonlist', false, 'GET', data)
+		return MyAPI('interact/commentlist', false, 'GET', data)
 	},
 	// 互动区问题回复
 	interCommentReply: (data) => {

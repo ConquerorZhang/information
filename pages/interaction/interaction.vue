@@ -252,8 +252,8 @@
 				})
 			},
 			loadMore(currentpage) {
-				console.log("加载更多")
 				if (this.data.hasmore) {
+					console.log("加载更多")
 					this.getlistdata(this.page);
 				}
 			},
@@ -275,20 +275,13 @@
 			// },350)
 			this.getlistdata(1);
 		},
-		// onLoad() {
-		//     setTimeout(()=>{
-		//       this.tabBars.forEach((tabBar) => {
-		//           this.newsList.push({
-		//               data: [],
-		//               isLoading: false,
-		//               refreshText: "",
-		//               loadingText: '加载更多...'
-		//           });
-		//       });
-		//       this.getList(0);
-		//     },350)
-		// },
-
+		onShow(){
+			// uni.showToast({
+			// 	title:'show'
+			// })
+			this.resetData();
+			this.getlistdata(1)
+		},
 	}
 </script>
 

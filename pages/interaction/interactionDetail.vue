@@ -11,7 +11,7 @@
 					</view>
 				</view>
 				<view class="item-top-collect" :class="detailData.collect ? 'item-top-collect-color' : 'item-top-uncollect-color'"
-				 @click="collect">
+				 @click="detailData.collect?Uncollect():collect()">
 					<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/sc_sec.png" : "../../static/sc.png"'></image>
 					<text class="collect-text">收藏</text>
 				</view>
@@ -26,7 +26,7 @@
 
 			<!-- 底部 -->
 			<view class="bottom">
-				<view class="bottom-left" @click="niubi()">
+				<view class="bottom-left" @click="detailData.favour?unniubi():niubi()">
 					<image class="bottom-icon-left" mode="aspectFit" :src='detailData.favour ? "../../static/zan_sec.png" : "../../static/zan.png"'></image>
 					<text class="bottom-text" :class="detailData.favour ? 'bottom-red-text' : 'bottom-gray-text'">{{detailData.favourCount}}</text>
 				</view>
@@ -121,9 +121,6 @@
 			};
 		},
 		onLoad(option) {
-			// console.log(option)
-			// 	let data = JSON.parse(option);
-			// 	console.log(data.id);
 			this.id = option.id;
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
@@ -180,23 +177,95 @@
 			},
 			collect() {
 				console.log("收藏成功");
-				this.togglePopup('center', 'image');
+				// 收藏
+				API.interactionCollect({
+					bizKey: this.id,
+					collectType:'issue'
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						console.log(this.detailData.collect);
+						this.detailData.collect = !this.detailData.collect;
+						console.log(this.detailData.collect);
+						// this.togglePopup('center', 'image');
+						setTimeout(()=>{
+							 this.togglePopup('center', 'image');
+						},500)
+					}
+					
+					// this.commentData();
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			Uncollect() {
+				console.log("取消收藏");
+				// this.togglePopup('center', 'image');
+				
+				// 取消收藏
+				API.interactionUnCollect({
+					bizkey: this.id,
+					collecttype:'issue'
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						console.log(this.detailData.favour);
+						this.detailData.collect = !this.detailData.collect;
+					}
+					
+					// this.commentData();
+				}).catch(err => {
+					console.log(err);
+				})
 			},
 			// 收藏成功后立即查看
 			lookCollection(o) {
 				this.showimage = false;
-
+				uni.navigateTo({
+					url:'../myInfo/myCollection'
+				})
 			},
 			// 点赞
 			niubi() {
-				console.log(this.detailData.favour);
-				this.detailData.favour = !this.detailData.favour;
+				API.interactionFavour({
+					id: this.id,
+					type:'issue'
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						console.log(this.detailData.favour);
+						this.detailData.favour = !this.detailData.favour;
+						this.detailData.favourCount +=1;
+					}
+					
+					// this.commentData();
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			unniubi(){
+				// 取消点赞
+				API.interactionUnFavour({
+					id: this.id,
+					type:'issue'
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						console.log(this.detailData.favour);
+						this.detailData.favour = !this.detailData.favour;
+						this.detailData.favourCount -=1;
+					}
+					
+					// this.commentData();
+				}).catch(err => {
+					console.log(err);
+				})
 			},
 			togglePopup(type, open) {
 				this.type = type
 				this['show' + open] = true
 
-				this.detailData.collect = !this.detailData.collect;
+				// this.detailData.collect = !this.detailData.collect;
 			},
 			cancel(type) {
 				this['show' + type] = false

@@ -132,4 +132,20 @@ module.exports = {
 	myCollect: (data) => {
 		return MyAPI('interact/mycollect', false, 'GET', data)
 	},
+  	// 互动区点赞
+	interactionFavour: (data) => {
+		return MyAPI('interact/favour/favour', false, 'GET', data)
+	},
+	// 互动区取消点赞
+	interactionUnFavour: (data) => {
+		return MyAPI('interact/favour/unfavour', false, 'GET', data)
+	},
+	// 互动区详情收藏
+	interactionCollect: (data) => {
+		return MyAPI('interact/addcollect', false, 'GET', data)
+	},
+	// 互动区详情取消收藏
+	interactionUnCollect: (data) => {
+		return MyAPI('interact/cancelcollect', false, 'GET', data)
+	},
 }

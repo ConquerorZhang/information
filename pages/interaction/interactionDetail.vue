@@ -56,7 +56,7 @@
 				<view v-if="item.subComments.length > 0" class="subContent">
 					<view v-for="(subItem,subIndex) in item.subComments" :key="subIndex">
 						<text class="subContentName">{{subItem.createName}}</text>
-						<text class="subContentContent">：{{subItem.createTime}}</text>
+						<text class="subContentContent">：{{subItem.contents}}</text>
 					</view>
 				</view>
 			</view>
@@ -242,16 +242,18 @@
 				this.input_placeholder = '回复' + subReplyName;
 				this.index = index; //回复索引
 				this.focus = true;
+				this.parentId = parentId;
 			},
 			blur: function() {
 				this.init_input();
 			},
 			send_comment: function(message) {
+				console.log(message);
 				if (this.is_reply) {
 					// sub回复 (调接口成功后，更新页面)
 					var replyDic = {
-						name: '我',
-						content: message.content,
+						createName: '我',
+						contents: message.content,
 					};
 
 					API.interCommentReply({
@@ -263,6 +265,7 @@
 						console.log(res);
 
 						this.commentList[this.index].subComments.push(replyDic);
+						console.log(this.commentList);
 					}).catch(err => {
 						console.log(err);
 					})

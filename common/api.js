@@ -86,9 +86,6 @@ const MyAPI = (url, needSubDomain, method, data) => {
 
 module.exports = {
 	MyAPI,
-	loginInfo: (data) => {
-		return MyAPI('login/regUserlogin', false, 'GET', data)
-	},
 	// 互动区发表
 	interPublish: (data) => {
 		return MyAPI('interact/issue/publish', false, 'POST', data)
@@ -117,5 +114,18 @@ module.exports = {
 	// 电科动态详情
 	newsDetail: (data) => {
 		return MyAPI('infos/dynamic/detail', false, 'GET', data)
+	},
+	
+	// 我的
+	myInfo: (data) => {
+		return MyAPI('', false, 'GET', data)
+	},
+	// 我的消息列表
+	myMessageList: (data) => {
+		return MyAPI('infos/notice/list', false, 'GET', data)
+	},
+	// 我的消息详情
+	myMessageDetail: (data) => {
+		return MyAPI('infos/notice/detail', false, 'GET', data)
 	},
 }

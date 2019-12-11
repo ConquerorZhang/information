@@ -36,7 +36,7 @@
 								<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 								<view class="emptyText">您还没有收藏任何帖子哦～</view>
 							</view>
-							<view class="cardPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.id)">
+							<view class="cardPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.bizKey)">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
 								<view class="detailPart">
 									<view class="item-top">
@@ -198,7 +198,6 @@
 			
 			},
 			interDetail(index1,id) {
-				console.log(index1);
 				console.log(id);
 				if (index1 == 0) {
 					// uni.navigateTo({
@@ -207,7 +206,7 @@
 				}
 				else {
 					uni.navigateTo({
-						url: '/pages/interaction/interactionDetail?id='+id
+						url: '/pages/interaction/interactionDetail?item='+encodeURIComponent(JSON.stringify({'id':id}))
 					});
 				}
 			},

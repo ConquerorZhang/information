@@ -102,6 +102,7 @@
 		},
 		data() {
 			return {
+				item:'',
 				id: '',
 				detailData: {
 					favour:false
@@ -121,7 +122,10 @@
 			};
 		},
 		onLoad(option) {
-			this.id = option.id;
+			console.log(option);
+			console.log(JSON.parse(option.item).id)
+			this.item = JSON.parse(option.item);
+			this.id = this.item.id;
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
 					this.screenHeight = res.screenHeight;
@@ -142,6 +146,9 @@
 
 			// 评论列表
 			this.commentData();
+		},
+		onBackPress(){
+			uni.$emit('interation$detailback',{'item':this.item})
 		},
 		onShow() {
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
@@ -236,6 +243,8 @@
 						console.log(this.detailData.favour);
 						this.detailData.favour = !this.detailData.favour;
 						this.detailData.favourCount +=1;
+						this.item.favour = this.detailData.favour;
+						this.item.favourCount = this.detailData.favourCount;
 					}
 					
 					// this.commentData();
@@ -254,6 +263,8 @@
 						console.log(this.detailData.favour);
 						this.detailData.favour = !this.detailData.favour;
 						this.detailData.favourCount -=1;
+						this.item.favour = this.detailData.favour;
+						this.item.favourCount = this.detailData.favourCount;
 					}
 					
 					// this.commentData();

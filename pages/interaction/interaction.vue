@@ -2,7 +2,8 @@
 <template>
 	<view class="page">
 		<view class="head">
-			<view class="statusBar"></view>
+			<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
+			<view class="statusBar" ></view>
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
@@ -24,7 +25,7 @@
 		<!-- <view class="top-zhanwei"></view> -->
 		<scroll-view scroll-y="true" class="list" enableBackToTop="true" @scrolltolower="loadMore(page)">
 			<!-- 列表item -->
-			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item)">
+			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item,index)">
 				<view class="item-top">
 					<image class="circleicon" mode="aspectFit" :src="item.avatarUrl"></image>
 					<view class="info">
@@ -74,6 +75,8 @@
 	export default {
 		data() {
 			return {
+				systemInfo:'',
+				currrenIndex:-1,
 				type: '',
 				searchKey: '',
 				limit: '10',
@@ -87,7 +90,7 @@
 					loadingText: '加载更多...',
 					datalsit: [],
 				},
-				itemlist: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+				itemlist: [{id:'123',name:'lmw',favour:false}, {id:'456',name:'lmw2',favour:true}, {id:'789',name:'lmw3'}, {}, {}, {}, {id:'369',name:'lmw',favour:false}, {}, {}],
 				themeColor: '#C7161E',
 				titleColor: '#ffffff',
 				filterResult: '',
@@ -203,9 +206,11 @@
 				this.getlistdata(1);
 			},
 			//页面跳转到详情
-			navToDetailPage(item) {
+			navToDetailPage(item,index) {
+				this.currrenIndex = index;
+				uni.$once('interation$detailback',this.detailBack);
 				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?id='+item.id
+					url: '/pages/interaction/interactionDetail?item='+encodeURIComponent(JSON.stringify(item))
 				})
 			},
 			//页面跳转到发布
@@ -244,7 +249,7 @@
 							this.data.hasmore = true;
 						}
 						this.data.datalsit = this.data.datalsit.concat(res.data.data);
-					// console.log(res.data.data);
+					console.log(res);
 					// console.log(this.data.datalsit);
 				}).catch(err => {
 					this.data.hasmore = true;
@@ -264,8 +269,19 @@
 					refreshText: "",
 					loadingText: '加载更多...',
 					datalsit: [],
+					currrenIndex:-1
 				};
 				this.page = 1;
+			},
+			//详情回调函数
+			detailBack(data){
+				console.log("回传数据呀--------------------");
+				// console.log(data.item);
+				if(this.currrenIndex !=-1){
+					this.data.datalsit[this.currrenIndex].favour = data.item.favour;
+					this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+				}
+				uni.$off('interation$detailback');
 			}
 		},
 
@@ -274,13 +290,18 @@
 			// 	this.getlistdata(1);
 			// },350)
 			this.getlistdata(1);
+			uni.getSystemInfo({
+				success: (res) => {
+					this.systemInfo = res
+				}
+			})
 		},
 		onShow(){
 			// uni.showToast({
 			// 	title:'show'
 			// })
-			this.resetData();
-			this.getlistdata(1)
+			// this.resetData();
+			// this.getlistdata(1)
 		},
 	}
 </script>
@@ -303,7 +324,7 @@
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
-				height: 40upx;
+				height: var(--status-bar-height);//这里是无效的，不知为何
 				width: 100%;
 			}
 

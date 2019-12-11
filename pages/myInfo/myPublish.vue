@@ -329,7 +329,7 @@
 			flex-direction: column;
 
 			.statusBar {
-				height: 45upx;
+				height: var(--status-bar-height);
 				width: 100%;
 				background-color: #FFFFFF;
 			}

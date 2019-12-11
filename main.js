@@ -13,6 +13,12 @@ Vue.config.configDic = {
 	appCode: "corpMall",
 };
 
+// uni.getSystemInfo({
+// 	success:function(res){
+// 		console.log(res);
+// 	}
+// })
+
 // 正式库
 // var http = request.http;
 // 测试库

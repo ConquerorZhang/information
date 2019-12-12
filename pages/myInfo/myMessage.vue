@@ -10,7 +10,7 @@
 					<text class="title">{{item.title}}</text>
 					<text :class="item.isRead == 1 ? 'read' : 'unread'">{{item.isRead == 1 ? "已读" : "未读"}}</text>
 				</view>
-				<image v-if="item.imgUrl != null || item.imgUrl != ''" :src="item.imgUrl" mode="widthFix"></image>
+				<image class="pic" v-if="item.imgUrl != null && item.imgUrl != ''" :src="item.imgUrl" mode="widthFix"></image>
 				<view class="subTitle">{{item.remark}}</view>
 				<view class="time">{{item.createTime}}</view>
 			</view>
@@ -131,6 +131,11 @@
 						font-size: 30rpx;
 						color: #ee3847;
 					}
+				}
+				
+				.pic {
+					border-radius: 10rpx;
+					margin-top: 10rpx;
 				}
 
 				.subTitle {

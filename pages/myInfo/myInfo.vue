@@ -31,7 +31,7 @@
 				<view class="content" v-for="(item,index) in data.interactionArr" :key="index" v-on:click="navigateToInter(index)">
 					<image class="interactionImage" :src="item.image" mode="widthFix"></image>
 					<view class="interactionText">{{item.text}}</view>
-					<view class="interactionDot">{{item.dot}}</view>
+					<view v-if="item.dot > 0" class="interactionDot">{{item.dot}}</view>
 				</view>
 			</view>
 		</view>
@@ -60,10 +60,10 @@
 					// settingBGImage: "../../static/mine/main/setting.png",
 					settingImage: "../../static/mine/main/setting.png",
 					head: "../../static/logo.png",
-					name: "哈哈",
-					mail: "1844@qq.com",
+					name: "测试人员",
+					mail: "123456789@qq.com",
 					mailImage: "../../static/mine/main/mail.png",
-					phone: "166",
+					phone: "16631138888",
 					phoneImage: "../../static/mine/main/phone.png",
 					myFunctionArr: [{
 							"image": "../../static/mine/main/collection.png",
@@ -85,12 +85,12 @@
 					interactionArr: [{
 							"image": "../../static/mine/main/myPublish.png",
 							"text": "我的发布",
-							"dot": "10"
+							"dot": "0"
 						},
 						{
 							"image": "../../static/mine/main/myAnswer.png",
 							"text": "我的回答",
-							"dot": "2"
+							"dot": "0"
 						},
 						{
 							"image": "../../static/mine/main/answerMe.png",
@@ -123,9 +123,7 @@
 						}
 					case 1:
 						{
-							uni.navigateTo({
-								url: "../interaction/interaction"
-							})
+							
 							break;
 						}
 					case 2:
@@ -223,8 +221,8 @@
 					image {
 						width: 20rpx;
 						height: 29rpx;
-						margin-right: 15rpx;
-						margin-left: 5rpx;
+						margin-right: 15.5rpx;
+						margin-left: 4.5rpx;
 					}
 				}
 			}
@@ -261,7 +259,7 @@
 
 			.myFunctionImage {
 				width: 60rpx;
-				height: 60rpx;
+				height: 58rpx;
 			}
 
 			.myFunctionImageLabel {
@@ -291,14 +289,19 @@
 			text-align: center;
 			justify-content: space-between;
 			height: 220rpx;
-			padding: 20rpx 20rpx;
-			color: $uni-text-color-placeholder;
+			padding: 30rpx 20rpx;
+			margin: 0 30rpx;
 
 			.content {
 				position: relative;
 
 				.interactionImage {
 					width: 50rpx;
+				}
+				
+				.interactionText {
+					color: #333333;
+					font-size: 30rpx;
 				}
 
 				.interactionDot {
@@ -311,7 +314,7 @@
 					font-size: 25rpx;
 					font-weight: 900;
 					position: absolute;
-					right: 15rpx;
+					right: -5rpx;
 					top: -10rpx;
 				}
 			}

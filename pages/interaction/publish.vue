@@ -234,7 +234,7 @@
 		padding: 20rpx 10rpx 0;
 		.title {
 			font-size: 40rpx;
-			font-weight: 900;
+			font-weight: 600;
 		}
 		.lineView {
 			margin: 20rpx 0;

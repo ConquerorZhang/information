@@ -20,7 +20,7 @@
 		methods: {
 			checkMyPublish() {
 				uni.navigateTo({
-					url: "interactionDetail?id="+this.id
+					url: "interactionDetail?item="+encodeURIComponent(JSON.stringify({'id':this.id}))
 				})
 			}
 		}

@@ -148,4 +148,20 @@ module.exports = {
 	interactionUnCollect: (data) => {
 		return MyAPI('interact/cancelcollect', false, 'GET', data)
 	},
+	// 我的发布-点赞我的
+	favourMyIssue: (data) => {
+		return MyAPI('interact/favour/favourMyIssue', false, 'GET', data)
+	},
+	// 我的发布-评论我的
+	commentMyIssue: (data) => {
+		return MyAPI('interact/commentMyIssue', false, 'GET', data)
+	},
+	// 我的发布-我的回答
+	myIssueComment: (data) => {
+		return MyAPI('interact/issue/myIssueComment', false, 'GET', data)
+	},
+	// 我的发布-我的发布
+	myPublish: (data) => {
+		return MyAPI('interact/issue/myPublish', false, 'GET', data)
+	},
 }

@@ -278,8 +278,10 @@
 				console.log("回传数据呀--------------------");
 				// console.log(data.item);
 				if(this.currrenIndex !=-1){
-					this.data.datalsit[this.currrenIndex].favour = data.item.favour;
-					this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
+					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+					this.data.datalsit[this.currrenIndex] = data.item;
+					this.$forceUpdate();
 				}
 				uni.$off('interation$detailback');
 			}

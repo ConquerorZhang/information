@@ -116,7 +116,6 @@
 				showInput: true, //评论输入框
 				index: '-1',
 				// comment_index: '',
-
 				commentList: [],
 				parentId: '', //如果是评论帖子，则为空，如果是评论评论，那位被评论的id
 			};

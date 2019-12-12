@@ -98,10 +98,23 @@
             "style" : {
 				"navigationBarTitleText": "动态详情"
 			}
-        }
-        ,{
+        },{
             "path" : "pages/home/home",
-            "style" : {}
+            "style" : {
+                "navigationBarTitleText": "首页",
+                "navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/means/means",
+            "style" : {
+                "navigationBarTitleText": "资料下载",
+                "navigationStyle": "custom"
+            }
+        },{
+            "path" : "pages/means/means-detile",
+            "style" : {
+                "navigationBarTitleText": "资料详情"
+            }
         }
     ],
 	"globalStyle": {

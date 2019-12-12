@@ -3,7 +3,7 @@
 		<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" />
 		<view class="lineView"></view>
 		<view class="contentView">
-			<textarea class="content" type="text" v-model="contentText" placeholder="说点什么好呢,用心分享会得到更多互动哦" auto-height />
+			<textarea class="content" type="text" v-model="contentText" placeholder="说点什么好呢,用心分享会得到更多互动哦" />
 			</view>
 		<view class="uni-uploader__files">
 			<block v-for="(image,index) in imageList" :key="index">
@@ -26,6 +26,7 @@
 
 <script>
 	const API = require('../../common/api.js')
+const CONFIG = require('../../common/config.js')
 	
 	var sourceType = [
 		['camera'],
@@ -117,7 +118,7 @@
 						// 上传图片操作
 						for (var i = 0; i < tempFilePaths.length; i++) {
 							uni.uploadFile({
-							            url: 'http://2e798028u0.zicp.vip:46856/file/fileupload?type=image', 
+							            url: CONFIG.imageURL, 
 							            filePath: tempFilePaths[i],
 							            name: 'file',
 							            formData: {
@@ -217,11 +218,6 @@
 			chooseBtn(index) {
 				this.selectedIndex = index;
 			}
-		},
-		onLoad() {
-			//商品数据
-			let data = JSON.parse(option.data);
-			console.log(data);
 		}
 	}
 </script>
@@ -241,11 +237,13 @@
 			border-bottom: 0.5rpx solid #C0C0C0;
 		}
 		.contentView {
-			min-height: 300rpx;
-			margin-bottom: 50rpx;
-			.content {
+			width:100%;
+			
+			textarea {
 				width: 100%;
-				font-size: 35rpx;
+				font-size:35rpx;
+				height:300upx;
+				margin-bottom: 20rpx;
 			}
 		}
 		

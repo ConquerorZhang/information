@@ -23,7 +23,7 @@
 		</view>
 
 		<!-- <view class="top-zhanwei"></view> -->
-		<scroll-view scroll-y="true" class="list" enableBackToTop="true" @scrolltolower="loadMore(page)">
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+68 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item,index)">
 				<view class="item-top">
@@ -392,7 +392,7 @@
 		// }
 
 		.list {
-			margin-top: 190rpx;
+			margin-top: 150rpx;
 			height: 100%;
 			width: 100%;
 

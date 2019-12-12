@@ -99,6 +99,10 @@
 				"navigationBarTitleText": "动态详情"
 			}
         }
+        ,{
+            "path" : "pages/home/home",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

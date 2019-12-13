@@ -1,11 +1,10 @@
 <template>
 	<view class="content">
-		<view :style="{height: tabHeight + 1 +'rpx'}">
-			<view :class="topFixed?'select-tab-fixed-top':'select-tab'" :style="{height: tabHeight+'rpx'}">
+		<view :style="{height: tabHeight + 1 +'px'}">
+			<view :class="topFixed?'select-tab-fixed-top':'select-tab'" :style="{height: tabHeight+'px'}">
 				<view class="select-tab-item" :style="{width: itemWidth}" v-for="(item,index) in titleList" :key="index" @tap="showMenuClick(index)">
 					<text :style="{color:color}">{{item.title}}</text>
-					<!-- <text class="arrows sl-font" :class="statusList[index].isActive?up:down"></text> -->
-					<image class="arrows" :src="statusList[index].isSort?arrow_down:arrow_order"></image>
+					<text class="arrows sl-font" :class="statusList[index].isActive?up:down"></text>
 				</view>
 			</view>
 		</view>
@@ -20,7 +19,7 @@
 
 <script>
 	import popupLayer from '@/components/sl-filter/popup-layer.vue';
-	import slFilterView from '@/components/sl-filter/filter-view.vue';
+	import slFilterView from '@/components/sl-filter/myDownLoadFilterView.vue';
 	export default {
 		components: {
 			popupLayer,
@@ -83,8 +82,7 @@
 			let r = {};
 			for (let i = 0; i < this.menuList.length; i++) {
 				arr.push({
-					'isActive': false,
-					'isSort':this.menuList[i].isSort
+					'isActive': false
 				});
 				// titleArr.push({
 				// 	'title': this.menuList[i].title,
@@ -96,14 +94,12 @@
 				if (this.menuList[i].reflexTitle && this.menuList[i].defaultSelectedIndex > -1) {
 					titleArr.push({
 						'title': this.menuList[i].detailList[this.menuList[i].defaultSelectedIndex].title,
-						'key': this.menuList[i].key,
-						'value':this.menuList[i].value,
+						'key': this.menuList[i].key
 					})
 				} else {
 					titleArr.push({
 						'title': this.menuList[i].title,
-						'key': this.menuList[i].key,
-						'value':this.menuList[i].value,
+						'key': this.menuList[i].key
 					})
 				}
 
@@ -121,8 +117,7 @@
 			let r = {};
 			for (let i = 0; i < this.menuList.length; i++) {
 				arr.push({
-					'isActive': false,
-					'isSort':this.menuList[i].isSort
+					'isActive': false
 				});
 				// titleArr.push({
 				// 	'title': this.menuList[i].title,
@@ -133,14 +128,12 @@
 				if (this.menuList[i].reflexTitle && this.menuList[i].defaultSelectedIndex > -1) {
 					titleArr.push({
 						'title': this.menuList[i].detailList[this.menuList[i].defaultSelectedIndex].title,
-						'key': this.menuList[i].key,
-						'value':this.menuList[i].value,
+						'key': this.menuList[i].key
 					})
 				} else {
 					titleArr.push({
 						'title': this.menuList[i].title,
-						'key': this.menuList[i].key,
-						'value':this.menuList[i].value,
+						'key': this.menuList[i].key
 					})
 				}
 
@@ -154,9 +147,7 @@
 			return {
 				down: 'sl-down',
 				up: 'sl-up',
-				arrow_down:'../../static/arrow_down_black.png',
-				arrow_order:'../../static/arrow_sort_black.png',
-				tabHeight: 60,
+				tabHeight: 50,
 				statusList: [],
 				selectedIndex: '',
 				titleList: [],
@@ -170,11 +161,11 @@
 					let item = arr[i];
 					for (let j = 0; j < item.detailList.length; j++) {
 						let d_item = item.detailList[j];
-						// if (j == 0) {
-						// 	d_item.isSelected = true
-						// } else {
+						if (j == 0 && !item.isMutiple) {
+							d_item.isSelected = true
+						} else {
 							d_item.isSelected = false
-						// }
+						}
 					}
 				}
 				return arr;
@@ -199,26 +190,13 @@
 			},
 			showMenuClick(index) {
 				this.selectedIndex = index;
-				if(this.statusList[index].isSort == true){
-					if (this.statusList[index].isActive == true) {
-						this.$refs.popupRef.close();
-						this.statusList[index].isActive = false
-					} else {
-						this.menuTabClick(index);
-						this.$refs.popupRef.show()
-					}
-				}else{//回传点击事件
-					let key = this.titleList[index].key;
-					let value = this.titleList[index].value;
-					//声明一个对象
-					 var val = {};
-					  //将执行语句声明为字符串
-					 var str = "val." + key + "=" + value;
-					//使用eval执行
-					 eval(str);
-					this.$emit("result",val );
+				if (this.statusList[index].isActive == true) {
+					this.$refs.popupRef.close();
+					this.statusList[index].isActive = false
+				} else {
+					this.menuTabClick(index);
+					this.$refs.popupRef.show()
 				}
-				
 			},
 			menuTabClick(index) {
 				this.$refs.slFilterView.menuTabClick(index);
@@ -285,15 +263,14 @@
 	@import 'iconfont/iconfont.css';
 
 	.select-tab {
-		border-bottom: #ffffff 1px solid;
-		background-color: #ffffff;
-		padding-bottom: 1px;
+		border-bottom: #F7F7F7 1px solid;
+		background-color: #FFFFFF;
 		display: flex;
 		width: 100%;
 	}
 
 	.select-tab-fixed-top {
-		/* border-bottom: #F7F7F7 1px solid; */
+		border-bottom: #F7F7F7 1px solid;
 		background-color: #FFFFFF;
 		display: flex;
 		width: 100%;
@@ -308,8 +285,6 @@
 
 	.arrows {
 		margin-left: 5px;
-		width: 20rpx;
-		height: 20rpx;
 	}
 
 	.select-tab .select-tab-item,

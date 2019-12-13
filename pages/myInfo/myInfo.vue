@@ -123,7 +123,9 @@
 						}
 					case 1:
 						{
-							
+							uni.navigateTo({
+								url: "myDownLoad"
+							})
 							break;
 						}
 					case 2:

@@ -36,9 +36,9 @@
 								<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 								<view class="emptyText">您还没有收藏任何帖子哦～</view>
 							</view>
-							<view class="cardPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.bizKey)">
+							<view class="cardPart" v-for="(item,index) in tab.data" :key="index">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
-								<view class="detailPart">
+								<view class="detailPart" @click="interDetail(index1,item.bizKey)">
 									<view class="item-top">
 										<image class="circleicon" mode="scaleToFill" :src="item.userImgUrl"></image>
 										<view class="info">

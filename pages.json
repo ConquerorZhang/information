@@ -116,6 +116,13 @@
                 "navigationBarTitleText": "资料详情"
             }
         }
+        ,{
+            "path" : "pages/myInfo/myDownLoad",
+            "style" : {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "我的下载"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -22,62 +22,63 @@
 			</view>
 
 			<!-- 过滤器 -->
-			<view class="filter" v-if="data.type == 1|| data.type == 2">
+			<view class="filter" v-if="datalists.type == 1|| datalists.type == 2">
 				<myPublishfilter :independence="true" :color="titleColor" :themeColor="themeColor" :menuList.sync="menuList"
-				 @result="result"></myPublishfilter>
+				 @result="result" @sortresult="sortresult"></myPublishfilter>
 			</view>
 		</view>
 		<!-- 列表 -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':(data.type == 1 || data.type == 2)?(systemInfo.statusBarHeight+75)+'px':(systemInfo.statusBarHeight+43) +'px'}">
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':(datalists.type == 1 || datalists.type == 2)?(systemInfo.statusBarHeight+75)+'px':(systemInfo.statusBarHeight+43) +'px'}"
+		 @scrolltolower="loadMore(datalists.type)">
 			<!-- 列表item  我的发布-->
-			<view class="item-one" v-if="data.type=='1'">
-				<view class="item" v-for="(item, index) in data.itemlist" :key="index">
+			<view class="item-one" v-if="datalists.type=='1'">
+				<view class="item" v-for="(item, index) in datalists.list1.datalist" :key="index">
 					<view class="item-top">
-						<image class="icon_head circleicon" mode="aspectFill" src="../../static/logo.png" @click="navToDetailPage(item)"></image>
-						<view class="info" @click="navToDetailPage(item)">
-							<text class="item-text name">吕飞飞吕飞飞吕</text>
+						<image class="icon_head circleicon" mode="aspectFill" :src="item.avatarUrl" @click="navToDetailPage(item,index)"></image>
+						<view class="info" @click="navToDetailPage(item,index)">
+							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
-								<text class="item-text time">11-26</text>
-								<text class="item-text number">350浏览</text>
+								<text class="item-text time">{{item.createTimeShow}}</text>
+								<text class="item-text number">{{item.visitCountShow}}</text>
 							</view>
 						</view>
 						<view class="item-top-collect" @click="collect">
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
-					<text class="item-text title">文章标题</text>
-					<text class="item-text brief">文章简介简短的简介哦放假奥</text>
+					<text class="item-text title">{{item.title}}</text>
+					<text class="item-text brief">{{item.contents}}</text>
 					<view class="item-image">
-						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
-						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+						<image class="item-image-image" mode="aspectFit" v-for="(pic,index) in item.pics" :key="index" :src="pic"></image>
+						<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
+						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->
 					</view>
 
 					<!-- 底部 -->
 					<view class="bottom">
 						<view class="bottom-left" @click.stop="niubi('topicid')">
-							<image class="bottom-icon-left" mode="aspectFit" src="../../static/zan_sec.png"></image>
-							<text class="bottom-text">520</text>
+							<image class="bottom-icon-left" mode="aspectFit" :src="item.favour?'../../static/zan_sec.png': '../../static/zan.png'"></image>
+							<text class="bottom-text">{{item.favourCount}}</text>
 						</view>
 						<view class="bottom-right" @click.stop="topiccomment('topicid')">
 							<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
-							<text class="bottom-text">520</text>
+							<text class="bottom-text">{{item.replyCount}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 
 			<!-- 列表item  我的回答-->
-			<view class="item-two" v-else-if="data.type=='2'">
-				<view class="item" v-for="(item, index) in data.itemlist" :key="index">
+			<view class="item-two" v-else-if="datalists.type=='2'">
+				<view class="item" v-for="(item, index) in datalists.list2.datalist" :key="index">
 					<view class="item-top">
-						<view class="item-head-icon" @click="navToDetailPage(item)">
-							<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+						<view class="item-head-icon" @click="navToDetailPage(item,index)">
+							<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 						</view>
-						<view class="info" @click="navToDetailPage(item)">
-							<text class="item-text name">吕飞飞吕飞飞吕</text>
+						<view class="info" @click="navToDetailPage(item,index)">
+							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
-								<text class="item-text content">这里是帖子内容，内容可能是很长的一段文字哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</text>
+								<text class="item-text content">{{item.contents}}</text>
 							</view>
 						</view>
 						<view class="item-top-collect" @click="collect">
@@ -89,49 +90,17 @@
 						<view class="comment-title">
 							<text class="item-text title">我：</text>
 						</view>
-						<text class="item-text brief">这里是我的评论呀评论很长很长哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈 </text>
+						<text class="item-text brief">{{item.commentContents}} </text>
 					</view>
 
 					<view class="item-date">
-						<text class="item-date-text">2019-11-4</text>
+						<text class="item-date-text">{{item.createTimeShow}}</text>
 					</view>
 
 				</view>
 			</view>
 			<!-- 列表item  回复我的-->
-			<view class="item-three" v-else-if="data.type=='3'">
-
-				<!-- <view class="item" v-for="(item, index) in data.itemlist" :key="index" >
-					<view class="item-top" >
-						<view class="item-head-icon" @click="navToDetailPage(item)">
-							<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
-						</view>
-						<view class="info" @click="navToDetailPage(item)">
-							<text class="item-text name">吕飞飞吕飞飞吕</text>
-							<view class="info-bottom">
-								<text class="item-text time">11-26</text>
-								<text class="item-text number" v-show="false">350浏览</text>
-							</view>
-						</view>
-						<view class="item-top-collect" @click="collect">
-							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
-						</view>
-					</view>
-
-					<view class="item-replycontent">
-						<text class="item-replycontent-text">这是回复我的内容</text>
-						<view class="item-reply-good">
-							<image class="bottom-icon-left" mode="aspectFit" src="../../static/respond_orange.png"></image>
-							<text class="bottom-text">赞了我的帖子</text>
-						</view>
-					</view>
-
-					<view class="comment">
-						<view class="comment-title">
-							<text class="item-text title">我的帖子：</text>
-						</view>
-						<text class="item-text brief">这里是我的评论呀评论很长很长哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈 </text>
-					</view> </view>-->
+			<view class="item-three" v-else-if="datalists.type=='3' || datalists.type =='4'">
 
 				<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
 					<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
@@ -139,18 +108,18 @@
 					</view>
 				</scroll-view>
 				<swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
-					<swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
-						<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
-							<view class="item" v-for="(item, index) in tab.data" :key="index">
+					<swiper-item class="swiper-item" v-for="(tab,index1) in datalists.list3" :key="index1">
+						<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(tab.type)">
+							<view class="item" v-for="(item, index) in tab.datalist" :key="index">
 								<view class="item-top">
-									<view class="item-head-icon" @click="navToDetailPage(item)">
-										<image class="circleicon" mode="aspectFill" src="../../static/logo.png"></image>
+									<view class="item-head-icon" @click="navToDetailPage(item,index)">
+										<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 									</view>
-									<view class="info" @click="navToDetailPage(item)">
-										<text class="item-text name">吕飞飞吕飞飞吕</text>
+									<view class="info" @click="navToDetailPage(item,index)">
+										<text class="item-text name">{{item.createName}}</text>
 										<view class="info-bottom">
-											<text class="item-text time">11-26</text>
-											<text class="item-text number" v-show="false">350浏览</text>
+											<text class="item-text time">{{item.createTime}}</text>
+											<text class="item-text number" v-show="false">0浏览</text>
 										</view>
 									</view>
 									<view class="item-top-collect" @click="collect">
@@ -159,8 +128,9 @@
 								</view>
 
 								<view class="item-replycontent">
-									<text class="item-replycontent-text">这是回复我的内容</text>
-									<view class="item-reply-good">
+									<text class="item-replycontent-text">{{item.contents}}</text>
+									<view class="item-reply-good" v-if="item.isFavour
+ == 1">
 										<image class="bottom-icon-left" mode="aspectFit" src="../../static/respond_orange.png"></image>
 										<text class="bottom-text">赞了我的帖子</text>
 									</view>
@@ -170,14 +140,19 @@
 									<view class="comment-title">
 										<text class="item-text title">我的帖子：</text>
 									</view>
-									<text class="item-text brief">这里是我的评论呀评论很长很长哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈 </text>
+									<text class="item-text brief">{{item.issueTitle}} </text>
 								</view>
+							</view>
+							<view class="loading-more" v-if="tab.isLoading || tab.datalist.length > 4">
+								<text class="loading-more-text">{{tab.loadingText}}</text>
 							</view>
 						</scroll-view>
 					</swiper-item>
 				</swiper>
 
-
+			</view>
+			<view class="loading-more" v-if="(datalists.type == '1' && (datalists.list1.isLoading || datalists.list1.datalist.length>4))|| (datalists.type == '2' && (datalists.list2.isLoading || datalists.list2.datalist.length>4))">
+				<text class="loading-more-text">{{datalists.type == '1'?datalists.list1.loadingText:datalists.list2.loadingText}}</text>
 			</view>
 		</scroll-view>
 		<uni-popup :show="showpopup" type="bottom" @change="change">
@@ -195,16 +170,63 @@
 	import myPublishfilter from '@/components/sl-filter/myPublish-filter.vue';
 	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
 	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue';
-
+	const API = require('../../common/api.js');
 	export default {
 		components: {
-
 			myPublishfilter
 			// uniIcons,
 			// uniPopup
 		},
 		data() {
 			return {
+
+				//内容数据
+				currrenIndex: -1, //记录跳转时点击的item索引
+				currrentType: '1', //当前展示的类型 1 我发布的，2我的回答，3回复我的  赞，4回复我的-内容
+				limit: '5',
+				page: [1, 1, 1, 1],
+				orderBy: '',
+				isAsc: 'desc',
+				filtertype: '',
+				loaddata: {
+					isLoading: false,
+					refreshText: "",
+					loadingText: '加载更多...',
+				},
+				datalists: {
+					type: '1',
+					list1: { //我的发布
+						hasmore: true,
+						isLoading: false,
+						loadingText: '加载更多...',
+						datalist: []
+					},
+					list2: { //我的回答
+						hasmore: true,
+						isLoading: false,
+						loadingText: '加载更多...',
+						datalist: []
+					},
+					list3: [{ //回复我的-赞我的
+							type: '3',
+							index: 0,
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						},
+						{ //回复我的-回复我的
+							type: '4',
+							index: 1,
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						}
+					]
+
+				},
+
 				//swiper数据
 				newsList: [],
 				tabIndex: 0,
@@ -220,10 +242,11 @@
 				//是否展示删除弹窗
 				showpopup: false,
 				//列表显示数据
-				data: {
-					type: '3',
-					itemlist: [{}, {}, {}, {}, {}, {}]
-				},
+				// data: {
+				// 	type: '3',
+				// 	itemlist: [{}, {}, {}, {}, {}, {}]
+				// },
+
 				// title  Radio数据
 				labelName: '',
 				labelDataList: 0,
@@ -238,7 +261,7 @@
 						checked: false
 					},
 					{
-						value: '3',
+						value: '999',
 						name: '回复我的',
 						checked: false
 					}
@@ -250,7 +273,7 @@
 				filterResult: '',
 				menuList: [{
 						'title': '全部',
-						'key': 'sort',
+						'key': 'part',
 						'isSort': true,
 						'reflexTitle': true,
 						'detailList': [{
@@ -259,15 +282,15 @@
 							},
 							{
 								'title': '业务资讯区',
-								'value': 'add_time'
+								'value': '1'
 							},
 							{
 								'title': '需求资讯区',
-								'value': 'wages_up'
+								'value': '2'
 							},
 							{
 								'title': '经验分享区',
-								'value': 'location'
+								'value': '3'
 							}
 						]
 					}, {
@@ -275,8 +298,8 @@
 						'detailTitle': '请选择职位类型（可多选）',
 						'isMutiple': false,
 						'isSort': false,
-						'key': 'jobType',
-						'value': '123',
+						'key': 'sort',
+						'value': 'multipleSort',
 						'detailList': [{
 							'title': '全部',
 							'value': '123'
@@ -285,8 +308,8 @@
 					},
 					{
 						'title': '按时间',
-						'key': 'salary',
-						'value': '456',
+						'key': 'sort',
+						'value': 'createTime ',
 						'isMutiple': false,
 						'isSort': false,
 						'detailList': [{
@@ -297,8 +320,8 @@
 					},
 					{
 						'title': '按回复数',
-						'key': 'single',
-						'value': '789',
+						'key': 'sort',
+						'value': 'visitCount',
 						'isMutiple': false,
 						'isSort': false,
 						'reflexTitle': true,
@@ -315,28 +338,39 @@
 			uni.getSystemInfo({
 				success: (res) => {
 					this.systemInfo = res
-				}
-			})
+				},
 
-			setTimeout(() => {
-				this.tabBars.forEach((tabBar) => {
-					this.newsList.push({
-						data: [],
-						isLoading: false,
-						refreshText: "",
-						loadingText: '加载更多...'
-					});
-				});
-				this.getList(0);
-			}, 350)
+			})
+			//初始化数据
+			this.getNewData(this.datalists.type);
+			// setTimeout(() => {
+			// 	this.tabBars.forEach((tabBar) => {
+			// 		this.newsList.push({
+			// 			data: [],
+			// 			isLoading: false,
+			// 			refreshText: "",
+			// 			loadingText: '加载更多...'
+			// 		});
+			// 	});
+			// 	this.getList(0);
+			// }, 350)
 		},
 		methods: {
 			radioChange: function(e) {
 				this.labelDataList = e.detail.value
 				console.log(e)
 				console.log('radio发生change事件，携带value值为：' + e.detail.value)
-				console.log(this.labelDataList, "labelDataList")
-				this.data.type = e.detail.value;
+				if (e.detail.value === '999') {
+					let index = 0;
+					this.currrentType = (index == 0 ? '3' : '4');
+					this.datalists.type = (index == 0 ? '3' : '4');
+					this.switchTab(index);
+				} else {
+					this.currrentType = e.detail.value;
+					this.datalists.type = e.detail.value;
+					// this.getlistdata2(this.page[1]);
+					this.getNewData(this.datalists.type);
+				}
 			},
 			labelBtn(name, index) {
 				console.log(name, index, "nameindex")
@@ -354,7 +388,46 @@
 			//筛选菜单返回结果
 			result(val) {
 				console.log('filter_result:' + JSON.stringify(val));
-				this.filterResult = JSON.stringify(val, null, 2)
+				// this.filterResult = JSON.stringify(val, null, 2)
+				this.filtertype = val.part;
+				console.log(this.filtertype)
+				//重新执行搜索函数
+				this.resetData(this.datalists.type);
+				setTimeout(() => {
+					this.getNewData(this.datalists.type);
+				}, 500)
+
+
+			},
+			//排序菜单返回结果
+			sortresult(val) {
+				console.log('sortresult-filter_result:' + JSON.stringify(val));
+				this.orderBy = val.sort;
+				console.log(this.orderBy)
+				this.resetData(this.datalists.type);
+				setTimeout(() => {
+					this.getNewData(this.datalists.type);
+				}, 500)
+				// this.getNewData(this.datalists.type);
+			},
+			//重新拉取数据
+			getNewData(type) {
+				switch (type) {
+					case '1':
+						this.getlistdata1(this.page[0]);
+						break;
+					case '2':
+						this.getlistdata2(this.page[1]);
+						break;
+					case '3':
+						this.getlistdata3(this.page[2]);
+						break;
+					case '4':
+						this.getlistdata4(this.page[3]);
+						break;
+					default:
+						break;
+				}
 			},
 			//点击小黑点
 			collect() {
@@ -363,10 +436,44 @@
 				this.showpopup = true;
 			},
 			//页面跳转到详情
-			navToDetailPage(item) {
+			navToDetailPage(item,index) {
+				this.currrenIndex = index;
+				uni.$once('interation$detailback', this.detailBack);
 				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail'
+					url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
 				})
+			},
+			//详情回调函数
+			detailBack(data) {
+				console.log("回传数据呀--------------------");
+				console.log(data.item);
+				console.log(this.datalists.type);
+				console.log(this.currrenIndex);
+				if (this.currrenIndex != -1) {
+					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
+					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+					// this.data.datalsit[this.currrenIndex] = data.item;
+					// this.$forceUpdate();
+					switch (this.datalists.type) {
+						case '1':
+							this.datalists.list1.datalist[this.currrenIndex] = data.item;
+							break;
+						case '2':
+							this.datalists.list2.datalist[this.currrenIndex] = data.item;
+							break;
+						case '3':
+							this.datalists.list3[0].datalist[this.currrenIndex] = data.item;
+							break;
+						case '4':
+							this.datalists.list3[1].datalist[this.currrenIndex] = data.item;
+							break;
+						default:
+							break;
+					}
+					console.log(this.datalists.list1.datalist);
+					this.$forceUpdate();
+				}
+				uni.$off('interation$detailback');
 			},
 			//删除评论的弹窗变化
 			change(e) {
@@ -387,45 +494,228 @@
 				console.log(e);
 				this.showpopup = false;
 			},
+			//回复我的 点击tab切换
 			ontabtap(e) {
 				console.log(e);
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				this.datalists.type = (index == 0 ? '3' : '4');
+				// console.log(this.datalsit.type);
 				this.switchTab(index);
+				// this.getlistdata3(this.page[2]);
 			},
+			//回复我的 滑动内容切换
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
+				this.datalists.type = (index == 0 ? '3' : '4');
 				this.switchTab(index);
 			},
 			switchTab(index) {
-				if (this.newsList[index].data.length === 0) {
-					this.getList(index);
+				console.log("------index: " + index);
+				if (this.datalists.list3[index].datalist.length === 0) {
+					if (index == 0) {
+						this.getlistdata3(this.page[2]);
+					} else if (index == 1) {
+						this.getlistdata4(this.page[3]);
+					}
 				}
 
 				if (this.tabIndex === index) {
 					return;
 				}
-
-				// 缓存 tabId
-				// if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
-				//     let isExist = this.cacheTab.indexOf(this.tabIndex);
-				//     if (isExist < 0) {
-				//         this.cacheTab.push(this.tabIndex);
-				//         //console.log("cache index:: " + this.tabIndex);
-				//     }
-				// }
-
-				// 释放 tabId
-				// if (this.cacheTab.length > MAX_CACHE_PAGE) {
-				//     let cacheIndex = this.cacheTab[0];
-				//     this.clearTabData(cacheIndex);
-				//     this.cacheTab.splice(0, 1);
-				//     //console.log("remove cache index:: " + cacheIndex);
-				// }
-
 				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
-			getList(index) {
+			loadMore(type) {
+				console.log("----加载更多" + type)
+				switch (type) {
+					case '1': //我的发布
+						console.log("----加载更多--我的发布:" + this.datalists.list1.hasmore)
+						if (this.datalists.list1.hasmore) {
+							console.log("加载更多")
+							this.getlistdata1(this.page[0]);
+						}
+						break;
+					case '2': //我的回答
+						console.log("----加载更多--我的回答:" + this.datalists.list2.hasmore)
+						if (this.datalists.list2.hasmore) {
+							console.log("加载更多")
+							this.getlistdata2(this.page[1]);
+						}
+						break;
+					case '3': //赞我的
+						console.log("----加载更多--赞我的:" + this.datalists.list3[0].hasmore)
+						if (this.datalists.list3[0].hasmore) {
+							console.log("加载更多")
+							this.getlistdata3(this.page[2]);
+						}
+						break;
+					case '4': //回复我的
+						console.log("----加载更多--回复我的:" + this.datalists.list3[1].hasmore)
+						if (this.datalists.list3[1].hasmore) {
+							console.log("加载更多")
+							this.getlistdata4(this.page[3]);
+						}
+						break;
+					default:
+						break;
+				}
+
+			},
+			//重置初始化数据
+			resetData(type) {
+				switch (type) {
+					case '1':
+						this.datalists.list1 = {
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						}
+						this.page[0] = 1;
+						break;
+					case '2':
+						this.datalists.list2 = {
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						}
+						this.page[1] = 1;
+						break;
+					case '3':
+						this.datalists.list3[0] = {
+							type: '3',
+							index: 0,
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						}
+						this.page[2] = 1;
+						break;
+					case '4':
+						this.datalists.list3[1] = {
+							type: '4',
+							index: 1,
+							hasmore: true,
+							isLoading: false,
+							loadingText: '加载更多...',
+							datalist: []
+						}
+						this.page[3] = 1;
+						break;
+					default:
+						break;
+				}
+			},
+			//获取我的发布数据
+			getlistdata1(page) {
+				console.log(typeof page)
+				console.log('getlistdata1---page----' + page);
+				this.datalists.list1.hasmore = false;
+				API.myPublish({
+					limit: this.limit,
+					page: page,
+					type: this.filtertype,
+					orderBy: this.orderBy,
+					isAsc: this.isAsc,
+				}).then(res => {
+					if (res.data.data.length < this.limit) {
+						this.datalists.list1.loadingText = "没有更多数据了"
+						this.datalists.list1.hasmore = false;
+					} else {
+						this.page[0] = page + 1;
+						this.datalists.list1.hasmore = true;
+					}
+					this.datalists.list1.datalist = this.datalists.list1.datalist.concat(res.data.data);
+					// this.$forceUpdate();
+					console.log(res);
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					this.datalists.list1.hasmore = true;
+					console.log(err);
+				})
+			},
+			//获取我的回答数据
+			getlistdata2(page) {
+				console.log('getlistdata2---page----' + page);
+				this.datalists.list2.hasmore = false;
+				API.myIssueComment({
+					limit: this.limit,
+					page: page,
+					type: this.filtertype,
+					orderBy: this.orderBy,
+					isAsc: this.isAsc,
+				}).then(res => {
+					if (res.data.data.length < this.limit) {
+						this.datalists.list2.loadingText = "没有更多数据了"
+						this.datalists.list2.hasmore = false;
+					} else {
+						this.page[1] = page + 1;
+						this.datalists.list2.hasmore = true;
+					}
+					this.datalists.list2.datalist = this.datalists.list2.datalist.concat(res.data.data);
+					// this.$forceUpdate();
+					console.log(res);
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					this.datalists.list2.hasmore = true;
+					console.log(err);
+				})
+			},
+
+			//获取赞我的数据
+			getlistdata3(page) {
+				console.log('getlistdata3---page----' + page);
+				this.datalists.list3[0].hasmore = false;
+				API.favourMyIssue({
+					limit: this.limit,
+					page: page,
+					// contents: this.contentText,
+					// pics: this.submitImageIdList,
+					// type: parseInt(this.selectedIndex) + 1,
+				}).then(res => {
+					if (res.data.data.length < this.limit) {
+						this.datalists.list3[0].loadingText = "没有更多数据了"
+						this.datalists.list3[0].hasmore = false;
+					} else {
+						this.page[2] = page + 1;
+						this.datalists.list3[0].hasmore = true;
+					}
+					this.datalists.list3[0].datalist = this.datalists.list3[0].datalist.concat(res.data.data);
+					// this.$forceUpdate();
+					console.log(res);
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					this.datalists.list3[0].hasmore = true;
+					console.log(err);
+				})
+			},
+			//获取回复我的数据
+			getlistdata4(page) {
+				console.log('getlistdata4---page----' + page);
+				this.datalists.list3[1].hasmore = false;
+				API.commentMyIssue({
+					limit: this.limit,
+					page: page,
+				}).then(res => {
+					if (res.data.data.length < this.limit) {
+						this.datalists.list3[1].loadingText = "没有更多数据了"
+						this.datalists.list3[1].hasmore = false;
+					} else {
+						this.page[3] = page + 1;
+						this.datalists.list3[1].hasmore = true;
+					}
+					this.datalists.list3[1].datalist = this.datalists.list3[1].datalist.concat(res.data.data);
+					// this.$forceUpdate();
+					console.log(res);
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					this.datalists.list3[1].hasmore = true;
+					console.log(err);
+				})
+			},
+			/* getList(index) {
 				console.log(index);
 				let activeTab = this.newsList[index];
 				let list = [];
@@ -496,17 +786,19 @@
 				];
 				list = tmpList[index];
 				activeTab.data = activeTab.data.concat(list);
-			}
+			} */
 		}
 	}
 </script>
 
 <style lang="scss">
 	page {
+		height: 100%;
 		background-color: #F1F1F1;
 	}
 
 	.page {
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 
@@ -567,12 +859,13 @@
 
 			.filter {
 				width: 100%;
-				height: 60rpx;
+				height: 95%;
 			}
 		}
 
 		.list {
 			// margin-top: 150rpx;
+			height: 100%;
 
 			.item-one .item {
 				background: #FFFFFF;
@@ -798,7 +1091,7 @@
 					padding: 15rpx;
 
 					.comment-title {
-						width: 200rpx;
+						width: 95rpx;
 
 						.title {
 							color: #007AFF;
@@ -1025,7 +1318,7 @@
 								background: #F1F1F1;
 
 								.comment-title {
-									width: 280rpx;
+									width: 150rpx;
 
 									.title {
 										color: #525252;
@@ -1037,6 +1330,7 @@
 								.brief {
 									margin: 0 0 15rpx 0;
 									line-height: 1.6em;
+									align-items: flex-start;
 									display: -webkit-box;
 									/** 对象作为伸缩盒子模型显示 **/
 									-webkit-line-clamp: 5;
@@ -1047,6 +1341,19 @@
 									color: #007AFF;
 								}
 
+							}
+
+							.loading-more {
+								align-items: center;
+								justify-content: center;
+								padding-top: 10px;
+								padding-bottom: 10px;
+								text-align: center;
+
+								.loading-more-text {
+									font-size: 28upx;
+									color: #999;
+								}
 							}
 
 
@@ -1102,11 +1409,19 @@
 				}
 
 
+			}
 
+			.loading-more {
+				align-items: center;
+				justify-content: center;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				text-align: center;
 
-
-
-
+				.loading-more-text {
+					font-size: 28upx;
+					color: #999;
+				}
 			}
 		}
 

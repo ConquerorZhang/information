@@ -90,7 +90,7 @@
 					loadingText: '加载更多...',
 					datalsit: [],
 				},
-				itemlist: [{id:'123',name:'lmw',favour:false}, {id:'456',name:'lmw2',favour:true}, {id:'789',name:'lmw3'}, {}, {}, {}, {id:'369',name:'lmw',favour:false}, {}, {}],
+				// itemlist: [{id:'123',name:'lmw',favour:false}, {id:'456',name:'lmw2',favour:true}, {id:'789',name:'lmw3'}, {}, {}, {}, {id:'369',name:'lmw',favour:false}, {}, {}],
 				themeColor: '#C7161E',
 				titleColor: '#ffffff',
 				filterResult: '',

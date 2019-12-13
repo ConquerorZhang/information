@@ -213,11 +213,13 @@
 					//声明一个对象
 					 var val = {};
 					  //将执行语句声明为字符串
-					 var str = "val." + key + "=" + value;
+					 var str = "val." + key + "=\"" + value+"\"";
 					//使用eval执行
 					 eval(str);
-					this.$emit("result",val );
+					this.$emit("sortresult",val );
 				}
+				
+				
 				
 			},
 			menuTabClick(index) {

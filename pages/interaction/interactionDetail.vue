@@ -122,9 +122,15 @@
 		},
 		onLoad(option) {
 			console.log(option);
-			console.log(JSON.parse(option.item).id)
+			// console.log(JSON.parse(option.item).id)
 			this.item = JSON.parse(option.item);
-			this.id = this.item.id;
+			if(!this.isEmpty(option.idkey) && option.idkey == 'id'){
+				this.id = this.item.id;
+			}else if(!this.isEmpty(option.idkey) && option.idkey == 'bizkey'){
+				this.id = this.item.bizkey;
+			}else{
+				this.id = this.item.id;
+			}
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
 					this.screenHeight = res.screenHeight;

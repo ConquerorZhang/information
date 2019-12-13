@@ -62,6 +62,15 @@ Vue.config.configDic = {
 //        break;
 // }
 
+//判断字符是否为空的方法
+Vue.prototype.isEmpty = function isEmpty(obj){
+    if(typeof obj == "undefined" || obj == null || obj == ""){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 const app = new Vue({
     ...App
 })

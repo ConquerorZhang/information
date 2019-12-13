@@ -34,15 +34,15 @@
 			<view class="item-one" v-if="datalists.type=='1'">
 				<view class="item" v-for="(item, index) in datalists.list1.datalist" :key="index">
 					<view class="item-top">
-						<image class="icon_head circleicon" mode="aspectFill" :src="item.avatarUrl" @click="navToDetailPage(item,index)"></image>
-						<view class="info" @click="navToDetailPage(item,index)">
+						<image class="icon_head circleicon" mode="aspectFill" :src="item.avatarUrl" @click="navToDetailPage(item,index,'id')"></image>
+						<view class="info" @click="navToDetailPage(item,index,'id')">
 							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
 								<text class="item-text time">{{item.createTimeShow}}</text>
 								<text class="item-text number">{{item.visitCountShow}}</text>
 							</view>
 						</view>
-						<view class="item-top-collect" @click="collect">
+						<view class="item-top-collect" @click="collect(item.id,index)">
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
@@ -72,16 +72,16 @@
 			<view class="item-two" v-else-if="datalists.type=='2'">
 				<view class="item" v-for="(item, index) in datalists.list2.datalist" :key="index">
 					<view class="item-top">
-						<view class="item-head-icon" @click="navToDetailPage(item,index)">
+						<view class="item-head-icon" @click="navToDetailPage(item,index,'id')">
 							<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 						</view>
-						<view class="info" @click="navToDetailPage(item,index)">
+						<view class="info" @click="navToDetailPage(item,index,'id')">
 							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
 								<text class="item-text content">{{item.contents}}</text>
 							</view>
 						</view>
-						<view class="item-top-collect" @click="collect">
+						<view class="item-top-collect" @click="collect(item.commentId,index)">
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
@@ -112,19 +112,19 @@
 						<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(tab.type)">
 							<view class="item" v-for="(item, index) in tab.datalist" :key="index">
 								<view class="item-top">
-									<view class="item-head-icon" @click="navToDetailPage(item,index)">
+									<view class="item-head-icon" @click="navToDetailPage(item,index,'bizkey')">
 										<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 									</view>
-									<view class="info" @click="navToDetailPage(item,index)">
+									<view class="info" @click="navToDetailPage(item,index,'bizkey')">
 										<text class="item-text name">{{item.createName}}</text>
 										<view class="info-bottom">
 											<text class="item-text time">{{item.createTime}}</text>
 											<text class="item-text number" v-show="false">0浏览</text>
 										</view>
 									</view>
-									<view class="item-top-collect" @click="collect">
+									<!-- <view class="item-top-collect" @click="collect(item.id,index1)">
 										<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
-									</view>
+									</view>   我注释了  也不能删  不能删-->
 								</view>
 
 								<view class="item-replycontent">
@@ -181,9 +181,11 @@
 			return {
 
 				//内容数据
+				deleteIndex:-1,
+				deleteid: '-1',
 				currrenIndex: -1, //记录跳转时点击的item索引
 				currrentType: '1', //当前展示的类型 1 我发布的，2我的回答，3回复我的  赞，4回复我的-内容
-				limit: '5',
+				limit: '10',
 				page: [1, 1, 1, 1],
 				orderBy: '',
 				isAsc: 'desc',
@@ -343,17 +345,6 @@
 			})
 			//初始化数据
 			this.getNewData(this.datalists.type);
-			// setTimeout(() => {
-			// 	this.tabBars.forEach((tabBar) => {
-			// 		this.newsList.push({
-			// 			data: [],
-			// 			isLoading: false,
-			// 			refreshText: "",
-			// 			loadingText: '加载更多...'
-			// 		});
-			// 	});
-			// 	this.getList(0);
-			// }, 350)
 		},
 		methods: {
 			radioChange: function(e) {
@@ -430,17 +421,20 @@
 				}
 			},
 			//点击小黑点
-			collect() {
+			collect(id,index) {
 				console.log("收藏成功");
 				// this.togglePopup('center', 'image');
 				this.showpopup = true;
+				this.deleteid = id;
+				this.deleteIndex = index;
+				
 			},
 			//页面跳转到详情
-			navToDetailPage(item,index) {
+			navToDetailPage(item, index, idkey) {
 				this.currrenIndex = index;
 				uni.$once('interation$detailback', this.detailBack);
 				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+					url: '/pages/interaction/interactionDetail?idkey=' + idkey + '&item=' + encodeURIComponent(JSON.stringify(item))
 				})
 			},
 			//详情回调函数
@@ -487,6 +481,72 @@
 				console.log('删除成功');
 				this.showpopup = false;
 				console.log(e)
+				setTimeout(() => {
+					switch (this.datalists.type) {
+						case '1':
+							this.delete_mypublish(this.deleteid,this.datalists.type,this.deleteIndex);
+							break;
+						case '2':
+							this.delete_myanswer(this.deleteid,this.datalists.type,this.deleteIndex);
+							break;
+						case '3':
+							break;
+						case '4':
+							break;
+						default:
+							break;
+					}
+				}, 500)
+
+			},
+			//删除我的发布
+			delete_mypublish(deleteid, type, index) {
+				API.myPublishDelete({
+					id: deleteid,
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						this.removeItem(type,index);
+					}
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			//删除我的回答
+			delete_myanswer(deleteid, type, index) {
+				API.myIssueCommentDelete({
+					id: deleteid,
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == '0'){
+						this.removeItem(type,index);
+					}
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			//前台移除数据
+			removeItem(type, index) {
+				switch (type) {
+					case '1':
+					// console.log("datalists.list1.datalist: " + JSON.stringify(this.datalists.list1.datalist));
+					this.datalists.list1.datalist.splice(index,1);
+						// this.$forceUpdate();
+						break;
+					case '2':
+					this.datalists.list2.datalist.splice(index,1);
+						break;
+					case '3':
+					this.datalists.list3[0].datalist.splice(index,1);
+						break;
+					case '4':
+					this.datalists.list3[1].datalist.splice(index,1);
+						break;
+					default:
+						break;
+				}
 			},
 			//取消关闭弹窗
 			cancel(e) {
@@ -715,78 +775,6 @@
 					console.log(err);
 				})
 			},
-			/* getList(index) {
-				console.log(index);
-				let activeTab = this.newsList[index];
-				let list = [];
-				// 制造的假数据
-				let tmpList = [
-					[{
-							'time': '今天',
-							'list': [{
-								title: '中国电科相关资料',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2011-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2020-2-2',
-							'list': [{
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2030-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2040-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						}
-					],
-					[{
-						'time': '2011-2-2',
-						'list': [{
-							title: '中国电科产品测试资料',
-							subtitle: '产品'
-						}]
-					}],
-					[{
-						'time': '2011-2-2',
-						'list': [{
-							title: '中国电科动态测试资料',
-							subtitle: '动态'
-						}]
-					}]
-				];
-				list = tmpList[index];
-				activeTab.data = activeTab.data.concat(list);
-			} */
 		}
 	}
 </script>
@@ -1147,18 +1135,14 @@
 					height: 80upx;
 					background: #FFFFFF;
 					flex-direction: row;
-					/* #ifndef APP-PLUS */
 					white-space: nowrap;
-					/* #endif */
 					/* flex-wrap: nowrap; */
 					/* border-color: #cccccc;
 					border-bottom-style: solid;
 					border-bottom-width: 1px; */
 
 					.uni-tab-item {
-						/* #ifndef APP-PLUS */
 						display: inline-block;
-						/* #endif */
 						flex-wrap: nowrap;
 						padding-left: 34upx;
 						padding-right: 34upx;
@@ -1170,9 +1154,7 @@
 						height: 80upx;
 						line-height: 80upx;
 						flex-wrap: nowrap;
-						/* #ifndef APP-PLUS */
 						white-space: nowrap;
-						/* #endif */
 					}
 
 					.uni-tab-item-title-active {

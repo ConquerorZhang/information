@@ -164,4 +164,12 @@ module.exports = {
 	myPublish: (data) => {
 		return MyAPI('interact/issue/myPublish', false, 'GET', data)
 	},
+	// 我的发布-删除我的发布
+	myPublishDelete: (data) => {
+		return MyAPI('interact/issue/delmyissue', false, 'GET', data)
+	},
+	// 我的发布-删除我的回答
+	myIssueCommentDelete: (data) => {
+		return MyAPI('interact/delmycomment', false, 'GET', data)
+	},
 }

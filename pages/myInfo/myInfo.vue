@@ -1,5 +1,8 @@
 <template>
 	<view class="totalContent">
+		<head>
+			<meta name = "format-detection" content = "telephone=no">
+		</head>
 		<view class="settingTopBgView">
 			<!-- :style="{background: 'url('+data.settingBGImage +')'}"> -->
 			<view class="headBGView">

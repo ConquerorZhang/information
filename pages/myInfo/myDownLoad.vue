@@ -27,7 +27,7 @@
 				<text class="loading-more-text">没有更多数据了</text>
 			</view>
 		</scroll-view>
-		
+
 		<view class='bottomBar' v-show="showCheckBox">
 			<checkbox-group @change="checkboxChange2">
 				<checkbox :value="'all'" :checked="allChecked" color="#ee3847" />
@@ -145,7 +145,7 @@
 				// if (!this.canLoad) {
 				// 	return;
 				// }
-			
+
 				// 假数据
 				this.currentList = [{
 					image: '../../static/logo.png',
@@ -173,7 +173,7 @@
 					time: '2013-6-22',
 					id: '15'
 				}];
-				
+
 				this.dataList = this.dataList.concat(this.currentList);
 				// 更新全选按钮状态
 				if (this.selectedIdArr.length == this.dataList.length) {
@@ -196,7 +196,7 @@
 			checkboxChange2: function(e) {
 				this.allChecked = !this.allChecked;
 				this.selectedIdArr = [];
-			
+
 				for (var i = 0; i < this.dataList.length; i++) {
 					this.dataList[i].checked = this.allChecked;
 					if (this.allChecked) {
@@ -211,7 +211,7 @@
 						if (res.confirm) {
 							console.log(this.selectedIdArr);
 							// todozcc 提交删除接口
-			
+
 							// 更新数据
 							this.dataList = [];
 							// 强制刷新删除按钮颜色
@@ -233,7 +233,7 @@
 	page {
 		height: 100%;
 	}
-	
+
 	.container {
 		position: relative;
 		height: 100%;
@@ -250,7 +250,7 @@
 				color: #969798;
 			}
 		}
-		
+
 		.scroll-v {
 			flex: 1;
 			width: 750upx;
@@ -258,45 +258,45 @@
 			flex-direction: column;
 			/* #endif */
 		}
-		
+
 		.scroll-v-height1 {
 			height: calc(100% - 290rpx);
 		}
-		
+
 		.scroll-v-height2 {
 			height: calc(100% - 190rpx);
 		}
-		
+
 		.productPart {
 			display: flex;
 			margin-top: 15rpx;
-		
+
 			checkbox {
 				margin-left: 15rpx;
 				margin-right: 15rpx;
 			}
-		
+
 			.detailPart {
 				display: flex;
 				background: #FFFFFF;
 				border-radius: 30rpx;
 				width: 750rpx;
-		
+
 				.imagePart {
 					margin: 40rpx 20rpx;
 					width: 80rpx;
 					height: 80rpx;
 				}
-		
+
 				.textPart {
 					margin-top: 35rpx;
 					width: 390rpx;
-		
+
 					.title {
 						color: #3f4041;
 						font-size: $uni-font-size-lg;
 					}
-		
+
 					.time {
 						padding-top: 5rpx;
 						font-size: 30rpx;
@@ -305,48 +305,53 @@
 				}
 			}
 		}
-		
+
 		.loading-more {
 			align-items: center;
 			justify-content: center;
 			padding-top: 10px;
 			padding-bottom: 10px;
 			text-align: center;
-			
+
 			.loading-more-text {
 				font-size: 28upx;
 				color: #999;
 			}
 		}
-		
+
 		.bottomBar {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
 			display: flex;
 			justify-content: space-between;
 			background: #FFFFFF;
 			height: 100rpx;
 			align-items: center;
-		
+
 			checkbox-group {
 				display: flex;
 			}
-		
+
 			checkbox {
 				margin-left: 20rpx;
 			}
-		
+
 			.delete {
 				color: #FFFFFF;
 				background: #b7b8b9;
 				text-align: center;
 				height: 100rpx;
 				line-height: 100rpx;
-				width: 180rpx;
+				width: 250rpx;
 			}
-		
+
 			.redDelete {
 				background: #d7061f;
 			}
-		
+
 			.grayDelete {
 				background: #b7b8b9;
 			}

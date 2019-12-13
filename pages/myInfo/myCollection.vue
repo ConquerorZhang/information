@@ -556,7 +556,7 @@
 			text-align: center;
 			height: 100rpx;
 			line-height: 100rpx;
-			width: 180rpx;
+			width: 250rpx;
 		}
 
 		.redDelete {

@@ -1,7 +1,7 @@
 <script>
 	export default {
 		globalData: {
-			
+
 		},
 		onLaunch: function() {
 			console.log('App Launch')
@@ -12,14 +12,14 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-		onError:function(e){
+		onError: function(e) {
 			console.log(e)
 		}
 	}
 </script>
 
 <style>
-	page{
+	page {
 		height: 100%;
 		background: #F1F1F1;
 	}

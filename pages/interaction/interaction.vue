@@ -1,6 +1,9 @@
 <!-- 互动专区首页 -->
 <template>
 	<view class="page">
+		<head>
+			<meta name="format-detection" content="telephone=no">
+		</head>
 		<view class="head">
 			<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
 			<view class="statusBar" ></view>
@@ -70,6 +73,7 @@
 
 <script>
 	const API = require('../../common/api.js');
+	var util = require('../../common/bridge.js');
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
 	export default {
@@ -207,6 +211,7 @@
 			},
 			//页面跳转到详情
 			navToDetailPage(item,index) {
+				util.bridgeAndroidAndIOS({'key':'inner'});
 				this.currrenIndex = index;
 				uni.$once('interation$detailback',this.detailBack);
 				uni.navigateTo({
@@ -215,7 +220,7 @@
 			},
 			//页面跳转到发布
 			navToPublish(item) {
-
+				util.bridgeAndroidAndIOS({'key':'inner'});
 				uni.navigateTo({
 					url: '/pages/interaction/publish'
 				})
@@ -299,6 +304,7 @@
 			})
 		},
 		onShow(){
+			util.bridgeAndroidAndIOS({'key':'onShow'});
 			// uni.showToast({
 			// 	title:'show'
 			// })

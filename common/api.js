@@ -17,13 +17,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const MyAPI = (url, needSubDomain, method, data) => {
-	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url
-
-	let token = Vue.config.configDic.token;
-	let guid = Vue.config.configDic.guid;
-	let nonce = Math.floor(Math.random() * 800000000 + 100000000);
-	let ttl = Date.parse(new Date()) / 1000;
-	let sign = SIGN.sign(url, guid, nonce, ttl, token, data);
+	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url;
+	
+	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "" : Vue.config.configDic.Authorization;
+	// let token = Vue.config.configDic.token;
+	// let guid = Vue.config.configDic.guid;
+	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);
+	// let ttl = Date.parse(new Date()) / 1000;
+	// let sign = SIGN.sign(url, guid, nonce, ttl, token, data);
 
 	// data['guid'] = guid;
 	// data['nonce'] = nonce;
@@ -37,12 +38,12 @@ const MyAPI = (url, needSubDomain, method, data) => {
 			// nonce: nonce,
 			// ttl: ttl,
 			// sign: sign,
-			token: token,
-			version: Vue.config.configDic.version,
-			verCode: Vue.config.configDic.verCode,
-			appCode: Vue.config.configDic.appCode,
+			// token: token,
+			// version: Vue.config.configDic.version,
+			// verCode: Vue.config.configDic.verCode,
+			// appCode: Vue.config.configDic.appCode,
+			Authorization: Authorization,
 			'content-type':'application/x-www-form-urlencoded',
-			// 'content-type':method == "GET" ? 'application/x-www-form-urlencoded' : 'application/json;charset=UTF-8',
 		}
 		return config
 	})

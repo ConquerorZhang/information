@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 function bridgeAndroidAndIOS(data) {
 	function setupWebViewJavascriptBridge(callback) {
 		if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
@@ -22,7 +24,17 @@ function bridgeAndroidAndIOS(data) {
 				/* Initialize your app here */
 				bridge.registerHandler('JS Echo', function(data, responseCallback) {
 					console.log("JS Echo called with:", data)
-					responseCallback(data)
+					// responseCallback(data)
+					
+					// 初始传入token和guid
+					Vue.config.configDic = {
+						Authorization: data.Authorization ,
+						// guid: "123456",
+						// token: "abcdefg",
+						// version: "0.0.1",
+						// verCode: "191122",
+						// appCode: "corpMall",
+					};
 				})
 				bridge.callHandler('ObjC Echo', data, function responseCallback(responseData) {
 					console.log("JS received response:", responseData)

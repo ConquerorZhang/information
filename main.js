@@ -1,17 +1,13 @@
 import Vue from 'vue'
 import App from './App'
+var util = require('./common/bridge.js');
 
 Vue.config.productionTip = false
 App.mpType = 'app'
 
-// 初始传入token和guid
-Vue.config.configDic = {
-	guid: "123456",
-	token: "abcdefg",
-	version: "0.0.1",
-	verCode: "191122",
-	appCode: "corpMall",
-};
+Vue.config.configDic = {};
+// 从原生获取token
+util.bridgeAndroidAndIOS();
 
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function isEmpty(obj){

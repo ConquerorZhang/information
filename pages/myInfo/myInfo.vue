@@ -115,6 +115,9 @@
 			// 	console.log('测试网络请求');
 			// })
 		},
+		onShow() {
+			util.bridgeAndroidAndIOS({'key':'mine'});
+		},
 		methods: {
 			clickSetting() {
 				util.bridgeAndroidAndIOS({'key':'setting'});

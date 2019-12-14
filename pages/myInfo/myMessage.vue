@@ -4,7 +4,7 @@
 			<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 			<view class="emptyText">暂无消息</view>
 		</view>
-		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
+		<scroll-view v-else class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
 			<view class="message" v-for="(item,index) in dataList" :key="index" v-on:click="navigateToDetail(item.id,index)">
 				<view class="titleRow">
 					<text class="title">{{item.title}}</text>

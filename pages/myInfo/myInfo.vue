@@ -1,7 +1,7 @@
 <template>
 	<view class="totalContent">
 		<head>
-			<meta name = "format-detection" content = "telephone=no">
+			<meta name="format-detection" content="telephone=no">
 		</head>
 		<view class="settingTopBgView">
 			<!-- :style="{background: 'url('+data.settingBGImage +')'}"> -->
@@ -18,7 +18,7 @@
 						<view class="phone">{{data.phone}}</view>
 					</view>
 				</view>
-				<image class="settingBtn" :src=data.settingImage></image>
+				<image class="settingBtn" :src=data.settingImage @click="clickSetting()"></image>
 			</view>
 		</view>
 		<view class="myFunctionModel">
@@ -54,6 +54,7 @@
 
 <script>
 	import Vue from 'vue'
+	var util = require('../../common/bridge.js');
 	const API = require('../../common/api.js')
 
 	export default {
@@ -93,7 +94,7 @@
 						{
 							"image": "../../static/mine/main/myAnswer.png",
 							"text": "我的回答",
-							"dot": "0"
+							"dot": "1"
 						},
 						{
 							"image": "../../static/mine/main/answerMe.png",
@@ -115,7 +116,11 @@
 			// })
 		},
 		methods: {
+			clickSetting() {
+				util.bridgeAndroidAndIOS({'key':'setting'});
+			},
 			navigateToFunc(index) {
+				util.bridgeAndroidAndIOS({'key':'inner'});
 				switch (index) {
 					case 0:
 						{
@@ -150,6 +155,7 @@
 				}
 			},
 			navigateToInter(index) {
+				util.bridgeAndroidAndIOS({'key':'inner'});
 				switch (index) {
 					case 0:
 						{
@@ -303,7 +309,7 @@
 				.interactionImage {
 					width: 50rpx;
 				}
-				
+
 				.interactionText {
 					color: #333333;
 					font-size: 30rpx;

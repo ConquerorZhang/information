@@ -13,7 +13,7 @@
 				<view class="v_search">
 					<uni-search-bar placeholder="关键字" radius="8" clearButton="auto" @confirm="search" class="search" />
 				</view>
-				<view class="top-right">
+				<view class="top-right"  @click="message">   <!--@click="window.android.click('77777777777')"-->
 					<image class="top-right-icon" mode="aspectFit" src="../../static/message_white.png"></image>
 					<!-- <text class="top-right-text" v-show='false' >消息</text> -->
 				</view>
@@ -165,6 +165,13 @@
 			intertctionFilter
 		},
 		methods: {
+			//消息
+			message(){
+				uni.showToast({
+					title:'h5 Toast',
+				})
+				window.android.click('77777777777');
+			},
 			// 评论
 			topiccomment(topicid) {
 				console.log(topicid);
@@ -332,7 +339,7 @@
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
-				height: var(--status-bar-height);//这里是无效的，不知为何
+				height: 40rpx;//这里是无效的，不知为何  var(--status-bar-height)
 				width: 100%;
 			}
 
@@ -398,7 +405,7 @@
 		// }
 
 		.list {
-			margin-top: 150rpx;
+			margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
 

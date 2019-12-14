@@ -76,6 +76,7 @@
 	var util = require('../../common/bridge.js');
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
+	var util = require('../../common/bridge.js'); 
 	export default {
 		data() {
 			return {
@@ -165,12 +166,18 @@
 			intertctionFilter
 		},
 		methods: {
+			// functionInJs : function(){
+			// 	uni.showToast({
+			// 		title:'h5 Toast',
+			// 	})
+			// },
 			//消息
 			message(){
-				uni.showToast({
-					title:'h5 Toast',
-				})
-				window.android.click('77777777777');
+				// uni.showToast({
+				// 	title:'h5 Toast',
+				// })
+				util.bridgeAndroidAndIOS({'key':'inner'});
+				// window.android.click('77777777777');
 			},
 			// 评论
 			topiccomment(topicid) {

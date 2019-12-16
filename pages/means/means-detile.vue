@@ -1,6 +1,7 @@
 <template>
     <view class="conter">
-        <view class="gdjk"></view>
+        <view class="xtnav"></view>
+        <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back"></uni-nav-bar>
         <view class="detaile">
             <view class="title">孵化信息系统资料DOC</view>
             <view class="time">2019-11-21 15:21</view>
@@ -46,8 +47,11 @@
 
 <script>
 import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
+import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+
 export default {
     components: {
+        uniNavBar,
         uniPopup
     },
     data() {
@@ -59,7 +63,12 @@ export default {
         },
         close(){
             this.$refs.replyPopup.close()
-        }
+        },
+        back() {
+        	uni.navigateBack({
+        		delta: 1
+        	})
+        },
     }
 };
 </script>
@@ -69,9 +78,8 @@ page {
     background: rgb(239, 239, 239);
     padding-bottom: 100rpx;
 }
-.gdjk{
-    height: var(--status-bar-height);
-    width: 100%;
+.xtnav{
+    height: 25px;
 }
 .detaile {
     border-top: 1px solid #f2f2f2;

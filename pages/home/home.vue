@@ -1,5 +1,6 @@
 <template>
     <view>
+        <view class="xtnav"></view>
         <uni-nav-bar class="nav" background-color="#EE3847" fixed="true">
             <view class="nav-input"><input type="text" value="" placeholder="请输入关键字" /></view>
             <view slot="left" class="nav-logo"><image src="../../static/logo.png" mode="scaleToFill"></image></view>
@@ -8,7 +9,7 @@
         <scroll-view class="scroll" scroll-x="true">
             <text class="x">全部</text>
             <text @click="kg=!kg">点这里试试</text>
-            <text>交通信息化</text>
+            <text @click="sdfdf">交通信息化</text>
             <text>交通信息化</text>
             <text>交通信息化</text>
             <text>交通信息化</text>
@@ -89,6 +90,7 @@
                     </view>
                 </view>
             </view>
+            {{version}} ---- {{innerVersion}}
         </view>
         <view v-else>
             <image src="../../static/interaction/commentEmpty.png" mode="aspectFit" class="empty"></image>
@@ -107,6 +109,8 @@ export default {
     },
     data() {
         return {
+            version:'',
+            innerVersion:'',
             kg:false,
             menuList: [
                 {
@@ -158,6 +162,13 @@ export default {
             uni.navigateTo({
                 url:'/pages/means/means'
             })
+        },
+        sdfdf() {
+            uni.showToast({
+                title:plus
+            })
+            this.version = plus.runtime.version;
+            this.innerVersion = plus.runtime.innerVersion;
         }
     }
 };
@@ -166,6 +177,10 @@ export default {
 <style lang="scss">
 page {
     background: rgb(239, 239, 239);
+}
+.xtnav{
+    height: 25px;
+    background: #EE3847;
 }
 .nav {
     /deep/ .uni-navbar__header {
@@ -178,7 +193,6 @@ page {
         box-shadow: none;
         border: none;
     }
-    padding-top: var(--status-bar-height);
     .nav-logo {
         image {
             width: 130rpx;

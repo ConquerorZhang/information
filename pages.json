@@ -1,6 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+		    "path" : "pages/home/home",
+		    "style" : {
+		        "navigationBarTitleText": "首页",
+		        "navigationStyle": "custom"
+		    }
+		},{
 			"path": "pages/myInfo/myInfo",
 			"style": {
 				"navigationStyle": "custom"
@@ -99,12 +105,6 @@
 				"navigationBarTitleText": "动态详情"
 			}
         },{
-            "path" : "pages/home/home",
-            "style" : {
-                "navigationBarTitleText": "首页",
-                "navigationStyle": "custom"
-            }
-        },{
             "path" : "pages/means/means",
             "style" : {
                 "navigationBarTitleText": "资料下载",
@@ -113,6 +113,7 @@
         },{
             "path" : "pages/means/means-detile",
             "style" : {
+                "navigationStyle": "custom",
                 "navigationBarTitleText": "资料详情"
             }
         }

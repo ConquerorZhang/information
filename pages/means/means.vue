@@ -1,5 +1,6 @@
 <template>
     <view class="conter">
+        <view class="xtnav"></view>
         <uni-nav-bar class="collectionBar" left-icon="back" :rightText="delstar == false ? '管理' : '完成'" title="资料下载" @clickLeft="back" @clickRight="clickRightBtn"></uni-nav-bar>
         <view class="bt">最近下载</view>
         <view class="means-item" @click="godetile">
@@ -73,11 +74,11 @@ page {
     background: rgb(239, 239, 239);
     padding-bottom: 100rpx;
 }
+.xtnav{
+    height: 25px;
+}
 .conter {
     overflow: hidden;
-}
-.collectionBar{
-    padding-top: var(--status-bar-height);
 }
 .bt {
     margin-top: 10rpx;

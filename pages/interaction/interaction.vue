@@ -26,7 +26,7 @@
 		</view>
 
 		<!-- <view class="top-zhanwei"></view> -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+68 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item,index)">
 				<view class="item-top">
@@ -176,7 +176,7 @@
 				// uni.showToast({
 				// 	title:'h5 Toast',
 				// })
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				util.bridgeAndroidAndIOS({'key':'onshow'});
 				// window.android.click('77777777777');
 			},
 			// 评论
@@ -225,19 +225,20 @@
 			},
 			//页面跳转到详情
 			navToDetailPage(item,index) {
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				
 				this.currrenIndex = index;
 				uni.$once('interation$detailback',this.detailBack);
 				uni.navigateTo({
 					url: '/pages/interaction/interactionDetail?item='+encodeURIComponent(JSON.stringify(item))
 				})
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			},
 			//页面跳转到发布
 			navToPublish(item) {
-				util.bridgeAndroidAndIOS({'key':'inner'});
 				uni.navigateTo({
 					url: '/pages/interaction/publish'
 				})
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			},
 			//键盘触发搜索
 			search(key) {

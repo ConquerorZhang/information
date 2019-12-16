@@ -178,6 +178,7 @@ page {
         box-shadow: none;
         border: none;
     }
+    padding-top: var(--status-bar-height);
     .nav-logo {
         image {
             width: 130rpx;

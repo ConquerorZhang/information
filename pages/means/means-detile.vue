@@ -1,5 +1,6 @@
 <template>
     <view class="conter">
+        <view class="gdjk"></view>
         <view class="detaile">
             <view class="title">孵化信息系统资料DOC</view>
             <view class="time">2019-11-21 15:21</view>
@@ -67,6 +68,10 @@ export default {
 page {
     background: rgb(239, 239, 239);
     padding-bottom: 100rpx;
+}
+.gdjk{
+    height: var(--status-bar-height);
+    width: 100%;
 }
 .detaile {
     border-top: 1px solid #f2f2f2;

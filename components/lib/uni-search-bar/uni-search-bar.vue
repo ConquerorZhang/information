@@ -42,7 +42,7 @@
 		},
 		data() {
 			return {
-				show: false,
+				show: true,
 				showSync: false,
 				searchVal: ""
 			}
@@ -56,8 +56,11 @@
 		},
 		methods: {
 			searchClick() {
+				this.$emit("searchClick", {
+					value: this.searchVal
+				});
 				this.searchVal = ""
-				this.show = true;
+				// this.show = true;
 				this.$nextTick(() => {
 					this.showSync = true;
 				})
@@ -70,7 +73,7 @@
 					value: this.searchVal
 				});
 				this.searchVal = ""
-				this.show = false
+				// this.show = false
 				this.showSync = false
 				// #ifndef APP-PLUS
 				uni.hideKeyboard()

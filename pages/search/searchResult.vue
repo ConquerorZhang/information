@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="searchFilterContainer">
-			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80"></uni-search-bar>
+			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" @cancel="cancel" @searchClick="searchClick"></uni-search-bar>
 			<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
 				<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
 					<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
@@ -100,6 +100,7 @@
 		data() {
 			return {
 				newsList: [],
+				keyword: '',
 				tabIndex: 0,
 				tabBars: [{
 					name: '电科动态',
@@ -118,7 +119,9 @@
 				navigateFlag: false,
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			console.log(option.keyword);
+			
 			setTimeout(() => {
 				this.tabBars.forEach((tabBar) => {
 					this.newsList.push({
@@ -295,6 +298,16 @@
 			},
 			navigateToProduct(e) {
 				console.log(e);
+			},
+			cancel() {
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			searchClick() {
+				uni.navigateBack({
+					delta:1
+				})
 			}
 		}
 	}
@@ -317,7 +330,7 @@
 		.searchFilterContainer {
 			
 			.searchBar {
-				padding: 40rpx 20rpx 20rpx;
+				padding: 80rpx 20rpx 20rpx;
 				background: #FFFFFF;
 			}
 			

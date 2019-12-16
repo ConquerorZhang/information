@@ -116,7 +116,7 @@
 			// })
 		},
 		onShow() {
-			util.bridgeAndroidAndIOS({'key':'mine'});
+			util.bridgeAndroidAndIOS({'key':'onShow'});
 		},
 		methods: {
 			clickSetting() {

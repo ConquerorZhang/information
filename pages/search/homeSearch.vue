@@ -10,7 +10,7 @@
 			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 
 			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword"
-			 @confirm="doSearchhha" confirm-type="search"></uni-search-bar>
+			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel"></uni-search-bar>
 
 			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+	var util = require('../../common/bridge.js');
 	//引用mSearch组件，如不需要删除即可
 	export default {
 		data() {
@@ -202,18 +203,14 @@
 				key = key ? key : this.keyword ? this.keyword : this.defaultKeyword;
 				// this.keyword = key.value;
 				this.saveKeyword(key); //保存为历史 
-				uni.showToast({
-					title: key,
-					icon: 'none',
-					duration: 2000
-				});
-				//以下是示例跳转淘宝搜索，可自己实现搜索逻辑
-				//#ifdef APP-PLUS
-				plus.runtime.openURL(encodeURI('taobao://s.taobao.com/search?q=' + key));
-				//#endif
-				//#ifdef H5
-				window.location.href = 'taobao://s.taobao.com/search?q=' + key
-				//#endif
+				// uni.showToast({
+				// 	title: key,
+				// 	icon: 'none',
+				// 	duration: 2000
+				// });
+				uni.navigateTo({
+					url:'./searchResult?keyword='+key
+				})
 			},
 			doSearchhha() {
 				// console.log(event.target.value);
@@ -251,7 +248,10 @@
 						this.oldKeywordList = OldKeys; //更新历史搜索
 					}
 				});
-			}
+			},
+			cancel() {
+				util.bridgeAndroidAndIOS({'key':'close'});
+			},
 		}
 	}
 </script>

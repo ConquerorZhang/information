@@ -618,7 +618,7 @@
 	}
 
 	.comment-model {
-		margin-bottom: 90rpx;
+		padding-bottom: 90rpx;
 		background: #FFFFFF;
 		border-top: 6px solid #eeeff0;
 

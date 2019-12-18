@@ -12,60 +12,67 @@
 			<swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
 				<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
 					<block v-if="index1 == 0">
-						<view class="empty" v-if="tab.data.length < 1">
-							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+						<view class="empty" v-if="tab.length < 1">
+							<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+							<view class="emptyText">没有找到相关信息～</view>
 						</view>
-						<view class="newsPart" v-for="(item,index) in tab.data" :key="index">
+						<view class="newsPart" v-for="(item,index) in tab" :key="index" @click="goDetail(index1,item.id)">
 							<view class="textPart">
 								<view class="title">
 									<text>{{item.title}}</text>
 								</view>
 								<view class="timePart">
-									<text class="time">{{item.time}}</text>
-									<text class="address">{{item.address}}</text>
+									<text class="time">{{item.createTime}}</text>
+									<text class="address">{{item.location}}</text>
 								</view>
 							</view>
-							<image :src="item.image" mode="scaleToFill"></image>
+							<image :src="item.imgUrl" mode="scaleToFill"></image>
 						</view>
 					</block>
 					<block v-else-if="index1 == 1">
-						<view class="empty" v-if="tab.data.length < 1">
-							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+						<view class="empty" v-if="tab.length < 1">
+							<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+							<view class="emptyText">没有找到相关信息～</view>
 						</view>
-						<view class="filePart" v-for="(item,index) in tab.data" :key="index">
+						<view class="filePart" v-for="(item,index) in tab" :key="index" @click="goDetail(index1,item.id)">
 							<view class="topPart">
 								<view class="textPart">
-									<view class="title">{{item.title}}</view>
-									<view class="subTitle">{{item.subTitle}}</view>
-									<view class="name">{{item.name}}</view>
-									<view class="client">{{item.client}}</view>
+									<view class="title">{{item.projectName}}</view>
+									<view class="subTitle">{{item.companyName}}</view>
+									<view class="name">{{item.charger}}</view>
+									<view class="client">{{item.customer}}</view>
 								</view>
 								<view class="rightPart">
-									<view class="redType">{{item.redType}}</view>
-									<view class="state">{{item.state}}</view>
+									<view class="redType">{{item.probabilityStatusStr}}</view>
+									<view class="state">{{item.procedureStatusStr}}</view>
 								</view>
 							</view>
-							<view class="time">{{item.time}}</view>
+							<view class="time">{{item.createTime}}</view>
 						</view>
 					</block>
 					<block v-else-if="index1 == 2">
-						<view class="empty" v-if="tab.data.length < 1">
-							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+						<view class="empty" v-if="tab.length < 1">
+							<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+							<view class="emptyText">没有找到相关信息～</view>
 						</view>
-						<view class="productPart" v-for="(item,index) in tab.data" :key="index">
+						<view class="productPart" v-for="(item,index) in tab" :key="index" @click="goDetail(index1,item.id)">
 							<productCell :data="item"></productCell>
 						</view>
 					</block>
 					<block v-else-if="index1 == 3">
-						<view class="empty" v-if="tab.data.length < 1">
-							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
+						<view class="empty" v-if="tab.length < 1">
+							<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+							<view class="emptyText">没有找到相关信息～</view>
 						</view>
-						<view class="learnPart" v-for="(item,index) in tab.data" :key="index">
+						<view class="learnPart" v-for="(item,index) in tab" :key="index">
 							<downLoadCell :data='item'></downLoadCell>
 						</view>
 					</block>
-					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4" v-on:click="loadMore(index1)">
-						<text class="loading-more-text">{{tab.loadingText}}</text>
+					<view class="loading-more" v-if="currentList[index1].length >= 10" v-on:click="loadMore()">
+						<text class="loading-more-text">加载更多数据</text>
+					</view>
+					<view class="loading-more" v-else-if="newsList[index1].length > 0">
+						<text class="loading-more-text">没有更多数据了</text>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -74,6 +81,7 @@
 </template>
 
 <script>
+	const API = require('../../common/api.js');
 	import UniSearchBar from "../../components/lib/uni-search-bar/uni-search-bar.vue"
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
@@ -86,7 +94,7 @@
 		},
 		data() {
 			return {
-				newsList: [],
+				newsList: [[],[],[],[]],
 				keyword: '',
 				tabIndex: 0,
 				tabBars: [{
@@ -104,159 +112,126 @@
 				}],
 				scrollInto: "",
 				navigateFlag: false,
+				
+				pageLimit: 10,
+				pageIndex: [1, 1, 1, 1],
+				currentList: [
+					[],
+					[],
+					[],
+					[]
+				],
+				canLoad: [true, true, true, true]
 			}
 		},
 		onLoad(option) {
 			console.log(option.keyword);
+			this.keyword = option.keyword;
 			
-			setTimeout(() => {
-				this.tabBars.forEach((tabBar) => {
-					this.newsList.push({
-						data: [],
-						isLoading: false,
-						refreshText: "",
-						loadingText: '加载更多...'
-					});
-				});
-				this.getList(0);
-			}, 350)
+			this.getList();
 		},
 		methods: {
-			getList(index) {
-				console.log(index);
-				let activeTab = this.newsList[index];
-				let list = [];
-				// 制造的假数据
-				let tmpList = [
-					[{
-							image: '../../static/logo.png',
-							title: '中国电科相关资料',
-							time: '2011-2-22',
-							address: '北京',
-							id: '01'
-						},
-						{
-							image: '../../static/logo.png',
-							title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-							time: '2011-2-22',
-							address: '北京',
-							id: '02'
-						},
-						{
-							image: '../../static/logo.png',
-							title: '中国电科相放松放松放松放松放松饭舒服舒服关资料',
-							time: '2011-2-22',
-							address: '北京',
-							id: '03'
-						}
-					],
-					[{
-							title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-							subTitle: '成都了思考科技有限公司',
-							name: '张三',
-							client: '王武',
-							time: '2011-2-22',
-							redType: '高级会',
-							state: '未完结',
-							id: '111'
-						},
-						{
-							title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-							subTitle: '成都了思考科技有限公司',
-							name: '张三',
-							client: '王武',
-							time: '2011-2-22',
-							redType: '高级会',
-							state: '未完结',
-							id: '112'
-						},
-						{
-							title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-							subTitle: '成都了思考科技有限公司',
-							name: '张三',
-							client: '王武',
-							time: '2011-2-22',
-							redType: '高级会',
-							state: '未完结',
-							id: '113'
-						},
-						{
-							title: '中国电科京津冀解决浏览浏览了解了解了了解了链接',
-							subTitle: '成都了思考科技有限公司',
-							name: '张三',
-							client: '王武',
-							time: '2011-2-22',
-							redType: '高级会',
-							state: '未完结',
-							id: '113'
-						}
-					],
-					[{
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						time: '2011-2-22',
-						id: '11'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '12'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '13'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '14'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '15'
-					}],
-					[{
-							image: '../../static/logo.png',
-							title: '浮台信息系统相关资料',
-							downloadImage: '../../static/logo.png',
-							time: '2019-11-11',
-							downloadNum: '下载量: 9878'
-						},
-						{
-							image: '../../static/logo.png',
-							title: '哈哈哈信息系统相关资料',
-							downloadImage: '../../static/logo.png',
-							time: '2013-12-11',
-							downloadNum: '下载量: 228'
-						}
-					]
-				];
-
-				list = tmpList[index];
-				activeTab.data = activeTab.data.concat(list);
-			},
-			goDetail(e) {
-				if (this.navigateFlag) {
+			getList() {
+				if (!this.canLoad[this.tabIndex]) {
 					return;
 				}
-				this.navigateFlag = true;
-				uni.navigateTo({
-					url: './detail/detail?title=' + e.title
-				});
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
+				
+				if (this.tabIndex == 0) {
+					API.searchResultNews({
+						searchkey: this.keyword,
+						limit: this.pageLimit,
+						page: this.pageIndex[this.tabIndex],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[this.tabIndex]++;
+						this.currentList[this.tabIndex] = (res.data.data == undefined && res.data.data == null) ? [] : res.data.data;
+						this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
+					
+						this.$forceUpdate();
+					
+						// scrollView上拉不加载标志
+						this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
+					}).catch(err => {
+						console.log(err);
+					})
+				}
+				else if (this.tabIndex == 1) {
+					API.searchResultFile({
+						searchkey: this.keyword,
+						limit: this.pageLimit,
+						page: this.pageIndex[this.tabIndex],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[this.tabIndex]++;
+						this.currentList[this.tabIndex] = (res.data.data == undefined && res.data.data == null) ? [] : res.data.data;
+						this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
+					
+						this.$forceUpdate();
+					
+						// scrollView上拉不加载标志
+						this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
+					}).catch(err => {
+						console.log(err);
+					})
+				}
+				else if (this.tabIndex == 2) {
+					API.searchResultProduct({
+						searchkey: this.keyword,
+						limit: this.pageLimit,
+						page: this.pageIndex[this.tabIndex],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[this.tabIndex]++;
+						this.currentList[this.tabIndex] = (res.data.data == undefined && res.data.data == null) ? [] : res.data.data;
+						this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
+					
+						this.$forceUpdate();
+					
+						// scrollView上拉不加载标志
+						this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
+					}).catch(err => {
+						console.log(err);
+					})
+				}
+				else if (this.tabIndex == 3) {
+					API.searchResultLearn({
+						searchkey: this.keyword,
+						limit: this.pageLimit,
+						page: this.pageIndex[this.tabIndex],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[this.tabIndex]++;
+						this.currentList[this.tabIndex] = (res.data.data == undefined && res.data.data == null) ? [] : res.data.data;
+						this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
+					
+						this.$forceUpdate();
+					
+						// scrollView上拉不加载标志
+						this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
+					}).catch(err => {
+						console.log(err);
+					})
+				}
+			},
+			goDetail(index,id) {
+				if (index == 0) {
+					uni.navigateTo({
+						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword
+					})
+				}
+				else if (index == 1) {
+					
+				}
+				else if (index == 2) {
+					
+				}
+				else if (index == 3) {
+					
+				}
 			},
 			loadMore(e) {
 				setTimeout(() => {
-					this.getList(this.tabIndex);
+					this.getList();
 				}, 500)
 			},
 			ontabtap(e) {
@@ -270,8 +245,8 @@
 				this.switchTab(index);
 			},
 			switchTab(index) {
-				if (this.newsList[index].data.length === 0) {
-					this.getList(index);
+				if (this.newsList[index].length === 0) {
+					this.getList();
 				}
 
 				if (this.tabIndex === index) {
@@ -282,8 +257,7 @@
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {
-				this.newsList[e].data.length = 0;
-				this.newsList[e].loadingText = "加载更多...";
+				this.newsList[e].length = 0;
 			},
 			navigateToProduct(e) {
 				console.log(e);
@@ -395,6 +369,9 @@
 				margin-top: 400rpx;
 				width: 300rpx;
 			}
+			.emptyText {
+				color: #969798;
+			}
 		}
 
 		.newsPart {
@@ -434,6 +411,8 @@
 			image {
 				width: 300rpx;
 				height: 200rpx;
+				background: #CCCCCC;
+				margin-right: 10rpx;
 			}
 		}
 

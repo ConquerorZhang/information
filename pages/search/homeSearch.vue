@@ -162,15 +162,15 @@
 					return;
 				}
 				this.keyword = keyword;
-				this.isShowKeywordList = true;
+				// this.isShowKeywordList = true;
 				//以下示例截取淘宝的关键字，请替换成你的接口
 				// this.keywordList = [{keyword:'哈哈'},{keyword:'完美'},{keyword:'哈哈好的'},{keyword:'真的不错'},{keyword:'啦啦啦啦啦'}]
-				uni.request({
-					url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
-					success: (res) => {
-						this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
-					}
-				});
+				// uni.request({
+				// 	url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
+				// 	success: (res) => {
+				// 		this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
+				// 	}
+				// });
 			},
 			//高亮关键字
 			drawCorrelativeKeyword(keywords, keyword) {

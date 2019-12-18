@@ -193,8 +193,24 @@ module.exports = {
 	productData: (data) => {
 		return MyAPI('api/product/productinfo', false, 'GET', data)
 	},
-  //首页热搜
+    //首页热搜
 	HomeHotSearch: (data) => {
 		return MyAPI('api/search/hotsearchkeyslist', false, 'GET', data)
+	},
+	//搜索结果-动态
+	searchResultNews: (data) => {
+		return MyAPI('api/infos/dynamic/searchlist', false, 'GET', data)
+	},
+	//搜索结果-项目档案
+	searchResultFile: (data) => {
+		return MyAPI('api/project/searchlist', false, 'GET', data)
+	},
+	//搜索结果-产品
+	searchResultProduct: (data) => {
+		return MyAPI('api/product/searchlist', false, 'GET', data)
+	},
+	//搜索结果-学习资料
+	searchResultLearn: (data) => {
+		return MyAPI('api/learnmaterial/searchlist', false, 'GET', data)
 	},
 }

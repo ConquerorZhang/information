@@ -27,6 +27,9 @@
 		methods: {
 			navigateToProduct(e) {
 				console.log(e);
+				uni.navigateTo({
+					url:'../../pages/product/product?productId='+e
+				})
 			},
 		}
 	}

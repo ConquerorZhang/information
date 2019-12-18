@@ -150,6 +150,12 @@
 				"transparentTitle": "always"
 			}
 		}
+        ,{
+            "path" : "pages/product/productOneLevel",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

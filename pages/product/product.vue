@@ -146,8 +146,7 @@
 					console.log(res);
 					this.data = res.data.data;
 
-					// todozcc 应该为2
-					if (this.data.level == 1) {
+					if (this.data.level == 2) {
 						this.tabBars = [{
 							name: '架构',
 							id: 'jiagou_url'

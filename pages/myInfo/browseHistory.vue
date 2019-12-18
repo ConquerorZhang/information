@@ -7,23 +7,30 @@
 		</scroll-view>
 		<swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
 			<swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
-				<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
-					<view class="dayPart" v-for="(item,index) in tab.data" :key="index">
-						<view class="time">{{item.time}}</view>
+				<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
+					<view class="empty" v-if="tab.length < 1">
+						<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+						<view class="emptyText">暂无信息～</view>
+					</view>
+					<view class="dayPart" v-for="(item,index) in tab" :key="index">
+						<view class="time">{{item.visitTime}}</view>
 						<view class="detailPart">
-							<block v-for="(detail,detailIndex) in item.list" :key="detailIndex">
+							<!-- <block v-for="(detail,detailIndex) in item.list" :key="detailIndex"> -->
 								<view class="singleDetail">
 									<view class="detailRed"></view>
 									<view class="detailText">
-										<view class="title">{{detail.title}}</view>
-										<view class="subTitle">{{detail.subtitle}}</view>
+										<view class="title">{{item.contents}}</view>
+										<view class="subTitle">{{item.bizType == 'product' ? '产品' : '动态'}}</view>
 									</view>
 								</view>
-							</block>
+							<!-- </block> -->
 						</view>
 					</view>
-					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
-						<text class="loading-more-text">{{tab.loadingText}}</text>
+					<view class="loading-more" v-if="currentList[index1].length >= 10" v-on:click="loadMore()">
+						<text class="loading-more-text">加载更多数据</text>
+					</view>
+					<view class="loading-more" v-else-if="newsList[index1].length > 0">
+						<text class="loading-more-text">没有更多数据了</text>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -31,15 +38,12 @@
 	</view>
 </template>
 <script>
-	// 缓存每页最多
-	// const MAX_CACHE_DATA = 100;
-	// 缓存页签数量
-	// const MAX_CACHE_PAGE = 3;
+	const API = require('../../common/api.js')
 
 	export default {
 		data() {
 			return {
-				newsList: [],
+				newsList: [[],[],[]],
 				tabIndex: 0,
 				tabBars: [{
 					name: '全部',
@@ -55,21 +59,17 @@
 				showTips: false,
 				navigateFlag: false,
 				pulling: false,
-				refreshIcon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB5QTFRFcHBw3Nzct7e39vb2ycnJioqK7e3tpqam29vb////D8oK7wAAAAp0Uk5T////////////ALLMLM8AAABxSURBVHja7JVBDoAgDASrjqj//7CJBi90iyYeOHTPMwmFZrHjYyyFYYUy1bwUZqtJIYVxhf1a6u0R7iUvWsCcrEtwJHp8MwMdvh2amHduiZD3rpWId9+BgPd7Cc2LIkPyqvlQvKxKBJ//Qwq/CacAAwDUv0a0YuKhzgAAAABJRU5ErkJggg=="
+				refreshIcon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB5QTFRFcHBw3Nzct7e39vb2ycnJioqK7e3tpqam29vb////D8oK7wAAAAp0Uk5T////////////ALLMLM8AAABxSURBVHja7JVBDoAgDASrjqj//7CJBi90iyYeOHTPMwmFZrHjYyyFYYUy1bwUZqtJIYVxhf1a6u0R7iUvWsCcrEtwJHp8MwMdvh2amHduiZD3rpWId9+BgPd7Cc2LIkPyqvlQvKxKBJ//Qwq/CacAAwDUv0a0YuKhzgAAAABJRU5ErkJggg==",
+				
+				pageLimit: 10,
+				pageIndex: [1, 1, 1],
+				biztypeArr: ['','product','dynamic'],
+				currentList: [[],[],[]],
+				canLoad: [true, true, true]
 			}
 		},
 		onLoad() {
-			setTimeout(() => {
-				this.tabBars.forEach((tabBar) => {
-					this.newsList.push({
-						data: [],
-						isLoading: false,
-						refreshText: "",
-						loadingText: '加载更多...'
-					});
-				});
-				this.getList(0);
-			}, 350)
+			this.getList();
 		},
 		methods: {
 			onNavigationBarButtonTap(e) {
@@ -78,84 +78,35 @@
 					success: (res) => {
 						if (res.confirm) {
 							console.log(this.tabIndex);
-							this.newsList[this.tabIndex].data = [];
+							this.newsList[this.tabIndex] = [];
 							// todozcc 提交删除接口
 
 						}
 					}
 				})
 			},
-			getList(index) {
-				console.log(index);
-				let activeTab = this.newsList[index];
-				let list = [];
-				// 制造的假数据
-				let tmpList = [
-					[{
-							'time': '今天',
-							'list': [{
-								title: '中国电科相关资料',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2011-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2020-2-2',
-							'list': [{
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2030-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						},
-						{
-							'time': '2040-2-2',
-							'list': [{
-								title: '哈哈哈哈哈',
-								subtitle: '产品'
-							}, {
-								title: '中国电科相关资料',
-								subtitle: '动态'
-							}]
-						}
-					],
-					[{
-						'time': '2011-2-2',
-						'list': [{
-							title: '中国电科产品测试资料',
-							subtitle: '产品'
-						}]
-					}],
-					[{
-						'time': '2011-2-2',
-						'list': [{
-							title: '中国电科动态测试资料',
-							subtitle: '动态'
-						}]
-					}]
-				];
-				list = tmpList[index];
-				activeTab.data = activeTab.data.concat(list);
+			getList() {
+				if (!this.canLoad[this.tabIndex]) {
+					return;
+				}
+				
+				API.myBrowseHistory({
+					biztype: this.biztypeArr[this.tabIndex],
+					limit: this.pageLimit,
+					page: this.pageIndex[this.tabIndex],
+				}).then(res => {
+					console.log(res);
+					this.pageIndex[this.tabIndex]++;
+					this.currentList[this.tabIndex] = res.data.data == undefined ? [] : res.data.data;
+					this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
+					
+					this.$forceUpdate();
+					
+					// scrollView上拉不加载标志
+					this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
+				}).catch(err => {
+					console.log(err);
+				})
 			},
 			goDetail(e) {
 				if (this.navigateFlag) {
@@ -171,7 +122,7 @@
 			},
 			loadMore(e) {
 				setTimeout(() => {
-					this.getList(this.tabIndex);
+					this.getList();
 				}, 500)
 			},
 			ontabtap(e) {
@@ -183,37 +134,19 @@
 				this.switchTab(index);
 			},
 			switchTab(index) {
-				if (this.newsList[index].data.length === 0) {
-					this.getList(index);
+				if (this.newsList[index].length === 0) {
+					this.getList();
 				}
 
 				if (this.tabIndex === index) {
 					return;
 				}
 
-				// 缓存 tabId
-				// if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
-				//     let isExist = this.cacheTab.indexOf(this.tabIndex);
-				//     if (isExist < 0) {
-				//         this.cacheTab.push(this.tabIndex);
-				//         //console.log("cache index:: " + this.tabIndex);
-				//     }
-				// }
-
-				// 释放 tabId
-				// if (this.cacheTab.length > MAX_CACHE_PAGE) {
-				//     let cacheIndex = this.cacheTab[0];
-				//     this.clearTabData(cacheIndex);
-				//     this.cacheTab.splice(0, 1);
-				//     //console.log("remove cache index:: " + cacheIndex);
-				// }
-
 				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {
-				this.newsList[e].data.length = 0;
-				this.newsList[e].loadingText = "加载更多...";
+				this.newsList[e].length = 0;
 			},
 		}
 	}
@@ -297,6 +230,19 @@
 		/* #ifndef MP-ALIPAY */
 		flex-direction: column;
 		/* #endif */
+	}
+	
+	.empty {
+		text-align: center;
+	
+		.emptyImage {
+			margin-top: 300rpx;
+			width: 500rpx;
+		}
+	
+		.emptyText {
+			color: #969798;
+		}
 	}
 
 	.dayPart {

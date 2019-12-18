@@ -142,29 +142,30 @@
 				console.log(index);
 				let activeTab = this.newsList[index];
 
-				// 待产品的接口
+				// 产品的接口
 				if (index == 0) {
-					this.currentList[index] = [{
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '产品的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴的点点滴滴',
-						time: '2011-2-22',
-						id: '11'
-					}, {
-						image: '../../static/logo.png',
-						title: '中国电科相关资料',
-						subtitle: '的点点滴滴',
-						time: '2013-2-22',
-						id: '12'
-					}];
+					API.myProductCollect({
+						limit: this.pageLimit,
+						page: this.pageIndex[index],
+					}).then(res => {
+						console.log(res);
+						this.pageIndex[index]++;
+						this.currentList[index] = res.data.data != null ? res.data.data : [];
 					
-					activeTab.data = activeTab.data.concat(this.currentList[index]);
-					// 更新全选按钮状态
-					if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
-						this.allChecked[this.tabIndex] = true;
-					} else {
-						this.allChecked[this.tabIndex] = false;
-					}
+						// scrollView上拉不加载标志
+						this.canLoad[index] = this.currentList[index].length > 0 ? true : false;
+						
+						activeTab.data = activeTab.data.concat(this.currentList[index]);
+						// 更新全选按钮状态
+						if (this.selectedIdArr[this.tabIndex].length == this.newsList[this.tabIndex].data.length) {
+							this.allChecked[this.tabIndex] = true;
+						} else {
+							this.allChecked[this.tabIndex] = false;
+						}
+					}).catch(err => {
+						console.log(err);
+					})
+					
 				} else if (index == 1) {
 					// 我收藏的帖子列表接口
 					API.myCollect({
@@ -194,9 +195,9 @@
 			interDetail(index1,id) {
 				console.log(id);
 				if (index1 == 0) {
-					// uni.navigateTo({
-					// 	url: ''
-					// });
+					uni.navigateTo({
+						url: '../product/product?productId='+id
+					});
 				}
 				else {
 					uni.navigateTo({
@@ -270,13 +271,24 @@
 					content: '确认删除吗？',
 					success: (res) => {
 						if (res.confirm) {
-							console.log(this.selectedIdArr[this.tabIndex]);
-							// todozcc 提交删除接口
-
-							// 更新数据
-							this.newsList[this.tabIndex].data = [];
-							// 强制刷新删除按钮颜色
-							this.$forceUpdate();
+							// console.log(this.selectedIdArr[this.tabIndex]);
+							// 提交删除接口
+							API.myCollectCancel({
+								collecttype: this.tabIndex == 0 ? 'issue' : 'product',
+								keys: this.selectedIdArr[this.tabIndex],
+							}).then(res => {
+								console.log(res);
+								
+								// 先直接拉数据吧
+								this.getList(this.tabIndex)
+								
+								// // 更新数据
+								// this.newsList[this.tabIndex].data = [];
+								// // 强制刷新删除按钮颜色
+								// this.$forceUpdate();
+							}).catch(err => {
+								console.log(err);
+							})
 						}
 					}
 				})

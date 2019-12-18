@@ -30,7 +30,7 @@
 						<view class="title">整体架构</view>
 						<htmlPanel :url.sync="jiagou_url"></htmlPanel>
 					</view>
-					<view class="model" id="zucheng" v-else-if='item.id == "zucheng_url"'>
+					<view class="model" id="zucheng_url" v-else-if='item.id == "zucheng_url"'>
 						<view class="title">模块组成</view>
 						<htmlPanel :url.sync="zucheng_url"></htmlPanel>
 					</view>
@@ -130,7 +130,7 @@
 		methods: {
 			searchClick() {
 				uni.navigateTo({
-					url: '../search/homeSearch'
+					url: '../search/homeSearch?fromH5='+'1'
 				})
 			},
 			ontabtap(index) {

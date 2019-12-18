@@ -96,10 +96,12 @@
 				hotKeywordList: [],
 				keywordList: [],
 				forbid: '',
-				isShowKeywordList: false
+				isShowKeywordList: false,
+				fromH5: '',//判断H5的返回
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.fromH5 = option.fromH5;
 			this.init();
 		},
 		components: {
@@ -265,7 +267,14 @@
 				});
 			},
 			cancel() {
-				util.bridgeAndroidAndIOS({'key':'close'});
+				if (this.fromH5 == 1) {
+					uni.navigateBack({
+						delta:1
+					})
+				}
+				else {
+					util.bridgeAndroidAndIOS({'key':'close'});
+				}
 			},
 		}
 	}

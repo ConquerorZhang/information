@@ -137,6 +137,14 @@ module.exports = {
 	myProductCollect: (data) => {
 		return MyAPI('api/interact/myproductcollect', false, 'GET', data)
 	},
+	// 我的收藏批量删除
+	myCollectCancel: (data) => {
+		return MyAPI('api/interact/cancelcollects', false, 'GET', data)
+	},
+	// 我的浏览记录
+	myBrowseHistory: (data) => {
+		return MyAPI('api/visithistory/mylist', false, 'GET', data)
+	},
   	// 互动区点赞
 	interactionFavour: (data) => {
 		return MyAPI('interact/favour/favour', false, 'GET', data)

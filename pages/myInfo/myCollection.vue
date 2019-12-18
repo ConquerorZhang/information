@@ -212,7 +212,9 @@
 			},
 			ontabtap(e) {
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
-				this.switchTab(index);
+				// this.switchTab(index);
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;

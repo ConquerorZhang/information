@@ -145,6 +145,10 @@ module.exports = {
 	myBrowseHistory: (data) => {
 		return MyAPI('api/visithistory/mylist', false, 'GET', data)
 	},
+	// 我的浏览记录删除
+	myBrowseClear: (data) => {
+		return MyAPI('api/visithistory/emptymylist', false, 'GET', data)
+	},
   	// 互动区点赞
 	interactionFavour: (data) => {
 		return MyAPI('interact/favour/favour', false, 'GET', data)

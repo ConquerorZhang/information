@@ -16,13 +16,13 @@
 						<view class="time">{{item.visitTime}}</view>
 						<view class="detailPart">
 							<!-- <block v-for="(detail,detailIndex) in item.list" :key="detailIndex"> -->
-								<view class="singleDetail">
-									<view class="detailRed"></view>
-									<view class="detailText">
-										<view class="title">{{item.contents}}</view>
-										<view class="subTitle">{{item.bizType == 'product' ? '产品' : '动态'}}</view>
-									</view>
+							<view class="singleDetail">
+								<view class="detailRed"></view>
+								<view class="detailText">
+									<view class="title">{{item.contents}}</view>
+									<view class="subTitle">{{item.bizType == 'product' ? '产品' : '动态'}}</view>
 								</view>
+							</view>
 							<!-- </block> -->
 						</view>
 					</view>
@@ -43,7 +43,11 @@
 	export default {
 		data() {
 			return {
-				newsList: [[],[],[]],
+				newsList: [
+					[],
+					[],
+					[]
+				],
 				tabIndex: 0,
 				tabBars: [{
 					name: '全部',
@@ -60,11 +64,15 @@
 				navigateFlag: false,
 				pulling: false,
 				refreshIcon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB5QTFRFcHBw3Nzct7e39vb2ycnJioqK7e3tpqam29vb////D8oK7wAAAAp0Uk5T////////////ALLMLM8AAABxSURBVHja7JVBDoAgDASrjqj//7CJBi90iyYeOHTPMwmFZrHjYyyFYYUy1bwUZqtJIYVxhf1a6u0R7iUvWsCcrEtwJHp8MwMdvh2amHduiZD3rpWId9+BgPd7Cc2LIkPyqvlQvKxKBJ//Qwq/CacAAwDUv0a0YuKhzgAAAABJRU5ErkJggg==",
-				
+
 				pageLimit: 10,
 				pageIndex: [1, 1, 1],
-				biztypeArr: ['','product','dynamic'],
-				currentList: [[],[],[]],
+				biztypeArr: ['', 'product', 'dynamic'],
+				currentList: [
+					[],
+					[],
+					[]
+				],
 				canLoad: [true, true, true]
 			}
 		},
@@ -77,10 +85,15 @@
 					content: '是否清空浏览历史？',
 					success: (res) => {
 						if (res.confirm) {
-							console.log(this.tabIndex);
-							this.newsList[this.tabIndex] = [];
-							// todozcc 提交删除接口
-
+							// 提交删除接口
+							API.myBrowseClear({
+								biztype: this.biztypeArr[this.tabIndex],
+							}).then(res => {
+								this.newsList[this.tabIndex] = [];
+								this.$forceUpdate();
+							}).catch(err => {
+								console.log(err);
+							})
 						}
 					}
 				})
@@ -89,7 +102,7 @@
 				if (!this.canLoad[this.tabIndex]) {
 					return;
 				}
-				
+
 				API.myBrowseHistory({
 					biztype: this.biztypeArr[this.tabIndex],
 					limit: this.pageLimit,
@@ -99,9 +112,9 @@
 					this.pageIndex[this.tabIndex]++;
 					this.currentList[this.tabIndex] = res.data.data == undefined ? [] : res.data.data;
 					this.newsList[this.tabIndex] = this.newsList[this.tabIndex].concat(this.currentList[this.tabIndex]);
-					
+
 					this.$forceUpdate();
-					
+
 					// scrollView上拉不加载标志
 					this.canLoad[this.tabIndex] = this.currentList[this.tabIndex].length > 0 ? true : false;
 				}).catch(err => {
@@ -127,11 +140,14 @@
 			},
 			ontabtap(e) {
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
-				this.switchTab(index);
+				// this.switchTab(index);
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
 				this.switchTab(index);
+				console.log(index);
 			},
 			switchTab(index) {
 				if (this.newsList[index].length === 0) {
@@ -231,15 +247,15 @@
 		flex-direction: column;
 		/* #endif */
 	}
-	
+
 	.empty {
 		text-align: center;
-	
+
 		.emptyImage {
 			margin-top: 300rpx;
 			width: 500rpx;
 		}
-	
+
 		.emptyText {
 			color: #969798;
 		}

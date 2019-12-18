@@ -124,7 +124,7 @@
 		onLoad(option) {
 			this.productId = option.productId;
 			//todozcc 临时
-			this.productId = '1206485981504774145';
+			this.productId = '1207118875340427266';
 			this.getProductData();
 		},
 		methods: {

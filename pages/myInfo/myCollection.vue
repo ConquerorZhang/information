@@ -18,15 +18,7 @@
 							</view>
 							<view class="productPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.id)">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
-								<view class="detailPart" v-on:click="navigateToProduct(item.id)">
-									<image class="imagePart" :src="item.image" mode="scaleToFill"></image>
-									<view class="textPart">
-										<view class="title">{{item.title}}</view>
-										<view class="subTitle">{{item.subtitle}}</view>
-										<view class="time">{{item.time}}</view>
-									</view>
-									<view class="look">查看</view>
-								</view>
+								<productCell :data="item"></productCell>
 							</view>
 						</checkbox-group>
 					</block>
@@ -81,10 +73,12 @@
 	const API = require('../../common/api.js')
 
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+	import productCell from "@/components/zcc/productCell/productCell.vue"
 
 	export default {
 		components: {
-			uniNavBar
+			uniNavBar,
+			productCell
 		},
 		data() {
 			return {
@@ -395,52 +389,6 @@
 
 		checkbox {
 			margin-right: 15rpx;
-		}
-
-		.detailPart {
-			display: flex;
-			background: #FFFFFF;
-			border-radius: 30rpx;
-			width: 710rpx;
-
-			.imagePart {
-				margin: 30rpx 20rpx;
-				width: 200rpx;
-				height: 170rpx;
-			}
-
-			.textPart {
-				margin-top: 25rpx;
-				width: 390rpx;
-
-				.title {
-					color: #3f4041;
-					font-size: $uni-font-size-lg;
-				}
-
-				.subTitle {
-					font-size: $uni-font-size-base;
-					color: #6b6c6d;
-					height: 80rpx;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					display: -webkit-box;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 2;
-				}
-
-				.time {
-					color: #8f9091;
-				}
-			}
-
-			.look {
-				align-self: flex-end;
-				margin-bottom: 35rpx;
-				color: #9fa0a1;
-				font-size: 30rpx;
-				white-space: nowrap;
-			}
 		}
 	}
 

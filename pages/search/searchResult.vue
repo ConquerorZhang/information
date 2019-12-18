@@ -53,15 +53,7 @@
 							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
 						</view>
 						<view class="productPart" v-for="(item,index) in tab.data" :key="index">
-							<view class="detailPart" v-on:click="navigateToProduct(item.id)">
-								<image class="imagePart" :src="item.image" mode="scaleToFill"></image>
-								<view class="textPart">
-									<view class="title">{{item.title}}</view>
-									<view class="subTitle">{{item.subtitle}}</view>
-									<view class="time">{{item.time}}</view>
-								</view>
-								<view class="look">查看</view>
-							</view>
+							<productCell :data="item"></productCell>
 						</view>
 					</block>
 					<block v-else-if="index1 == 3">
@@ -69,17 +61,7 @@
 							<image class="emptyImage" src="../../static/logo.png" mode="widthFix"></image>
 						</view>
 						<view class="learnPart" v-for="(item,index) in tab.data" :key="index">
-							<view class="topPart">
-								<view class="titlePart">
-									<image :src="item.image" mode="scaleToFill"></image>
-									<view class="title">{{item.title}}</view>
-								</view>
-								<image :src="item.downloadImage" mode="scaleToFill"></image>
-							</view>
-							<view class="bottomPart">
-								<text class="time">{{item.time}}</text>
-								<text class="number">{{item.downloadNum}}</text>
-							</view>
+							<downLoadCell :data='item'></downLoadCell>
 						</view>
 					</block>
 					<view class="loading-more" v-if="tab.isLoading || tab.data.length > 4" v-on:click="loadMore(index1)">
@@ -93,10 +75,15 @@
 
 <script>
 	import UniSearchBar from "../../components/lib/uni-search-bar/uni-search-bar.vue"
-	components: {
-		UniSearchBar
-	}
+	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
+	import productCell from "@/components/zcc/productCell/productCell.vue"
+	
 	export default {
+		components: {
+			UniSearchBar,
+			downLoadCell,
+			productCell
+		},
 		data() {
 			return {
 				newsList: [],
@@ -512,98 +499,11 @@
 			display: flex;
 			margin-top: 30rpx;
 			margin-left: 20rpx;
-
-			.detailPart {
-				display: flex;
-				background: #FFFFFF;
-				border-radius: 30rpx;
-				width: 710rpx;
-
-				.imagePart {
-					margin: 30rpx 20rpx;
-					width: 200rpx;
-					height: 170rpx;
-				}
-
-				.textPart {
-					margin-top: 25rpx;
-					width: 390rpx;
-
-					.title {
-						color: #3f4041;
-						font-size: $uni-font-size-lg;
-					}
-
-					.subTitle {
-						font-size: $uni-font-size-base;
-						color: #6b6c6d;
-						height: 80rpx;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 2;
-					}
-
-					.time {
-						color: #8f9091;
-					}
-				}
-
-				.look {
-					align-self: flex-end;
-					margin-bottom: 35rpx;
-					color: #9fa0a1;
-					font-size: 30rpx;
-					white-space: nowrap;
-				}
-			}
 		}
 
 		.learnPart {
 			margin-top: 10rpx;
 			background: #FFFFFF;
-
-			.topPart {
-				display: flex;
-				justify-content: space-between;
-				padding: 20rpx;
-				border-bottom: 0.5px solid #edeeef;
-
-				.titlePart {
-					display: flex;
-					
-					image {
-						width: 100rpx;
-						height: 100rpx;
-						margin-right: 20rpx;
-					}
-
-					.title {
-						line-height: 100rpx;
-					}
-				}
-
-				image {
-					width: 70rpx;
-					height: 70rpx;
-					align-self: center;
-				}
-			}
-
-			.bottomPart {
-				margin: 0 20rpx; 
-				color: #616263;
-				font-size: 30rpx;
-				display: flex;
-				justify-content: space-between;
-				height: 70rpx;
-				line-height: 70rpx;
-				
-				.time {}
-
-				.number {}
-			}
 		}
 
 		.loading-more {

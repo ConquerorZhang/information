@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="contentView" v-html="content">{{content}}</view>
+		<view class="contentView" v-html="content"></view>
 	</view>
 </template>
 

@@ -1,14 +1,15 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-		    "path" : "pages/home/home",
-		    "style" : {
-		        "navigationBarTitleText": "首页",
-		        "navigationStyle": "custom"
-		    }
-		},{
 			"path": "pages/myInfo/myInfo",
 			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "首页",
 				"navigationStyle": "custom"
 			}
 		},
@@ -98,28 +99,26 @@
 			"style": {
 				"navigationBarTitleText": "电科动态"
 			}
-		}
-	    ,{
-            "path" : "pages/main/newsDetail",
-            "style" : {
+		}, {
+			"path": "pages/main/newsDetail",
+			"style": {
 				"navigationBarTitleText": "动态详情"
 			}
-        },{
-            "path" : "pages/means/means",
-            "style" : {
-                "navigationBarTitleText": "资料下载",
-                "navigationStyle": "custom"
-            }
-        },{
-            "path" : "pages/means/means-detile",
-            "style" : {
-                "navigationStyle": "custom",
-                "navigationBarTitleText": "资料详情"
-            }
-        }
-        ,{
-            "path" : "pages/myInfo/myDownLoad",
-            "style" : {
+		}, {
+			"path": "pages/means/means",
+			"style": {
+				"navigationBarTitleText": "资料下载",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/means/means-detile",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "资料详情"
+			}
+		}, {
+			"path": "pages/myInfo/myDownLoad",
+			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的下载"
 			}
@@ -142,6 +141,15 @@
             "path" : "components/zcc/productCell/productCell",
             "style" : {}
         }
+	, {
+			"path": "pages/home/briefintroduction",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "信息化平台简介",
+				"transparentTitle": "always"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -150,7 +158,7 @@
 		"backgroundColor": "#F8F8F8"
 	},
 	"condition": { //模式配置，仅开发期间生效
-		"current": 2, //当前激活的模式(list 的索引项)
+		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [{
 				"name": "互动首页", //模式名称
 				"path": "pages/interaction/interaction", //启动页面，必选
@@ -167,8 +175,13 @@
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
-				"name": "搜索", //模式名称
+				"name": "搜索", //模式名称pages/home/briefintroduction
 				"path": "pages/search/homeSearch", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "首页简介", //模式名称
+				"path": "pages/home/briefintroduction", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]

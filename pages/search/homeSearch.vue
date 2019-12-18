@@ -84,6 +84,7 @@
 </template>
 
 <script>
+	const API = require('../../common/api.js');
 	var util = require('../../common/bridge.js');
 	//引用mSearch组件，如不需要删除即可
 	export default {
@@ -132,7 +133,21 @@
 			//加载热门搜索
 			loadHotKeyword() {
 				//定义热门搜索关键字，可以自己实现ajax请求数据再赋值
-				this.hotKeywordList = ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'];
+				this.hotKeywordList = [];
+				API.HomeHotSearch({
+					
+				}).then(res=>{
+					console.log(res);
+					// let d = [];
+					if(res.data.data.length>0){
+						let d = res.data.data;
+						d.forEach((item) => {
+							this.hotKeywordList.push(item.keywords);
+						})
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
 			},
 			//监听输入
 			inputChange(event) {

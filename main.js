@@ -7,7 +7,7 @@ App.mpType = 'app'
 
 Vue.config.configDic = {};
 // 从原生获取token
-util.bridgeAndroidAndIOS({'key':'onshow'});
+// util.bridgeAndroidAndIOS({'key':'onshow'});
 
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function isEmpty(obj){

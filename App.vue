@@ -1,10 +1,11 @@
 <script>
 	export default {
 		globalData: {
-
+			systemInfo:'',
 		},
 		onLaunch: function() {
 			console.log('App Launch')
+			this.getSystemInfo();
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -14,6 +15,15 @@
 		},
 		onError: function(e) {
 			console.log(e)
+		},
+		methods:{
+			getSystemInfo(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.systemInfo = res
+					}
+				})
+			}
 		}
 	}
 </script>

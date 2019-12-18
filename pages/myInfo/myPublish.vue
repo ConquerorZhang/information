@@ -181,7 +181,7 @@
 			return {
 
 				//内容数据
-				deleteIndex:-1,
+				deleteIndex: -1,
 				deleteid: '-1',
 				currrenIndex: -1, //记录跳转时点击的item索引
 				currrentType: '1', //当前展示的类型 1 我发布的，2我的回答，3回复我的  赞，4回复我的-内容
@@ -336,29 +336,69 @@
 				systemInfo: '',
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			console.log(option);
+			let index = option.index;
 			uni.getSystemInfo({
 				success: (res) => {
 					this.systemInfo = res
 				},
 
 			})
+
+			this.labelList.forEach((item) => {
+				switch (index) {
+					case "0":
+						if (item.value == '1') {
+							item.checked = true;
+							this.radioSetData(item.value);
+						} else {
+							item.checked = false;
+						}
+
+						break;
+					case "1":
+						if (item.value == '2') {
+							item.checked = true;
+							this.radioSetData(item.value);
+						} else {
+							item.checked = false;
+						}
+						break;
+					case "2":
+						if (item.value == '999') {
+							item.checked = true;
+							this.radioSetData(item.value);
+						} else {
+							item.checked = false;
+						}
+						break;
+
+				}
+
+			})
 			//初始化数据
-			this.getNewData(this.datalists.type);
+			setTimeout(()=>{
+				this.getNewData(this.datalists.type);
+			},500)
+			
 		},
 		methods: {
 			radioChange: function(e) {
 				this.labelDataList = e.detail.value
 				console.log(e)
 				console.log('radio发生change事件，携带value值为：' + e.detail.value)
-				if (e.detail.value === '999') {
+				this.radioSetData(e.detail.value);
+			},
+			radioSetData:function(value){
+				if (value === '999') {
 					let index = 0;
-					this.currrentType = (index == 0 ? '3' : '4');
+					// this.currrentType = (index == 0 ? '3' : '4');
 					this.datalists.type = (index == 0 ? '3' : '4');
 					this.switchTab(index);
 				} else {
-					this.currrentType = e.detail.value;
-					this.datalists.type = e.detail.value;
+					// this.currrentType = value;
+					this.datalists.type = value;
 					// this.getlistdata2(this.page[1]);
 					this.getNewData(this.datalists.type);
 				}
@@ -421,13 +461,13 @@
 				}
 			},
 			//点击小黑点
-			collect(id,index) {
+			collect(id, index) {
 				console.log("收藏成功");
 				// this.togglePopup('center', 'image');
 				this.showpopup = true;
 				this.deleteid = id;
 				this.deleteIndex = index;
-				
+
 			},
 			//页面跳转到详情
 			navToDetailPage(item, index, idkey) {
@@ -484,10 +524,10 @@
 				setTimeout(() => {
 					switch (this.datalists.type) {
 						case '1':
-							this.delete_mypublish(this.deleteid,this.datalists.type,this.deleteIndex);
+							this.delete_mypublish(this.deleteid, this.datalists.type, this.deleteIndex);
 							break;
 						case '2':
-							this.delete_myanswer(this.deleteid,this.datalists.type,this.deleteIndex);
+							this.delete_myanswer(this.deleteid, this.datalists.type, this.deleteIndex);
 							break;
 						case '3':
 							break;
@@ -505,8 +545,8 @@
 					id: deleteid,
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
-						this.removeItem(type,index);
+					if (res.data.code == '0') {
+						this.removeItem(type, index);
 					}
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -519,8 +559,8 @@
 					id: deleteid,
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
-						this.removeItem(type,index);
+					if (res.data.code == '0') {
+						this.removeItem(type, index);
 					}
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -531,18 +571,18 @@
 			removeItem(type, index) {
 				switch (type) {
 					case '1':
-					// console.log("datalists.list1.datalist: " + JSON.stringify(this.datalists.list1.datalist));
-					this.datalists.list1.datalist.splice(index,1);
+						// console.log("datalists.list1.datalist: " + JSON.stringify(this.datalists.list1.datalist));
+						this.datalists.list1.datalist.splice(index, 1);
 						// this.$forceUpdate();
 						break;
 					case '2':
-					this.datalists.list2.datalist.splice(index,1);
+						this.datalists.list2.datalist.splice(index, 1);
 						break;
 					case '3':
-					this.datalists.list3[0].datalist.splice(index,1);
+						this.datalists.list3[0].datalist.splice(index, 1);
 						break;
 					case '4':
-					this.datalists.list3[1].datalist.splice(index,1);
+						this.datalists.list3[1].datalist.splice(index, 1);
 						break;
 					default:
 						break;
@@ -694,6 +734,10 @@
 				}).catch(err => {
 					this.datalists.list1.hasmore = true;
 					console.log(err);
+					uni.showToast({
+						title:err.errMsg,
+						icon:'none',
+					})
 				})
 			},
 			//获取我的回答数据
@@ -717,10 +761,15 @@
 					this.datalists.list2.datalist = this.datalists.list2.datalist.concat(res.data.data);
 					// this.$forceUpdate();
 					console.log(res);
+					
 					// console.log(this.data.datalsit);
 				}).catch(err => {
 					this.datalists.list2.hasmore = true;
 					console.log(err);
+					uni.showToast({
+						title:err.errMsg,
+						icon:'none',
+					})
 				})
 			},
 
@@ -749,6 +798,10 @@
 				}).catch(err => {
 					this.datalists.list3[0].hasmore = true;
 					console.log(err);
+					uni.showToast({
+						title:err.errMsg,
+						icon:'none',
+					})
 				})
 			},
 			//获取回复我的数据
@@ -773,6 +826,10 @@
 				}).catch(err => {
 					this.datalists.list3[1].hasmore = true;
 					console.log(err);
+					uni.showToast({
+						title:err.errMsg,
+						icon:'none',
+					})
 				})
 			},
 		}

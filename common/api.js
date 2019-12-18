@@ -177,9 +177,12 @@ module.exports = {
 	myIssueCommentDelete: (data) => {
 		return MyAPI('interact/delmycomment', false, 'GET', data)
 	},
-	
 	// 产品
 	productData: (data) => {
 		return MyAPI('api/product/productinfo', false, 'GET', data)
-	}
+	},
+  //首页热搜
+	HomeHotSearch: (data) => {
+		return MyAPI('api/search/hotsearchkeyslist', false, 'GET', data)
+	},
 }

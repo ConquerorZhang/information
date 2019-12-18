@@ -123,7 +123,7 @@
 				util.bridgeAndroidAndIOS({'key':'setting'});
 			},
 			navigateToFunc(index) {
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				
 				switch (index) {
 					case 0:
 						{
@@ -156,9 +156,10 @@
 					default:
 						break;
 				}
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			},
 			navigateToInter(index) {
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				
 				switch (index) {
 					case 0:
 						{
@@ -184,6 +185,7 @@
 					default:
 						break;
 				}
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			}
 		}
 	}

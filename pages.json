@@ -124,6 +124,24 @@
 				"navigationBarTitleText": "我的下载"
 			}
         }
+        ,{
+            "path" : "pages/product/product",
+            "style" : {
+				"navigationBarTitleText": "产品中心"
+			}
+        }
+        ,{
+            "path" : "components/zcc/my-html-panel/my-html-panel",
+            "style" : {}
+        }
+        ,{
+            "path" : "components/zcc/downLoadCell/downLoadCell",
+            "style" : {}
+        }
+        ,{
+            "path" : "components/zcc/productCell/productCell",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

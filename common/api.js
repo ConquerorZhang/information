@@ -18,8 +18,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const MyAPI = (url, needSubDomain, method, data) => {
 	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url;
-	
-	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "" : Vue.config.configDic.Authorization;
+	//todozcc临时的token
+	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjM2LCJleHAiOjE1NzkwNTQxNDQsInVzZXJuYW1lIjoi5byg5LiJIn0.QPo5Xiz1l-ktWhPhKIEN5a1XuXiQnxWs3ha8bh6fS5A" : Vue.config.configDic.Authorization;
 	// let token = Vue.config.configDic.token;
 	// let guid = Vue.config.configDic.guid;
 	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);
@@ -129,9 +129,13 @@ module.exports = {
 	myMessageDetail: (data) => {
 		return MyAPI('infos/notice/detail', false, 'GET', data)
 	},
-	// 我的收藏
+	// 我的帖子收藏 interact/mycollect
 	myCollect: (data) => {
-		return MyAPI('interact/mycollect', false, 'GET', data)
+		return MyAPI('api/interact/myissuecollect', false, 'GET', data)
+	},
+	// 我的产品收藏 
+	myProductCollect: (data) => {
+		return MyAPI('api/interact/myproductcollect', false, 'GET', data)
 	},
   	// 互动区点赞
 	interactionFavour: (data) => {
@@ -143,11 +147,11 @@ module.exports = {
 	},
 	// 互动区详情收藏
 	interactionCollect: (data) => {
-		return MyAPI('interact/addcollect', false, 'GET', data)
+		return MyAPI('api/interact/addcollect', false, 'GET', data)
 	},
 	// 互动区详情取消收藏
 	interactionUnCollect: (data) => {
-		return MyAPI('interact/cancelcollect', false, 'GET', data)
+		return MyAPI('api/interact/cancelcollect', false, 'GET', data)
 	},
 	// 我的发布-点赞我的
 	favourMyIssue: (data) => {
@@ -173,4 +177,9 @@ module.exports = {
 	myIssueCommentDelete: (data) => {
 		return MyAPI('interact/delmycomment', false, 'GET', data)
 	},
+	
+	// 产品
+	productData: (data) => {
+		return MyAPI('api/product/productinfo', false, 'GET', data)
+	}
 }

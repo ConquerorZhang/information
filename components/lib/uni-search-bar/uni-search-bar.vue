@@ -15,7 +15,7 @@
 				<uni-icons color="#999999" class="" size="24" type="clear" />
 			</view>
 		</view>
-		<uni-icons @click="cancel" class="uni-searchbar__cancel" v-if="show" color="#333333" size="40" type="closeempty" />
+		<uni-icons @click="cancel" class="uni-searchbar__cancel" v-if="initShowClose && show" color="#333333" size="40" type="closeempty" />
 	</view>
 </template>
 
@@ -38,6 +38,10 @@
 			clearButton: {
 				type: String,
 				default: "auto"
+			},
+			initShowClose: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {

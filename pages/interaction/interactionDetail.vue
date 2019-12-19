@@ -234,7 +234,7 @@
 			lookCollection(o) {
 				this.showimage = false;
 				uni.navigateTo({
-					url:'../myInfo/myCollection'
+					url:'../myInfo/myCollection?index=1'
 				})
 			},
 			// 点赞

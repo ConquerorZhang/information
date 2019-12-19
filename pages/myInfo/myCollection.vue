@@ -113,14 +113,19 @@
 				canLoad: [true, true]
 			}
 		},
-		onLoad() {
+		onLoad(option) {
 			setTimeout(() => {
 				this.tabBars.forEach((tabBar) => {
 					this.newsList.push({
 						data: [],
 					});
 				});
-				this.getList(0);
+				if (option.index == 1) {
+					this.switchTab(1);
+				}
+				else {
+					this.getList(0);
+				}
 			}, 350)
 		},
 		methods: {

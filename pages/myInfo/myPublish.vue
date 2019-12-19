@@ -812,6 +812,7 @@
 					limit: this.limit,
 					page: page,
 				}).then(res => {
+					console.log(res);
 					if (res.data.data.length < this.limit) {
 						this.datalists.list3[1].loadingText = "没有更多数据了"
 						this.datalists.list3[1].hasmore = false;

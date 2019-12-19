@@ -43,9 +43,8 @@
 			}
 		},
 		onLoad(option) {
-			// this.productId = option.productId;
-			//todozcc 临时
-			this.productId = "1207118875340427266";
+			this.productId = option.productId;
+			
 			this.getProductData();
 		},
 		methods: {

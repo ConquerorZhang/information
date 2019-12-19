@@ -27,6 +27,11 @@
 
 		<!-- <view class="top-zhanwei"></view> -->
 		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
+			
+			<view class="empty" v-if="data.datalsit.length < 1">
+				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+				<view class="emptyText">没有找到相关信息～</view>
+			</view>
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item,index)">
 				<view class="item-top">
@@ -63,6 +68,8 @@
 			<view class="loading-more" v-if="data.isLoading || data.datalsit.length > 4">
 				<text class="loading-more-text">{{data.loadingText}}</text>
 			</view>
+			
+			
 		</scroll-view>
 		<cover-view class="cover-view" @click="navToPublish">
 			<image class="cover-view-image" src="../../static/interaction/publish_go.png"></image>
@@ -268,7 +275,8 @@
 							this.page = page + 1;
 							this.data.hasmore = true;
 						}
-						this.data.datalsit = this.data.datalsit.concat(res.data.data);
+						// this.data.datalsit = this.data.datalsit.concat(res.data.data);
+						this.data.datalsit=[];
 					console.log(res);
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -416,6 +424,19 @@
 			margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
+			
+			.empty {
+				text-align: center;
+			
+				.emptyImage {
+					margin-top: 300rpx;
+					width: 500rpx;
+				}
+			
+				.emptyText {
+					color: #969798;
+				}
+			}
 
 			.item {
 				background: #FFFFFF;

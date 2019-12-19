@@ -183,8 +183,11 @@
 				// uni.showToast({
 				// 	title:'h5 Toast',
 				// })
-				util.bridgeAndroidAndIOS({'key':'onshow'});
 				// window.android.click('77777777777');
+				uni.navigateTo({
+					url: "../myInfo/myMessage"
+				})
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			},
 			// 评论
 			topiccomment(topicid) {
@@ -227,6 +230,7 @@
 			sortresult(val) {
 				// console.log('filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
+				this.isAsc = "desc" == this.isAsc?"asc":"desc";
 				this.resetData();
 				this.getlistdata(1);
 			},
@@ -254,7 +258,7 @@
 				this.getlistdata(1);
 			},
 			getlistdata(page) {
-				// console.log('page----' + page);
+				console.log('page----' + page);
 				this.data.hasmore = false;
 				API.interactionList({
 					searchKey: this.searchKey,
@@ -268,6 +272,7 @@
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
+					console.log(res);
 						if (res.data.data.length < this.limit) {
 							this.data.loadingText = "没有更多数据了"
 							this.data.hasmore = false;
@@ -275,8 +280,8 @@
 							this.page = page + 1;
 							this.data.hasmore = true;
 						}
-						// this.data.datalsit = this.data.datalsit.concat(res.data.data);
-						this.data.datalsit=[];
+						this.data.datalsit = this.data.datalsit.concat(res.data.data);
+						// this.data.datalsit=[];
 					console.log(res);
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -355,7 +360,7 @@
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
-				height: 40rpx;//这里是无效的，不知为何  var(--status-bar-height)
+				height: $uni-status-height;//这里是无效的，不知为何  var(--status-bar-height)
 				width: 100%;
 			}
 

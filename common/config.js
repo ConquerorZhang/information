@@ -4,6 +4,6 @@ module.exports = {
   // verCode: '191126001',
   imageURL: "http://10.10.5.33:8888/file/fileupload?type=image",
   httpURL: "https://www.baidu.com",
-  testURL: "http://10.10.5.33:80",
+  testURL: "http://10.10.5.33:80/api",
   subDomain: "mall",
 }

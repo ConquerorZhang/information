@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 const MyAPI = (url, needSubDomain, method, data) => {
 	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url;
 	//todozcc临时的token
-	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjM2LCJleHAiOjE1NzkwNTQxNDQsInVzZXJuYW1lIjoi5byg5LiJIn0.QPo5Xiz1l-ktWhPhKIEN5a1XuXiQnxWs3ha8bh6fS5A" : Vue.config.configDic.Authorization;
+	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsImV4cCI6MTU3OTMzNjU3NCwidXNlcm5hbWUiOiLogpblvawifQ.RT9sW3EAIxoCG9u2JMiFOPZngROM72uthVxs16Odzrk" : Vue.config.configDic.Authorization;
 	// let token = Vue.config.configDic.token;
 	// let guid = Vue.config.configDic.guid;
 	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);

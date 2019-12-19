@@ -158,6 +158,46 @@
 							<view class="loading-more" v-if="tab.isLoading || tab.datalist.length > 4">
 								<text class="loading-more-text">{{tab.loadingText}}</text>
 							</view>
+							
+							
+							
+							
+							<!-- 输入框 -->
+							<view class="input-box" :class="popupLayerClass">
+								<!-- H5下不能录音，输入栏布局改动一下 -->
+								
+								<!-- #ifdef H5 || MP-ALIPAY -->
+								<view class="more" @tap="showMore">
+									<fa-icon type='plus' size="24"></fa-icon>
+								</view>
+								<!-- #endif -->
+								<view class="textbox">
+									
+									<view class="text-mode"  :class="isVoice?'hidden':''">
+										<view class="box">
+											<textarea auto-height="true" :value="textMsg"  :cursor="cursor"  @blur='textareaBlurEvent' />
+										</view>
+										<view class="em" @tap="chooseEmoji">
+											<fa-icon type='smile-o ' size="28"></fa-icon>
+										</view>
+									</view>
+									
+								</view>
+								<!-- #ifndef H5 -->
+								<view class="more" @tap="showMore">
+									<view class="icon add"></view>
+								</view>
+								<!-- #endif -->
+								<view class="send" :class="isVoice?'hidden':''" @tap="sendText">
+									<view class="btn">发送</view>
+								</view>
+							</view>
+							
+							
+							
+							
+							
+							
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -446,6 +486,7 @@
 			sortresult(val) {
 				console.log('sortresult-filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
+				this.isAsc = "desc" == this.isAsc?"asc":"desc";
 				console.log(this.orderBy)
 				this.resetData(this.datalists.type);
 				setTimeout(() => {
@@ -612,7 +653,7 @@
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
 				this.datalists.type = (index == 0 ? '3' : '4');
 				// console.log(this.datalsit.type);
-				this.switchTab(index);
+				// this.switchTab(index);
 				// this.getlistdata3(this.page[2]);
 			},
 			//回复我的 滑动内容切换
@@ -833,7 +874,7 @@
 						this.page[3] = page + 1;
 						this.datalists.list3[1].hasmore = true;
 					}
-					// this.datalists.list3[1].datalist = this.datalists.list3[1].datalist.concat(res.data.data);
+					this.datalists.list3[1].datalist = this.datalists.list3[1].datalist.concat(res.data.data);
 					// this.$forceUpdate();
 					console.log(res);
 					// console.log(this.data.datalsit);

@@ -82,6 +82,7 @@
 
 <script>
 	const API = require('../../common/api.js');
+	var util = require('../../common/bridge.js');
 	import UniSearchBar from "../../components/lib/uni-search-bar/uni-search-bar.vue"
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
@@ -220,7 +221,7 @@
 					})
 				}
 				else if (index == 1) {
-					
+					util.bridgeAndroidAndIOS({'key':'dangan','id':id});
 				}
 				else if (index == 2) {
 					

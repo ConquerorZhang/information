@@ -97,6 +97,7 @@
 		}, {
 			"path": "pages/main/news",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "电科动态"
 			}
 		}, {

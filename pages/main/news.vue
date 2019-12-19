@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<uni-nav-bar id="naviBar" left-icon="back" title="电科动态" @clickLeft="back"></uni-nav-bar>
 		<view class="searchFilterContainer">
 			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" @confirm="search" @input="input" @cancel="cancel"></uni-search-bar>
 		</view>
@@ -33,8 +34,13 @@
 
 <script>
 	const API = require('../../common/api.js')
+	var util = require('../../common/bridge.js');
+	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
+		components: {
+			uniNavBar
+		},
 		data() {
 			return {
 				newsList: [],
@@ -44,9 +50,11 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				canLoad: true,
+				fromOrigin: '',
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.fromOrigin = option.fromOrigin;
 			this.getList();
 		},
 		methods: {
@@ -106,6 +114,16 @@
 					this.getList();
 				}, 500)
 			},
+			back() {
+				if (this.fromOrigin == '1') {
+					util.bridgeAndroidAndIOS({'key':'back'});
+				}
+				else {
+					uni.navigateBack({
+						delta: 1
+					})
+				}
+			}
 		}
 	}
 </script>

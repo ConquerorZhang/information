@@ -89,7 +89,7 @@
 								<text class="item-text content">{{item.contents}}</text>
 							</view>
 						</view>
-						<view class="item-top-collect" @click="collect(item.commentId,index)">
+						<view class="item-top-collect" @click="collect(item.id,index)">
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
@@ -98,11 +98,11 @@
 						<view class="comment-title">
 							<text class="item-text title">我：</text>
 						</view>
-						<text class="item-text brief">{{item.commentContents}} </text>
+						<text class="item-text brief">{{item.fatherContents}} </text>
 					</view>
 
 					<view class="item-date">
-						<text class="item-date-text">{{item.createTimeShow}}</text>
+						<text class="item-date-text">{{item.createTime}}</text>
 					</view>
 
 				</view>
@@ -134,9 +134,9 @@
 											<text class="item-text number" v-show="false">0浏览</text>
 										</view>
 									</view>
-									<!-- <view class="item-top-collect" @click="collect(item.id,index1)">
+									<view class="item-top-collect" @click="collect(item.id,index)">
 										<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
-									</view>   我注释了  也不能删  不能删-->
+									</view>
 								</view>
 
 								<view class="item-replycontent">
@@ -158,46 +158,16 @@
 							<view class="loading-more" v-if="tab.isLoading || tab.datalist.length > 4">
 								<text class="loading-more-text">{{tab.loadingText}}</text>
 							</view>
-							
-							
-							
-							
+
+
+
 							<!-- 输入框 -->
-							<view class="input-box" :class="popupLayerClass">
-								<!-- H5下不能录音，输入栏布局改动一下 -->
-								
-								<!-- #ifdef H5 || MP-ALIPAY -->
-								<view class="more" @tap="showMore">
-									<fa-icon type='plus' size="24"></fa-icon>
-								</view>
-								<!-- #endif -->
-								<view class="textbox">
-									
-									<view class="text-mode"  :class="isVoice?'hidden':''">
-										<view class="box">
-											<textarea auto-height="true" :value="textMsg"  :cursor="cursor"  @blur='textareaBlurEvent' />
-										</view>
-										<view class="em" @tap="chooseEmoji">
-											<fa-icon type='smile-o ' size="28"></fa-icon>
-										</view>
-									</view>
-									
-								</view>
-								<!-- #ifndef H5 -->
-								<view class="more" @tap="showMore">
-									<view class="icon add"></view>
-								</view>
-								<!-- #endif -->
-								<view class="send" :class="isVoice?'hidden':''" @tap="sendText">
-									<view class="btn">发送</view>
-								</view>
-							</view>
-							
-							
-							
-							
-							
-							
+
+
+
+
+
+
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -375,7 +345,7 @@
 					{
 						'title': '按回复数',
 						'key': 'sort',
-						'value': 'visitCount',
+						'value': 'replyCount',
 						'isMutiple': false,
 						'isSort': false,
 						'reflexTitle': true,
@@ -389,15 +359,10 @@
 			}
 		},
 		onLoad(option) {
+			console.log("-----pages:"+getCurrentPages())
 			console.log(option);
 			let index = option.index;
-			uni.getSystemInfo({
-				success: (res) => {
-					this.systemInfo = res
-				},
-
-			})
-
+			this.systemInfo = getApp().globalData.systemInfo;
 			this.labelList.forEach((item) => {
 				switch (index) {
 					case "0":
@@ -486,7 +451,7 @@
 			sortresult(val) {
 				console.log('sortresult-filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
-				this.isAsc = "desc" == this.isAsc?"asc":"desc";
+				this.isAsc = "desc" == this.isAsc ? "asc" : "desc";
 				console.log(this.orderBy)
 				this.resetData(this.datalists.type);
 				setTimeout(() => {
@@ -583,8 +548,10 @@
 							this.delete_myanswer(this.deleteid, this.datalists.type, this.deleteIndex);
 							break;
 						case '3':
+							this.delete_favourme(this.deleteid, this.datalists.type, this.deleteIndex)
 							break;
 						case '4':
+							this.delete_replyme(this.deleteid, this.datalists.type, this.deleteIndex)
 							break;
 						default:
 							break;
@@ -608,7 +575,36 @@
 			},
 			//删除我的回答
 			delete_myanswer(deleteid, type, index) {
-				API.myIssueCommentDelete({
+				API.myIssueCommentDelete2({
+					id: deleteid,
+				}).then(res => {
+					console.log(res);
+					if (res.data.code == '0') {
+						this.removeItem(type, index);
+					}
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			//删除点赞我的
+			delete_favourme(deleteid, type, index) {
+				API.myIssueCommentDelete2({
+					id: deleteid,
+					type: 'issue'
+				}).then(res => {
+					console.log(res);
+					if (res.data.code == '0') {
+						this.removeItem(type, index);
+					}
+					// console.log(this.data.datalsit);
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			//删除回复我的
+			delete_replyme(deleteid, type, index) {
+				API.myIssueCommentDelete2({
 					id: deleteid,
 				}).then(res => {
 					console.log(res);
@@ -622,6 +618,7 @@
 			},
 			//前台移除数据
 			removeItem(type, index) {
+				console.log('----------------------removeItem:' + type + '---index:' + index);
 				switch (type) {
 					case '1':
 						// console.log("datalists.list1.datalist: " + JSON.stringify(this.datalists.list1.datalist));
@@ -652,6 +649,8 @@
 				console.log(e);
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
 				this.datalists.type = (index == 0 ? '3' : '4');
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
 				// console.log(this.datalsit.type);
 				// this.switchTab(index);
 				// this.getlistdata3(this.page[2]);
@@ -664,6 +663,15 @@
 			},
 			switchTab(index) {
 				console.log("------index: " + index);
+
+				this.getlist3andlist4Data(index);
+				if (this.tabIndex === index) {
+					return;
+				}
+				this.tabIndex = index;
+				this.scrollInto = this.tabBars[index].id;
+			},
+			getlist3andlist4Data(index) {
 				if (this.datalists.list3[index].datalist.length === 0) {
 					if (index == 0) {
 						this.getlistdata3(this.page[2]);
@@ -671,12 +679,6 @@
 						this.getlistdata4(this.page[3]);
 					}
 				}
-
-				if (this.tabIndex === index) {
-					return;
-				}
-				this.tabIndex = index;
-				this.scrollInto = this.tabBars[index].id;
 			},
 			loadMore(type) {
 				console.log("----加载更多" + type)
@@ -798,13 +800,14 @@
 			getlistdata2(page) {
 				console.log('getlistdata2---page----' + page);
 				this.datalists.list2.hasmore = false;
-				API.myIssueComment({
+				API.myIssueComment2({
 					limit: this.limit,
 					page: page,
 					type: this.filtertype,
 					orderBy: this.orderBy,
 					isAsc: this.isAsc,
 				}).then(res => {
+					console.log(res);
 					if (res.data.data.length < this.limit) {
 						this.datalists.list2.loadingText = "没有更多数据了"
 						this.datalists.list2.hasmore = false;
@@ -814,7 +817,7 @@
 					}
 					this.datalists.list2.datalist = this.datalists.list2.datalist.concat(res.data.data);
 					// this.$forceUpdate();
-					console.log(res);
+
 
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -866,7 +869,6 @@
 					limit: this.limit,
 					page: page,
 				}).then(res => {
-					console.log(res);
 					if (res.data.data.length < this.limit) {
 						this.datalists.list3[1].loadingText = "没有更多数据了"
 						this.datalists.list3[1].hasmore = false;
@@ -967,277 +969,93 @@
 			// margin-top: 150rpx;
 			height: 100%;
 
-			.item-one{ 
-				
+			.item-one {
+
 				.empty {
 					text-align: center;
-				
+
 					.emptyImage {
 						margin-top: 300rpx;
 						width: 500rpx;
 					}
-				
+
 					.emptyText {
 						color: #969798;
 					}
 				}
-				
+
 				.item {
-				background: #FFFFFF;
-				margin: 20rpx 3rpx;
-				border-radius: 20rpx;
+					background: #FFFFFF;
+					margin: 20rpx 3rpx;
+					border-radius: 20rpx;
 
-				
 
-				.item-text {
-					display: block;
-				}
 
-				.item-top {
-					display: flex;
-					flex-wrap: nowrap;
-					align-items: center;
-
-					.circleicon {
-						border-radius: 42.5rpx;
-						margin: 20rpx;
-						width: 85rpx;
-						height: 85rpx;
-						// background: url("../../static/logo.png") no-repeat center;
-						background-size: 50px;
+					.item-text {
+						display: block;
 					}
 
-					.info {
+					.item-top {
 						display: flex;
-						padding: 15rpx 10rpx;
-						flex-direction: column;
-						flex-grow: 10;
-
-						.info-bottom {
-							display: flex;
-							flex-direction: row;
-
-							.number {
-								margin-left: 20rpx;
-							}
-						}
-
-						.name {
-							color: #585858;
-							font-size: $uni-font-size-name;
-						}
-
-						.time,
-						.number {
-							color: #8D8D8D;
-							font-size: $uni-font-size-time;
-						}
-					}
-
-					.item-top-collect {
-						display: flex;
-						border-radius: 30upx;
-						width: 120upx;
-						height: 40upx;
+						flex-wrap: nowrap;
 						align-items: center;
-						justify-content: center;
-						margin-right: 20upx;
-
-						.collect-icon {
-							width: 30upx;
-							height: 30upx;
-							margin-right: 5upx;
-						}
-					}
-				}
-
-				.title,
-				.brief {
-					margin: 0 20rpx;
-					line-height: 1.6em;
-					display: -webkit-box;
-					/** 对象作为伸缩盒子模型显示 **/
-					-webkit-line-clamp: 5;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					-webkit-box-orient: vertical;
-				}
-
-				.title {
-					color: #282828;
-					font-size: $uni-font-size-article-title;
-				}
-
-				.brief {
-					color: #525252;
-					font-size: $uni-font-size-article-brief;
-				}
-
-				.item-image {
-					display: flex;
-					flex-direction: row;
-
-					.item-image-image {
-						margin: 0 20rpx;
-						width: 30%;
-						height: 200rpx;
-					}
-				}
-
-				.bottom {
-					display: flex;
-					justify-content: flex-end;
-
-					.bottom-right {
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						margin: 0 20rpx 20rpx 0;
-					}
-
-					.bottom-left {
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						margin: 0 5rpx 20rpx 0;
-					}
-
-					.bottom-icon-left,
-					.bottom-icon-right {
-						width: 25rpx;
-						height: 25rpx;
-						padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
-					}
-
-					.bottom-text {
-						font-size: 20upx;
-						color: #525252;
-					}
-
-				}
-			}
-}
-			// 我的回答布局样式
-			.item-two{
-				
-				display: flex;
-				flex-direction: column;
-				
-				.empty {
-					text-align: center;
-				
-					.emptyImage {
-						margin-top: 300rpx;
-						width: 500rpx;
-					}
-				
-					.emptyText {
-						color: #969798;
-					}
-				}
-				
-				.item {
-
-				background: #FFFFFF;
-				margin: 20rpx 3rpx;
-				border-radius: 20rpx;
-				display: flex;
-				flex-direction: column;
-
-				
-
-				.item-text {
-					display: block;
-				}
-
-				.item-top {
-					display: flex;
-					flex-wrap: nowrap;
-					align-items: center;
-					flex-direction: row;
-					align-items: flex-start;
-
-					.item-head-icon {
-						width: 100rpx;
-						height: 100rpx;
 
 						.circleicon {
 							border-radius: 42.5rpx;
 							margin: 20rpx;
 							width: 85rpx;
 							height: 85rpx;
-							flex-grow: 2;
-						}
-					}
-
-					.info {
-						display: flex;
-						padding: 15rpx 10rpx;
-						flex-direction: column;
-						flex-grow: 10;
-
-						.name {
-							margin-left: 10rpx;
-							color: #585858;
-							font-size: $uni-font-size-name;
+							// background: url("../../static/logo.png") no-repeat center;
+							background-size: 50px;
 						}
 
-						.info-bottom {
+						.info {
 							display: flex;
-							flex-direction: row;
+							padding: 15rpx 10rpx;
+							flex-direction: column;
+							flex-grow: 10;
 
-							.content {
+							.info-bottom {
+								display: flex;
+								flex-direction: row;
+
+								.number {
+									margin-left: 20rpx;
+								}
+							}
+
+							.name {
 								color: #585858;
 								font-size: $uni-font-size-name;
-								margin-left: 10rpx;
-								display: -webkit-box;
-								/** 对象作为伸缩盒子模型显示 **/
-								-webkit-line-clamp: 5;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								-webkit-box-orient: vertical;
+							}
+
+							.time,
+							.number {
+								color: #8D8D8D;
+								font-size: $uni-font-size-time;
 							}
 						}
 
-					}
+						.item-top-collect {
+							display: flex;
+							border-radius: 30upx;
+							width: 120upx;
+							height: 40upx;
+							align-items: center;
+							justify-content: center;
+							margin-right: 20upx;
 
-					.item-top-collect {
-						display: flex;
-						border-radius: 30upx;
-						width: 120upx;
-						height: 40upx;
-						align-items: center;
-						justify-content: center;
-						margin: 15upx 20upx 0 0;
-
-						.collect-icon {
-							width: 30upx;
-							height: 30upx;
-							margin-right: 5upx;
-						}
-					}
-				}
-
-				.comment {
-					display: flex;
-					flex-direction: row;
-					align-items: flex-start;
-					margin: 0 20rpx 20rpx 20rpx;
-					border-radius: 10rpx;
-					background: #F1F1F1;
-					padding: 15rpx;
-
-					.comment-title {
-						width: 95rpx;
-
-						.title {
-							color: #007AFF;
-							line-height: 1.6em;
-							font-size: $uni-font-size-article-brief;
+							.collect-icon {
+								width: 30upx;
+								height: 30upx;
+								margin-right: 5upx;
+							}
 						}
 					}
 
+					.title,
 					.brief {
+						margin: 0 20rpx;
 						line-height: 1.6em;
 						display: -webkit-box;
 						/** 对象作为伸缩盒子模型显示 **/
@@ -1247,25 +1065,211 @@
 						-webkit-box-orient: vertical;
 					}
 
-
+					.title {
+						color: #282828;
+						font-size: $uni-font-size-article-title;
+					}
 
 					.brief {
 						color: #525252;
 						font-size: $uni-font-size-article-brief;
 					}
 
-				}
+					.item-image {
+						display: flex;
+						flex-direction: row;
 
-				.item-date {
-					margin: 0 20rpx 20rpx 35rpx;
+						.item-image-image {
+							margin: 0 20rpx;
+							width: 30%;
+							height: 200rpx;
+						}
+					}
 
-					.item-date-text {
-						color: #8D8D8D;
-						font-size: $uni-font-size-time;
+					.bottom {
+						display: flex;
+						justify-content: flex-end;
+
+						.bottom-right {
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							margin: 0 20rpx 20rpx 0;
+						}
+
+						.bottom-left {
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							margin: 0 5rpx 20rpx 0;
+						}
+
+						.bottom-icon-left,
+						.bottom-icon-right {
+							width: 25rpx;
+							height: 25rpx;
+							padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
+						}
+
+						.bottom-text {
+							font-size: 20upx;
+							color: #525252;
+						}
+
 					}
 				}
 			}
-} 
+
+			// 我的回答布局样式
+			.item-two {
+
+				display: flex;
+				flex-direction: column;
+
+				.empty {
+					text-align: center;
+
+					.emptyImage {
+						margin-top: 300rpx;
+						width: 500rpx;
+					}
+
+					.emptyText {
+						color: #969798;
+					}
+				}
+
+				.item {
+
+					background: #FFFFFF;
+					margin: 20rpx 3rpx;
+					border-radius: 20rpx;
+					display: flex;
+					flex-direction: column;
+
+
+
+					.item-text {
+						display: block;
+					}
+
+					.item-top {
+						display: flex;
+						flex-wrap: nowrap;
+						align-items: center;
+						flex-direction: row;
+						align-items: flex-start;
+
+						.item-head-icon {
+							width: 100rpx;
+							height: 100rpx;
+
+							.circleicon {
+								border-radius: 42.5rpx;
+								margin: 20rpx;
+								width: 85rpx;
+								height: 85rpx;
+								flex-grow: 2;
+							}
+						}
+
+						.info {
+							display: flex;
+							padding: 15rpx 10rpx;
+							flex-direction: column;
+							flex-grow: 10;
+
+							.name {
+								margin-left: 10rpx;
+								color: #585858;
+								font-size: $uni-font-size-name;
+							}
+
+							.info-bottom {
+								display: flex;
+								flex-direction: row;
+
+								.content {
+									color: #585858;
+									font-size: $uni-font-size-name;
+									margin-left: 10rpx;
+									display: -webkit-box;
+									/** 对象作为伸缩盒子模型显示 **/
+									-webkit-line-clamp: 5;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									-webkit-box-orient: vertical;
+								}
+							}
+
+						}
+
+						.item-top-collect {
+							display: flex;
+							border-radius: 30upx;
+							width: 120upx;
+							height: 40upx;
+							align-items: center;
+							justify-content: center;
+							margin: 15upx 20upx 0 0;
+
+							.collect-icon {
+								width: 30upx;
+								height: 30upx;
+								margin-right: 5upx;
+							}
+						}
+					}
+
+					.comment {
+						display: flex;
+						flex-direction: row;
+						align-items: flex-start;
+						margin: 0 20rpx 20rpx 20rpx;
+						border-radius: 10rpx;
+						background: #F1F1F1;
+						padding: 15rpx;
+
+						.comment-title {
+							width: 95rpx;
+
+							.title {
+								color: #007AFF;
+								line-height: 1.6em;
+								font-size: $uni-font-size-article-brief;
+							}
+						}
+
+						.brief {
+							line-height: 1.6em;
+							display: -webkit-box;
+							/** 对象作为伸缩盒子模型显示 **/
+							-webkit-line-clamp: 5;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-box-orient: vertical;
+						}
+
+
+
+						.brief {
+							color: #525252;
+							font-size: $uni-font-size-article-brief;
+						}
+
+					}
+
+					.item-date {
+						margin: 0 20rpx 20rpx 35rpx;
+
+						.item-date-text {
+							color: #8D8D8D;
+							font-size: $uni-font-size-time;
+						}
+					}
+				}
+			}
+
 			//回复我的布局样式
 			.item-three {
 				background: #FFFFFF;

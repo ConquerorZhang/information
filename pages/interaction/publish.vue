@@ -55,6 +55,11 @@ const CONFIG = require('../../common/config.js')
 				selectedIndex:'-1',
 			}
 		},
+		onShow() {
+			this.callHandler('ObjC Echo',{
+				'key': 'inner'
+			});
+		},
 		methods: {
 			onNavigationBarButtonTap(e) {
 				console.log(this.submitImageIdList);

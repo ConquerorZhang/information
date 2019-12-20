@@ -181,6 +181,10 @@ module.exports = {
 	myIssueComment: (data) => {
 		return MyAPI('interact/issue/myIssueComment', false, 'GET', data)
 	},
+	// 我的发布-我的回答,改
+	myIssueComment2: (data) => {
+		return MyAPI('interact/commentonmycomment', false, 'GET', data)
+	},
 	// 我的发布-我的发布
 	myPublish: (data) => {
 		return MyAPI('interact/issue/myPublish', false, 'GET', data)
@@ -192,6 +196,18 @@ module.exports = {
 	// 我的发布-删除我的回答
 	myIssueCommentDelete: (data) => {
 		return MyAPI('interact/delmycomment', false, 'GET', data)
+	},
+	// 我的发布-删除我的回答,改
+	myIssueCommentDelete2: (data) => {
+		return MyAPI('interact/delcommentonmycomment', false, 'GET', data)
+	},
+	// 我的发布-删除赞我的
+	replymeDeletefavour: (data) => {
+		return MyAPI('interact/favour/delfavourme', false, 'GET', data)
+	},
+	// 我的发布-删除回复我的
+	replymeDeleteContent: (data) => {
+		return MyAPI('interact/delcommentmyissue', false, 'GET', data)
 	},
 	// 产品
 	productData: (data) => {

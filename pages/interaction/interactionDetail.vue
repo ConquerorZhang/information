@@ -121,6 +121,7 @@
 			};
 		},
 		onLoad(option) {
+			console.log("-----pages:"+getCurrentPages())
 			console.log(option);
 			// console.log(JSON.parse(option.item).id)
 			this.item = JSON.parse(option.item);
@@ -156,6 +157,9 @@
 			uni.$emit('interation$detailback',{'item':this.item})
 		},
 		onShow() {
+			this.callHandler('ObjC Echo',{
+				'key': 'inner'
+			});
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
 				if (this.platform === 'ios') {
 					this.windowHeight = res.size.windowHeight;

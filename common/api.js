@@ -197,4 +197,8 @@ module.exports = {
 	HomeHotSearch: (data) => {
 		return MyAPI('api/search/hotsearchkeyslist', false, 'GET', data)
 	},
+      //获取资源列表
+    HomeresourceList: (data) => {
+    	return MyAPI('api/learnmaterial/list', false, 'GET', data)
+    },
 }

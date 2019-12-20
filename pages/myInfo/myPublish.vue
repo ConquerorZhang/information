@@ -32,6 +32,10 @@
 		 @scrolltolower="loadMore(datalists.type)">
 			<!-- 列表item  我的发布-->
 			<view class="item-one" v-if="datalists.type=='1'">
+				<view class="empty" v-if="datalists.list1.datalist.length < 1">
+					<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+					<view class="emptyText">没有找到相关信息～</view>
+				</view>
 				<view class="item" v-for="(item, index) in datalists.list1.datalist" :key="index">
 					<view class="item-top">
 						<image class="icon_head circleicon" mode="aspectFill" :src="item.avatarUrl" @click="navToDetailPage(item,index,'id')"></image>
@@ -70,6 +74,10 @@
 
 			<!-- 列表item  我的回答-->
 			<view class="item-two" v-else-if="datalists.type=='2'">
+				<view class="empty" v-if="datalists.list2.datalist.length < 1">
+					<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+					<view class="emptyText">没有找到相关信息～</view>
+				</view>
 				<view class="item" v-for="(item, index) in datalists.list2.datalist" :key="index">
 					<view class="item-top">
 						<view class="item-head-icon" @click="navToDetailPage(item,index,'id')">
@@ -110,6 +118,10 @@
 				<swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
 					<swiper-item class="swiper-item" v-for="(tab,index1) in datalists.list3" :key="index1">
 						<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore(tab.type)">
+							<view class="empty" v-if="tab.datalist.length < 1">
+								<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+								<view class="emptyText">没有找到相关信息～</view>
+							</view>
 							<view class="item" v-for="(item, index) in tab.datalist" :key="index">
 								<view class="item-top">
 									<view class="item-head-icon" @click="navToDetailPage(item,index,'bizkey')">
@@ -146,6 +158,46 @@
 							<view class="loading-more" v-if="tab.isLoading || tab.datalist.length > 4">
 								<text class="loading-more-text">{{tab.loadingText}}</text>
 							</view>
+							
+							
+							
+							
+							<!-- 输入框 -->
+							<view class="input-box" :class="popupLayerClass">
+								<!-- H5下不能录音，输入栏布局改动一下 -->
+								
+								<!-- #ifdef H5 || MP-ALIPAY -->
+								<view class="more" @tap="showMore">
+									<fa-icon type='plus' size="24"></fa-icon>
+								</view>
+								<!-- #endif -->
+								<view class="textbox">
+									
+									<view class="text-mode"  :class="isVoice?'hidden':''">
+										<view class="box">
+											<textarea auto-height="true" :value="textMsg"  :cursor="cursor"  @blur='textareaBlurEvent' />
+										</view>
+										<view class="em" @tap="chooseEmoji">
+											<fa-icon type='smile-o ' size="28"></fa-icon>
+										</view>
+									</view>
+									
+								</view>
+								<!-- #ifndef H5 -->
+								<view class="more" @tap="showMore">
+									<view class="icon add"></view>
+								</view>
+								<!-- #endif -->
+								<view class="send" :class="isVoice?'hidden':''" @tap="sendText">
+									<view class="btn">发送</view>
+								</view>
+							</view>
+							
+							
+							
+							
+							
+							
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -378,10 +430,10 @@
 
 			})
 			//初始化数据
-			setTimeout(()=>{
+			setTimeout(() => {
 				this.getNewData(this.datalists.type);
-			},500)
-			
+			}, 500)
+
 		},
 		methods: {
 			radioChange: function(e) {
@@ -390,7 +442,7 @@
 				console.log('radio发生change事件，携带value值为：' + e.detail.value)
 				this.radioSetData(e.detail.value);
 			},
-			radioSetData:function(value){
+			radioSetData: function(value) {
 				if (value === '999') {
 					let index = 0;
 					// this.currrentType = (index == 0 ? '3' : '4');
@@ -434,6 +486,7 @@
 			sortresult(val) {
 				console.log('sortresult-filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
+				this.isAsc = "desc" == this.isAsc?"asc":"desc";
 				console.log(this.orderBy)
 				this.resetData(this.datalists.type);
 				setTimeout(() => {
@@ -481,8 +534,8 @@
 			detailBack(data) {
 				console.log("回传数据呀--------------------");
 				console.log(data.item);
-				console.log(this.datalists.type);
-				console.log(this.currrenIndex);
+				// console.log(this.datalists.type);
+				// console.log(this.currrenIndex);
 				if (this.currrenIndex != -1) {
 					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
 					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
@@ -600,7 +653,7 @@
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
 				this.datalists.type = (index == 0 ? '3' : '4');
 				// console.log(this.datalsit.type);
-				this.switchTab(index);
+				// this.switchTab(index);
 				// this.getlistdata3(this.page[2]);
 			},
 			//回复我的 滑动内容切换
@@ -728,6 +781,7 @@
 						this.datalists.list1.hasmore = true;
 					}
 					this.datalists.list1.datalist = this.datalists.list1.datalist.concat(res.data.data);
+					// this.datalists.list1.datalist = [];
 					// this.$forceUpdate();
 					console.log(res);
 					// console.log(this.data.datalsit);
@@ -735,8 +789,8 @@
 					this.datalists.list1.hasmore = true;
 					console.log(err);
 					uni.showToast({
-						title:err.errMsg,
-						icon:'none',
+						title: err.errMsg,
+						icon: 'none',
 					})
 				})
 			},
@@ -761,14 +815,14 @@
 					this.datalists.list2.datalist = this.datalists.list2.datalist.concat(res.data.data);
 					// this.$forceUpdate();
 					console.log(res);
-					
+
 					// console.log(this.data.datalsit);
 				}).catch(err => {
 					this.datalists.list2.hasmore = true;
 					console.log(err);
 					uni.showToast({
-						title:err.errMsg,
-						icon:'none',
+						title: err.errMsg,
+						icon: 'none',
 					})
 				})
 			},
@@ -799,8 +853,8 @@
 					this.datalists.list3[0].hasmore = true;
 					console.log(err);
 					uni.showToast({
-						title:err.errMsg,
-						icon:'none',
+						title: err.errMsg,
+						icon: 'none',
 					})
 				})
 			},
@@ -812,6 +866,7 @@
 					limit: this.limit,
 					page: page,
 				}).then(res => {
+					console.log(res);
 					if (res.data.data.length < this.limit) {
 						this.datalists.list3[1].loadingText = "没有更多数据了"
 						this.datalists.list3[1].hasmore = false;
@@ -827,8 +882,8 @@
 					this.datalists.list3[1].hasmore = true;
 					console.log(err);
 					uni.showToast({
-						title:err.errMsg,
-						icon:'none',
+						title: err.errMsg,
+						icon: 'none',
 					})
 				})
 			},
@@ -912,10 +967,27 @@
 			// margin-top: 150rpx;
 			height: 100%;
 
-			.item-one .item {
+			.item-one{ 
+				
+				.empty {
+					text-align: center;
+				
+					.emptyImage {
+						margin-top: 300rpx;
+						width: 500rpx;
+					}
+				
+					.emptyText {
+						color: #969798;
+					}
+				}
+				
+				.item {
 				background: #FFFFFF;
 				margin: 20rpx 3rpx;
 				border-radius: 20rpx;
+
+				
 
 				.item-text {
 					display: block;
@@ -1044,15 +1116,35 @@
 
 				}
 			}
-
+}
 			// 我的回答布局样式
-			.item-two .item {
+			.item-two{
+				
+				display: flex;
+				flex-direction: column;
+				
+				.empty {
+					text-align: center;
+				
+					.emptyImage {
+						margin-top: 300rpx;
+						width: 500rpx;
+					}
+				
+					.emptyText {
+						color: #969798;
+					}
+				}
+				
+				.item {
 
 				background: #FFFFFF;
 				margin: 20rpx 3rpx;
 				border-radius: 20rpx;
 				display: flex;
 				flex-direction: column;
+
+				
 
 				.item-text {
 					display: block;
@@ -1173,7 +1265,7 @@
 					}
 				}
 			}
-
+} 
 			//回复我的布局样式
 			.item-three {
 				background: #FFFFFF;
@@ -1240,6 +1332,18 @@
 							flex-direction: column;
 							/* #endif */
 
+							.empty {
+								text-align: center;
+
+								.emptyImage {
+									margin-top: 300rpx;
+									width: 500rpx;
+								}
+
+								.emptyText {
+									color: #969798;
+								}
+							}
 
 							.item-text {
 								display: block;
@@ -1400,7 +1504,6 @@
 
 					}
 				}
-
 
 
 

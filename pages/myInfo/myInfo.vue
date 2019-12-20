@@ -38,17 +38,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="hotTitle">热门收藏</view>
-		<view class="hotListModel">
-			<view class="hotList" v-for="item in data.hotList" :key="item.id">
-				<image class="hotListImage" :src="item.image" mode="scaleToFill"></image>
-				<view class="hotListText">
-					<view class="title">{{item.title}}</view>
-					<view class="subTitle">{{item.subTitle}}</view>
-					<view class="time">{{item.time}}</view>
-				</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 
@@ -63,11 +52,11 @@
 				data: {
 					// settingBGImage: "../../static/mine/main/setting.png",
 					settingImage: "../../static/mine/main/setting.png",
-					head: "../../static/logo.png",
-					name: "测试人员",
-					mail: "123456789@qq.com",
+					head: "",
+					name: "",
+					mail: "",
 					mailImage: "../../static/mine/main/mail.png",
-					phone: "16631138888",
+					phone: "",
 					phoneImage: "../../static/mine/main/phone.png",
 					myFunctionArr: [{
 							"image": "../../static/mine/main/collection.png",
@@ -94,26 +83,40 @@
 						{
 							"image": "../../static/mine/main/myAnswer.png",
 							"text": "我的回答",
-							"dot": "1"
+							"dot": "0"
 						},
 						{
 							"image": "../../static/mine/main/answerMe.png",
 							"text": "回复我的",
-							"dot": "99"
+							"dot": "0"
 						},
 					],
 				}
 			}
 		},
 		onLoad() {
-			// API.loginInfo({
-			// 	userName: 'name',
-			// 	password: '123456'
-			// }).then(res => {
-			// 	console.log(res);
-			// }).catch(err => {
-			// 	console.log('测试网络请求');
-			// })
+			API.myInfo({}).then(res => {
+				// console.log(res);
+				const resData = res.data.data;
+				
+				this.data.head = resData.avatarUrl;
+				this.data.name = resData.name;
+				this.data.mail = resData.email;
+				this.data.phone = resData.phone;
+			}).catch(err => {
+				console.log(err);
+			})
+			
+			//我的互动的消息红点
+			API.myInfoRedDots({}).then(res => {
+				// console.log(res);
+				const resData = res.data.data;
+				
+				this.data.interactionArr[1].dot = resData.myAnswer;
+				this.data.interactionArr[2].dot = resData.answerMe;
+			}).catch(err => {
+				console.log(err);
+			})
 		},
 		onShow() {
 			util.bridgeAndroidAndIOS({'key':'onShow'});
@@ -213,6 +216,7 @@
 				width: 140rpx;
 				height: 140rpx;
 				border-radius: 70rpx;
+				background: #D3D3D3;
 			}
 
 			.nameInfo {

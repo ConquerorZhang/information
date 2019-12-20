@@ -40,6 +40,7 @@
 
 <script>
 	const API = require('../../common/api.js')
+	var util = require('../../common/bridge.js');
 
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 	import myfilter from '@/components/sl-filter/myDownLoad-filter.vue';
@@ -118,17 +119,24 @@
 						]
 					}
 
-				]
+				],
+				fromOrigin: '',
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.fromOrigin = option.fromOrigin;
 			this.getList();
 		},
 		methods: {
 			back() {
-				uni.navigateBack({
-					delta: 1
-				})
+				if (this.fromOrigin == '1') {
+					util.bridgeAndroidAndIOS({'key':'back'});
+				}
+				else {
+					uni.navigateBack({
+						delta: 1
+					})
+				}
 			},
 			clickRightBtn(e) {
 				this.showCheckBox = !this.showCheckBox;
@@ -210,7 +218,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							console.log(this.selectedIdArr);
-							// todozcc 提交删除接口
+							// todozcc删除
 
 							// 更新数据
 							this.dataList = [];

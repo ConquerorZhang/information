@@ -27,6 +27,11 @@
 
 		<!-- <view class="top-zhanwei"></view> -->
 		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
+			
+			<view class="empty" v-if="data.datalsit.length < 1">
+				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+				<view class="emptyText">没有找到相关信息～</view>
+			</view>
 			<!-- 列表item -->
 			<view class="item" v-for="(item, index) in data.datalsit" :key="index" @click="navToDetailPage(item,index)">
 				<view class="item-top">
@@ -63,6 +68,8 @@
 			<view class="loading-more" v-if="data.isLoading || data.datalsit.length > 4">
 				<text class="loading-more-text">{{data.loadingText}}</text>
 			</view>
+			
+			
 		</scroll-view>
 		<cover-view class="cover-view" @click="navToPublish">
 			<image class="cover-view-image" src="../../static/interaction/publish_go.png"></image>
@@ -176,8 +183,11 @@
 				// uni.showToast({
 				// 	title:'h5 Toast',
 				// })
-				util.bridgeAndroidAndIOS({'key':'onshow'});
 				// window.android.click('77777777777');
+				uni.navigateTo({
+					url: "../myInfo/myMessage"
+				})
+				util.bridgeAndroidAndIOS({'key':'inner'});
 			},
 			// 评论
 			topiccomment(topicid) {
@@ -220,6 +230,7 @@
 			sortresult(val) {
 				// console.log('filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
+				this.isAsc = "desc" == this.isAsc?"asc":"desc";
 				this.resetData();
 				this.getlistdata(1);
 			},
@@ -247,7 +258,7 @@
 				this.getlistdata(1);
 			},
 			getlistdata(page) {
-				// console.log('page----' + page);
+				console.log('page----' + page);
 				this.data.hasmore = false;
 				API.interactionList({
 					searchKey: this.searchKey,
@@ -261,6 +272,7 @@
 					// pics: this.submitImageIdList,
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
+					console.log(res);
 						if (res.data.data.length < this.limit) {
 							this.data.loadingText = "没有更多数据了"
 							this.data.hasmore = false;
@@ -269,6 +281,7 @@
 							this.data.hasmore = true;
 						}
 						this.data.datalsit = this.data.datalsit.concat(res.data.data);
+						// this.data.datalsit=[];
 					console.log(res);
 					// console.log(this.data.datalsit);
 				}).catch(err => {
@@ -347,7 +360,7 @@
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
-				height: 40rpx;//这里是无效的，不知为何  var(--status-bar-height)
+				height: $uni-status-height;//这里是无效的，不知为何  var(--status-bar-height)
 				width: 100%;
 			}
 
@@ -416,6 +429,19 @@
 			margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
+			
+			.empty {
+				text-align: center;
+			
+				.emptyImage {
+					margin-top: 300rpx;
+					width: 500rpx;
+				}
+			
+				.emptyText {
+					color: #969798;
+				}
+			}
 
 			.item {
 				background: #FFFFFF;

@@ -98,6 +98,7 @@
 		}, {
 			"path": "pages/main/news",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "电科动态"
 			}
 		}, {
@@ -151,6 +152,12 @@
 				"transparentTitle": "always"
 			}
 		}
+        ,{
+            "path" : "pages/product/productOneLevel",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

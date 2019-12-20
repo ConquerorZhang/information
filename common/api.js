@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 const MyAPI = (url, needSubDomain, method, data) => {
 	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url;
 	//todozcc临时的token
-	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjM2LCJleHAiOjE1NzkwNTQxNDQsInVzZXJuYW1lIjoi5byg5LiJIn0.QPo5Xiz1l-ktWhPhKIEN5a1XuXiQnxWs3ha8bh6fS5A" : Vue.config.configDic.Authorization;
+	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsImV4cCI6MTU3OTMzNjU3NCwidXNlcm5hbWUiOiLogpblvawifQ.RT9sW3EAIxoCG9u2JMiFOPZngROM72uthVxs16Odzrk" : Vue.config.configDic.Authorization;
 	// let token = Vue.config.configDic.token;
 	// let guid = Vue.config.configDic.guid;
 	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);
@@ -119,7 +119,11 @@ module.exports = {
 	
 	// 我的
 	myInfo: (data) => {
-		return MyAPI('', false, 'GET', data)
+		return MyAPI('users/userinfo', false, 'GET', data)
+	},
+	// 我的互动里的红点
+	myInfoRedDots: (data) => {
+		return MyAPI('interact/myunreaditems', false, 'GET', data)
 	},
 	// 我的消息列表
 	myMessageList: (data) => {
@@ -131,23 +135,23 @@ module.exports = {
 	},
 	// 我的帖子收藏 interact/mycollect
 	myCollect: (data) => {
-		return MyAPI('api/interact/myissuecollect', false, 'GET', data)
+		return MyAPI('interact/myissuecollect', false, 'GET', data)
 	},
 	// 我的产品收藏 
 	myProductCollect: (data) => {
-		return MyAPI('api/interact/myproductcollect', false, 'GET', data)
+		return MyAPI('interact/myproductcollect', false, 'GET', data)
 	},
 	// 我的收藏批量删除
 	myCollectCancel: (data) => {
-		return MyAPI('api/interact/cancelcollects', false, 'GET', data)
+		return MyAPI('interact/cancelcollects', false, 'GET', data)
 	},
 	// 我的浏览记录
 	myBrowseHistory: (data) => {
-		return MyAPI('api/visithistory/mylist', false, 'GET', data)
+		return MyAPI('visithistory/mylist', false, 'GET', data)
 	},
 	// 我的浏览记录删除
 	myBrowseClear: (data) => {
-		return MyAPI('api/visithistory/emptymylist', false, 'GET', data)
+		return MyAPI('visithistory/emptymylist', false, 'GET', data)
 	},
   	// 互动区点赞
 	interactionFavour: (data) => {
@@ -159,11 +163,11 @@ module.exports = {
 	},
 	// 互动区详情收藏
 	interactionCollect: (data) => {
-		return MyAPI('api/interact/addcollect', false, 'GET', data)
+		return MyAPI('interact/addcollect', false, 'GET', data)
 	},
 	// 互动区详情取消收藏
 	interactionUnCollect: (data) => {
-		return MyAPI('api/interact/cancelcollect', false, 'GET', data)
+		return MyAPI('interact/cancelcollect', false, 'GET', data)
 	},
 	// 我的发布-点赞我的
 	favourMyIssue: (data) => {
@@ -191,11 +195,27 @@ module.exports = {
 	},
 	// 产品
 	productData: (data) => {
-		return MyAPI('api/product/productinfo', false, 'GET', data)
+		return MyAPI('product/productinfo', false, 'GET', data)
 	},
-  //首页热搜
+    //首页热搜
 	HomeHotSearch: (data) => {
-		return MyAPI('api/search/hotsearchkeyslist', false, 'GET', data)
+		return MyAPI('search/hotsearchkeyslist', false, 'GET', data)
+	},
+	//搜索结果-动态
+	searchResultNews: (data) => {
+		return MyAPI('infos/dynamic/searchlist', false, 'GET', data)
+	},
+	//搜索结果-项目档案
+	searchResultFile: (data) => {
+		return MyAPI('project/searchlist', false, 'GET', data)
+	},
+	//搜索结果-产品
+	searchResultProduct: (data) => {
+		return MyAPI('product/searchlist', false, 'GET', data)
+	},
+	//搜索结果-学习资料
+	searchResultLearn: (data) => {
+		return MyAPI('learnmaterial/searchlist', false, 'GET', data)
 	},
       //获取资源列表
     HomeresourceList: (data) => {

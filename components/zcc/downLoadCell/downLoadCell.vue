@@ -52,7 +52,8 @@
 			}
 
 			.title {
-				line-height: 100rpx;
+				// line-height: 100rpx;
+				width: 500rpx;
 			}
 		}
 

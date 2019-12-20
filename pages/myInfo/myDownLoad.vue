@@ -218,7 +218,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							console.log(this.selectedIdArr);
-							// todozcc 提交删除接口
+							// todozcc删除
 
 							// 更新数据
 							this.dataList = [];

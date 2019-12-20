@@ -96,13 +96,24 @@
 		},
 		onLoad() {
 			API.myInfo({}).then(res => {
-				console.log(res);
+				// console.log(res);
 				const resData = res.data.data;
 				
 				this.data.head = resData.avatarUrl;
 				this.data.name = resData.name;
 				this.data.mail = resData.email;
 				this.data.phone = resData.phone;
+			}).catch(err => {
+				console.log(err);
+			})
+			
+			//我的互动的消息红点
+			API.myInfoRedDots({}).then(res => {
+				// console.log(res);
+				const resData = res.data.data;
+				
+				this.data.interactionArr[1].dot = resData.myAnswer;
+				this.data.interactionArr[2].dot = resData.answerMe;
 			}).catch(err => {
 				console.log(err);
 			})

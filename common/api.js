@@ -121,6 +121,10 @@ module.exports = {
 	myInfo: (data) => {
 		return MyAPI('users/userinfo', false, 'GET', data)
 	},
+	// 我的互动里的红点
+	myInfoRedDots: (data) => {
+		return MyAPI('interact/myunreaditems', false, 'GET', data)
+	},
 	// 我的消息列表
 	myMessageList: (data) => {
 		return MyAPI('infos/notice/list', false, 'GET', data)

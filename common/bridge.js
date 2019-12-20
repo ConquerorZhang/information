@@ -65,10 +65,10 @@ function bridgeAndroidAndIOS() {
 
 				bridge.registerHandler("JS Echo", function(data, responseCallback) {
 					bridgeLog('接收到来自Android数据： ' + JSON.parse(data).Authorization);
-					JSON.parse(data).Authorization
+					
 					// 初始传入token和guid
 					Vue.config.configDic = {
-						Authorization: data.Authorization,
+						Authorization: JSON.parse(data).Authorization,
 						// guid: "123456",
 						// token: "abcdefg",
 						// version: "0.0.1",

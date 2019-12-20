@@ -359,10 +359,15 @@
 			}
 		},
 		onLoad(option) {
-			console.log("-----pages:"+getCurrentPages())
+			console.log("-----pages:" + getCurrentPages())
 			console.log(option);
 			let index = option.index;
-			this.systemInfo = getApp().globalData.systemInfo;
+			// this.systemInfo = getApp().globalData.systemInfo;
+			uni.getSystemInfo({
+				success: (res) => {
+					this.systemInfo = res
+				}
+			})
 			this.labelList.forEach((item) => {
 				switch (index) {
 					case "0":
@@ -398,7 +403,9 @@
 			setTimeout(() => {
 				this.getNewData(this.datalists.type);
 			}, 500)
-
+			this.callHandler('ObjC Echo', {
+				'key': 'inner'
+			});
 		},
 		methods: {
 			radioChange: function(e) {
@@ -490,9 +497,13 @@
 			//页面跳转到详情
 			navToDetailPage(item, index, idkey) {
 				this.currrenIndex = index;
+				
 				uni.$once('interation$detailback', this.detailBack);
 				uni.navigateTo({
 					url: '/pages/interaction/interactionDetail?idkey=' + idkey + '&item=' + encodeURIComponent(JSON.stringify(item))
+				})
+				uni.showToast({
+					title:this.currrenIndex+'',
 				})
 			},
 			//详情回调函数
@@ -502,13 +513,13 @@
 				// console.log(this.datalists.type);
 				// console.log(this.currrenIndex);
 				if (this.currrenIndex != -1) {
-					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
-					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
-					// this.data.datalsit[this.currrenIndex] = data.item;
-					// this.$forceUpdate();
 					switch (this.datalists.type) {
 						case '1':
 							this.datalists.list1.datalist[this.currrenIndex] = data.item;
+							// console.log("---------favourCount:"+data.item.favourCount+"-----:"+data.item.favourCount)
+							// uni.showToast({
+							// 	title:data.item.favourCount,
+							// })
 							break;
 						case '2':
 							this.datalists.list2.datalist[this.currrenIndex] = data.item;
@@ -913,6 +924,7 @@
 			flex-direction: column;
 
 			.statusBar {
+				// height: $uni-status-height;
 				height: var(--status-bar-height);
 				width: 100%;
 				background-color: #FFFFFF;
@@ -966,7 +978,7 @@
 		}
 
 		.list {
-			// margin-top: 150rpx;
+			margin-top: 150rpx;
 			height: 100%;
 
 			.item-one {
@@ -1010,6 +1022,7 @@
 						}
 
 						.info {
+							width: 60%;
 							display: flex;
 							padding: 15rpx 10rpx;
 							flex-direction: column;
@@ -1174,8 +1187,9 @@
 						}
 
 						.info {
+							width: 60%;
 							display: flex;
-							padding: 15rpx 10rpx;
+							padding: 15rpx 10rpx 10rpx 10rpx;
 							flex-direction: column;
 							flex-grow: 10;
 
@@ -1183,6 +1197,11 @@
 								margin-left: 10rpx;
 								color: #585858;
 								font-size: $uni-font-size-name;
+								/** 对象作为伸缩盒子模型显示 **/
+								-webkit-line-clamp: 1;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								-webkit-box-orient: vertical;
 							}
 
 							.info-bottom {
@@ -1225,7 +1244,7 @@
 						display: flex;
 						flex-direction: row;
 						align-items: flex-start;
-						margin: 0 20rpx 20rpx 20rpx;
+						margin: 10rpx 20rpx 20rpx 20rpx;
 						border-radius: 10rpx;
 						background: #F1F1F1;
 						padding: 15rpx;
@@ -1381,6 +1400,7 @@
 									}
 
 									.info {
+										width: 60%;
 										display: flex;
 										padding: 15rpx 10rpx;
 										flex-direction: column;

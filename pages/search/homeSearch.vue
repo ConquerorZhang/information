@@ -273,7 +273,8 @@
 					})
 				}
 				else {
-					util.bridgeAndroidAndIOS({'key':'close'});
+					// util.bridgeAndroidAndIOS({'key':'close'});
+					this.callHandler('ObjC Echo',{'key':'close'});
 				}
 			},
 		}

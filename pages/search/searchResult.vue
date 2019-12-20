@@ -221,7 +221,8 @@
 					})
 				}
 				else if (index == 1) {
-					util.bridgeAndroidAndIOS({'key':'dangan','id':id});
+					// util.bridgeAndroidAndIOS({'key':'dangan','id':id});
+					this.callHandler('ObjC Echo', {'key':'dangan','id':id});
 				}
 				else if (index == 2) {
 					

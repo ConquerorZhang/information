@@ -130,7 +130,8 @@
 		methods: {
 			back() {
 				if (this.fromOrigin == '1') {
-					util.bridgeAndroidAndIOS({'key':'back'});
+					// util.bridgeAndroidAndIOS({'key':'back'});
+					this.callHandler('ObjC Echo',{'key':'back'});
 				}
 				else {
 					uni.navigateBack({

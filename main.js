@@ -6,8 +6,27 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 Vue.config.configDic = {};
-// 从原生获取token
-util.bridgeAndroidAndIOS();
+// 初始化bridge
+util.bridgeAndroidAndIOS();//{'key':'onshow'}
+
+
+// setTimeout(function(){
+	
+// 	util.mregisterHandler('JS Echo', function(data, responseCallback) {
+// 		uni.showToast({
+// 			title: data.key,
+// 		});
+// 					// 初始传入token和guid
+// 					Vue.config.configDic = {
+// 						Authorization: data.Authorization,
+// 						// guid: "123456",
+// 						// token: "abcdefg",
+// 						// version: "0.0.1",
+// 						// verCode: "191122",
+// 						// appCode: "corpMall",
+// 					};
+// 				});
+// },500)
 
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function isEmpty(obj){
@@ -17,6 +36,23 @@ Vue.prototype.isEmpty = function isEmpty(obj){
         return false;
     }
 }
+//注册函数,供原生调用
+Vue.prototype.registerHandler = function registerHandler(name,invoke){
+	util.mregisterHandler(name,invoke);
+};
+
+//调用原生
+Vue.prototype.callHandler = function callHandler(name,data){
+	util.mcallHandler(name,data,function(responseData) {
+				console.log("JS received response:", responseData)
+				// uni.showToast({
+				// 	title: responseData,
+				// })
+			});
+};
+
+
+
 
 const app = new Vue({
     ...App

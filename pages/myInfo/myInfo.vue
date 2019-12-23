@@ -119,14 +119,15 @@
 			})
 		},
 		onShow() {
-			util.bridgeAndroidAndIOS({'key':'onShow'});
+			// util.bridgeAndroidAndIOS({'key':'onShow'});
+			this.callHandler('ObjC Echo',{'key':'onShow'});
 		},
 		methods: {
 			clickSetting() {
-				util.bridgeAndroidAndIOS({'key':'setting'});
+				// util.bridgeAndroidAndIOS({'key':'setting'});
+				this.callHandler('ObjC Echo',{'key':'setting'})
 			},
 			navigateToFunc(index) {
-				
 				switch (index) {
 					case 0:
 						{
@@ -159,7 +160,8 @@
 					default:
 						break;
 				}
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				// util.bridgeAndroidAndIOS({'key':'inner'});
+				this.callHandler('ObjC Echo',{'key':'inner'});
 			},
 			navigateToInter(index) {
 				
@@ -188,7 +190,7 @@
 					default:
 						break;
 				}
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				// util.bridgeAndroidAndIOS({'key':'inner'});
 			}
 		}
 	}

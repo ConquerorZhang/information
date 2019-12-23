@@ -6,14 +6,15 @@
 		</head>
 		<view class="head">
 			<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
-			<view class="statusBar" ></view>
+			<view class="statusBar"></view>
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
 				<view class="v_search">
 					<uni-search-bar placeholder="关键字" radius="8" clearButton="auto" @confirm="search" class="search" />
 				</view>
-				<view class="top-right"  @click="message">   <!--@click="window.android.click('77777777777')"-->
+				<view class="top-right" @click="message">
+					<!--@click="window.android.click('77777777777')"-->
 					<image class="top-right-icon" mode="aspectFit" src="../../static/message_white.png"></image>
 					<!-- <text class="top-right-text" v-show='false' >消息</text> -->
 				</view>
@@ -26,8 +27,9 @@
 		</view>
 
 		<!-- <view class="top-zhanwei"></view> -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}" enableBackToTop="true" @scrolltolower="loadMore(page)" >
-			
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}"
+		 enableBackToTop="true" @scrolltolower="loadMore(page)">
+
 			<view class="empty" v-if="data.datalsit.length < 1">
 				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 				<view class="emptyText">没有找到相关信息～</view>
@@ -68,8 +70,8 @@
 			<view class="loading-more" v-if="data.isLoading || data.datalsit.length > 4">
 				<text class="loading-more-text">{{data.loadingText}}</text>
 			</view>
-			
-			
+
+
 		</scroll-view>
 		<cover-view class="cover-view" @click="navToPublish">
 			<image class="cover-view-image" src="../../static/interaction/publish_go.png"></image>
@@ -83,12 +85,12 @@
 	var util = require('../../common/bridge.js');
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
-	var util = require('../../common/bridge.js'); 
+	var util = require('../../common/bridge.js');
 	export default {
 		data() {
 			return {
-				systemInfo:'',
-				currrenIndex:-1,
+				systemInfo: '',
+				currrenIndex: -1,
 				type: '',
 				searchKey: '',
 				limit: '10',
@@ -156,7 +158,7 @@
 					{
 						'title': '按回复数',
 						'key': 'sort',
-						'value': 'visitCount',
+						'value': 'reply_count',
 						'isMutiple': false,
 						'isSort': false,
 						'reflexTitle': true,
@@ -173,21 +175,28 @@
 			intertctionFilter
 		},
 		methods: {
+
 			// functionInJs : function(){
 			// 	uni.showToast({
 			// 		title:'h5 Toast',
 			// 	})
 			// },
 			//消息
-			message(){
-				// uni.showToast({
-				// 	title:'h5 Toast',
-				// })
-				// window.android.click('77777777777');
+			message() {
 				uni.navigateTo({
 					url: "../myInfo/myMessage"
 				})
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				
+				// util.bridgeAndroidAndIOS({
+				// 	'key': 'inner'
+				// });
+				// uni.showToast({
+				// 	title: '111',
+				// });
+				this.callHandler('ObjC Echo',{
+					'key': 'inner'
+				});
+				
 			},
 			// 评论
 			topiccomment(topicid) {
@@ -230,26 +239,30 @@
 			sortresult(val) {
 				// console.log('filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
-				this.isAsc = "desc" == this.isAsc?"asc":"desc";
+				this.isAsc = "desc" == this.isAsc ? "asc" : "desc";
 				this.resetData();
 				this.getlistdata(1);
 			},
 			//页面跳转到详情
-			navToDetailPage(item,index) {
-				
+			navToDetailPage(item, index) {
+
 				this.currrenIndex = index;
-				uni.$once('interation$detailback',this.detailBack);
+				uni.$once('interation$detailback', this.detailBack);
 				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?item='+encodeURIComponent(JSON.stringify(item))
+					url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
 				})
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				// util.bridgeAndroidAndIOS({
+				// 	'key': 'inner'
+				// });
 			},
 			//页面跳转到发布
 			navToPublish(item) {
 				uni.navigateTo({
 					url: '/pages/interaction/publish'
 				})
-				util.bridgeAndroidAndIOS({'key':'inner'});
+				// util.bridgeAndroidAndIOS({
+				// 	'key': 'inner'
+				// });
 			},
 			//键盘触发搜索
 			search(key) {
@@ -273,16 +286,15 @@
 					// type: parseInt(this.selectedIndex) + 1,
 				}).then(res => {
 					console.log(res);
-						if (res.data.data.length < this.limit) {
-							this.data.loadingText = "没有更多数据了"
-							this.data.hasmore = false;
-						} else {
-							this.page = page + 1;
-							this.data.hasmore = true;
-						}
-						this.data.datalsit = this.data.datalsit.concat(res.data.data);
-						// this.data.datalsit=[];
-					console.log(res);
+					if (res.data.data.length < this.limit) {
+						this.data.loadingText = "没有更多数据了"
+						this.data.hasmore = false;
+					} else {
+						this.page = page + 1;
+						this.data.hasmore = true;
+					}
+					this.data.datalsit = this.data.datalsit.concat(res.data.data);
+					// this.data.datalsit=[];
 					// console.log(this.data.datalsit);
 				}).catch(err => {
 					this.data.hasmore = true;
@@ -302,37 +314,47 @@
 					refreshText: "",
 					loadingText: '加载更多...',
 					datalsit: [],
-					currrenIndex:-1
+					currrenIndex: -1
 				};
 				this.page = 1;
 			},
 			//详情回调函数
-			detailBack(data){
+			detailBack(data) {
 				console.log("回传数据呀--------------------");
 				// console.log(data.item);
-				if(this.currrenIndex !=-1){
+				if (this.currrenIndex != -1) {
 					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
 					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
 					this.data.datalsit[this.currrenIndex] = data.item;
 					this.$forceUpdate();
 				}
 				uni.$off('interation$detailback');
+			},
+			back() {
+				console.log(uni.onBackPress())
 			}
 		},
 
 		onLoad() {
-			// setTimeout(()=>{
-			// 	this.getlistdata(1);
-			// },350)
 			this.getlistdata(1);
-			uni.getSystemInfo({
-				success: (res) => {
-					this.systemInfo = res
-				}
-			})
+			this.systemInfo = getApp().globalData.systemInfo;
+			
+			// this.registerHandler('JS Echo', function(data, responseCallback) {
+			// 	// bridgeLog('收到Android数据： ' + data);
+			// 	uni.showToast({
+			// 		title: '收到Android数据： ' + data,
+
+			// 	})
+			// });
 		},
-		onShow(){
-			util.bridgeAndroidAndIOS({'key':'onShow'});
+		onShow() {
+			// util.bridgeAndroidAndIOS({
+			// 	'key': 'onShow'
+			// });
+			this.callHandler('ObjC Echo',{
+				'key': 'onShow'
+			});
+			
 			// uni.showToast({
 			// 	title:'show'
 			// })
@@ -351,7 +373,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		
+
 		.head {
 			position: fixed;
 			top: 0rpx;
@@ -360,7 +382,7 @@
 			background-image: linear-gradient(#D74819, #C7161E);
 
 			.statusBar {
-				height: $uni-status-height;//这里是无效的，不知为何  var(--status-bar-height)
+				height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
 				width: 100%;
 			}
 
@@ -429,15 +451,15 @@
 			margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
-			
+
 			.empty {
 				text-align: center;
-			
+
 				.emptyImage {
 					margin-top: 300rpx;
 					width: 500rpx;
 				}
-			
+
 				.emptyText {
 					color: #969798;
 				}

@@ -50,12 +50,15 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				canLoad: true,
-				fromOrigin: '',
+				fromH5: '',
 			}
 		},
 		onLoad(option) {
-			this.fromOrigin = option.fromOrigin;
+			this.fromH5 = option.fromH5;
 			this.getList();
+		},
+		onShow() {
+			
 		},
 		methods: {
 			getList() {
@@ -81,7 +84,7 @@
 			},
 			goDetail(item) {
 				uni.navigateTo({
-					url: 'newsDetail?id=' + item.id + '&keyword=' + this.keyword
+					url: 'newsDetail?id=' + item.id + '&keyword=' + this.keyword + '&fromH5=' + '1'
 				});
 			},
 			search(res) {
@@ -115,14 +118,13 @@
 				}, 500)
 			},
 			back() {
-				if (this.fromOrigin == '1') {
-					// util.bridgeAndroidAndIOS({'key':'back'});
-					this.callHandler('ObjC Echo',{'key':'back'});
-				}
-				else {
+				if (this.fromH5 == '1') {
 					uni.navigateBack({
 						delta: 1
 					})
+				}
+				else {
+					this.callHandler('ObjC Echo',{'key':'back'});
 				}
 			}
 		}

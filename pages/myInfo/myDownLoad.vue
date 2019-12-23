@@ -120,23 +120,23 @@
 					}
 
 				],
-				fromOrigin: '',
+				fromH5: '',
 			}
 		},
 		onLoad(option) {
-			this.fromOrigin = option.fromOrigin;
+			this.fromH5 = option.fromH5;
 			this.getList();
 		},
 		methods: {
 			back() {
-				if (this.fromOrigin == '1') {
-					// util.bridgeAndroidAndIOS({'key':'back'});
-					this.callHandler('ObjC Echo',{'key':'back'});
-				}
-				else {
+				if (this.fromH5 == '1') {
 					uni.navigateBack({
 						delta: 1
 					})
+				}
+				else {
+					// util.bridgeAndroidAndIOS({'key':'back'});
+					this.callHandler('ObjC Echo',{'key':'back'});
 				}
 			},
 			clickRightBtn(e) {

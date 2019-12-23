@@ -106,6 +106,10 @@
 			}).catch(err => {
 				console.log(err);
 			})
+		},
+		onShow() {
+			// util.bridgeAndroidAndIOS({'key':'onShow'});
+			this.callHandler('ObjC Echo',{'key':'onShow'});
 			
 			//我的互动的消息红点
 			API.myInfoRedDots({}).then(res => {
@@ -117,10 +121,6 @@
 			}).catch(err => {
 				console.log(err);
 			})
-		},
-		onShow() {
-			// util.bridgeAndroidAndIOS({'key':'onShow'});
-			this.callHandler('ObjC Echo',{'key':'onShow'});
 		},
 		methods: {
 			clickSetting() {

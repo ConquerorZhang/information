@@ -18,7 +18,7 @@
 							</view>
 							<view class="productPart" v-for="(item,index) in tab.data" :key="index" @click="interDetail(index1,item.id)">
 								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
-								<productCell :data="item"></productCell>
+								<productCell :data="item" fromH5='1'></productCell>
 							</view>
 						</checkbox-group>
 					</block>

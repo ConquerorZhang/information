@@ -14,7 +14,7 @@
 					<view class="title">产品中心</view>
 					<view class="subtitle">{{data.briefIntroduction}}</view>
 					<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
-						<productCell :data="item"></productCell>
+						<productCell :data="item" fromH5='1'></productCell>
 					</view>
 				</view>
 			</view>

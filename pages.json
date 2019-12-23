@@ -104,6 +104,7 @@
 		}, {
 			"path": "pages/main/newsDetail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "动态详情"
 			}
 		}, {
@@ -128,6 +129,7 @@
         ,{
             "path" : "pages/product/product",
             "style" : {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "产品中心"
 			}
         }

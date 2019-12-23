@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 function bridgeAndroidAndIOS() {
 
 	//ios
@@ -89,11 +91,11 @@ function bridgeAndroidAndIOS() {
 					bridge.registerHandler('JS Echo', function(data, responseCallback) {
 						console.log("JS Echo called with:", data)
 						// responseCallback(data)
-
+						
 						// 初始传入token和guid
 						Vue.config.configDic = {
 							Authorization: data.Authorization,
-							// guid: "123456",
+							productID: data.productID,
 							// token: "abcdefg",
 							// version: "0.0.1",
 							// verCode: "191122",

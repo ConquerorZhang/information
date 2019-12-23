@@ -17,7 +17,11 @@
 			data: {
 				type: Object,
 				default: {}
-			}
+			},
+			fromH5: {
+				type: String,
+				default: ''
+			},
 		},
 		data() {
 			return {
@@ -26,10 +30,15 @@
 		},
 		methods: {
 			navigateToProduct(e) {
-				console.log(e);
-				uni.navigateTo({
-					url:'../../pages/product/product?productId='+e
-				})
+				// console.log(e);
+				if (this.fromH5 == '1') {
+					uni.navigateTo({
+						url:'../../pages/product/product?productId='+e + '&fromH5=' + this.fromH5
+					})
+				}
+				else {
+					this.callHandler('ObjC Echo',{'key':'newProduct','productId':e});
+				}
 			},
 		}
 	}

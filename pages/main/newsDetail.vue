@@ -1,6 +1,9 @@
 <template>
 	<view class="container">
-		<view class="contentView" v-html="content">{{content}}</view>
+		<uni-nav-bar id="naviBar" left-icon="back" title="动态详情" @clickLeft="back"></uni-nav-bar>
+		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
+			<view class="contentView" v-html="content">{{content}}</view>
+		</scroll-view>
 		<view class="bottomView">
 			<view class="preViewEmpty" v-if="data.preTitle == null || data.preTitle == ''"></view>
 			<view class="preView" v-show="data.preTitle != null && data.preTitle != ''" @click="navigateToNews(data.preId)">
@@ -17,21 +20,27 @@
 
 <script>
 	const API = require('../../common/api.js')
-	
+	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+
 	export default {
+		components: {
+			uniNavBar
+		},
 		data() {
 			return {
 				id: '',
 				keyword: '',
 				content: '',
-				data:{}
+				data: {},
+				fromH5: '',
 			}
 		},
 		onLoad(option) {
-			console.log(option);
+			// console.log(option);
+			this.fromH5 = option.fromH5;
 			this.id = option.id;
 			this.keyword = option.keyword;
-			
+
 			API.newsDetail({
 				id: this.id,
 				title: this.keyword
@@ -56,6 +65,18 @@
 				}).catch(err => {
 					console.log(err);
 				})
+			},
+			back() {
+				console.log(this.fromH5);
+				if (this.fromH5 == '1') {
+					uni.navigateBack({
+						delta: 1
+					})
+				} else {
+					this.callHandler('ObjC Echo', {
+						'key': 'back'
+					});
+				}
 			}
 		}
 	}
@@ -66,15 +87,22 @@
 		height: 100%;
 		background: #FFFFFF;
 	}
-	
+
 	.container {
 		width: 100%;
 		height: 100%;
-		
-		.contentView {
-			height: calc(100% - 100rpx);
+
+		.scroll-v {
+			flex: 1;
+			width: 750upx;
+			height: calc(100% - 170rpx);
+			flex-direction: column;
+
+			.contentView {
+				height: calc(100% - 200rpx);
+			}
 		}
-		
+
 		.bottomView {
 			display: flex;
 			position: fixed;
@@ -84,19 +112,23 @@
 			line-height: 100rpx;
 			border-top: 1px solid #CCCCCC;
 			background: #FFFFFF;
+
 			.preViewEmpty {
 				width: 330rpx;
 			}
+
 			.preView {
 				margin-left: 10rpx;
 				width: 320rpx;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
+
 				.label {
-					 color: #757677;
+					color: #757677;
 				}
 			}
+
 			.nextView {
 				margin-right: 10rpx;
 				margin-left: 90rpx;
@@ -104,8 +136,9 @@
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
+
 				.label {
-					 color: #757677;
+					color: #757677;
 				}
 			}
 		}

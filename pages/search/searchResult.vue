@@ -56,7 +56,7 @@
 							<view class="emptyText">没有找到相关信息～</view>
 						</view>
 						<view class="productPart" v-for="(item,index) in tab" :key="index" @click="goDetail(index1,item.id)">
-							<productCell :data="item"></productCell>
+							<productCell :data="item" :fromH5='fromH5'></productCell>
 						</view>
 					</block>
 					<block v-else-if="index1 == 3">
@@ -122,7 +122,8 @@
 					[],
 					[]
 				],
-				canLoad: [true, true, true, true]
+				canLoad: [true, true, true, true],
+				fromH5: '1'
 			}
 		},
 		onLoad(option) {
@@ -130,6 +131,9 @@
 			this.keyword = option.keyword;
 			
 			this.getList();
+		},
+		onShow() {
+			this.callHandler('ObjC Echo', {'key':'onShow'});
 		},
 		methods: {
 			getList() {
@@ -217,7 +221,7 @@
 			goDetail(index,id) {
 				if (index == 0) {
 					uni.navigateTo({
-						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword
+						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword + '&fromH5=' + '1'
 					})
 				}
 				else if (index == 1) {

@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<uni-nav-bar id="naviBar" left-icon="back" title="产品中心" @clickLeft="back"></uni-nav-bar>
 		<view class="searchPart">
 			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" :initShowClose=initShowClose @searchClick="searchClick"></uni-search-bar>
 		</view>
@@ -60,7 +61,7 @@
 					<view class="title">产品中心</view>
 					<view class="subtitle">{{data.briefIntroduction}}</view>
 					<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
-						<productCell :data="item"></productCell>
+						<productCell :data="item" fromH5='1'></productCell>
 					</view>
 				</view>
 			</view>
@@ -90,16 +91,19 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	const API = require('../../common/api.js')
 	import htmlPanel from "@/components/zcc/my-html-panel/my-html-panel.vue"
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
+	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
 		components: {
 			htmlPanel,
 			downLoadCell,
-			productCell
+			productCell,
+			uniNavBar
 		},
 		data() {
 			return {
@@ -119,10 +123,12 @@
 				youshi_url: '',
 				gongneng_url: '',
 				anli_url: '',
+				fromH5: '',
 			}
 		},
 		onLoad(option) {
-			this.productId = option.productId;
+			this.productId = Vue.prototype.isEmpty(option.productId) ? Vue.config.configDic.productID : option.productId;
+			this.fromH5 = option.fromH5;
 			this.getProductData();
 		},
 		methods: {
@@ -225,6 +231,16 @@
 						console.log("成功拨打电话")
 					}
 				})
+			},
+			back() {
+				if (this.fromH5 == '1') {
+					uni.navigateBack({
+						delta: 1
+					})
+				}
+				else {
+					this.callHandler('ObjC Echo',{'key':'back'});
+				}
 			}
 		}
 	}
@@ -285,7 +301,7 @@
 		.scroll-v {
 			flex: 1;
 			width: 750upx;
-			height: calc(100% - 180rpx);
+			height: calc(100% - 270rpx);
 			/* #ifndef MP-ALIPAY */
 			flex-direction: column;
 

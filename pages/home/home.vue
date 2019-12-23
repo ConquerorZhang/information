@@ -11,8 +11,12 @@
             </view>
         </uni-nav-bar>
         <scroll-view class="scroll" scroll-x="true">
-            <text class="x">全部</text>
-            <text @click="kg=!kg">点这里试试</text>
+            <text :class="0 == productId ? 'x' : ''" @click="product_all">全部</text>
+            <text v-for="(item,index) in lv1list" @click="product_cli(item.id)" :class="item.id == productId ? 'x' : ''"> 
+            {{item.productName}}
+             </text>
+           
+          <!--  <text @click="kg=!kg">点这里试试</text>
             <text @click="sdfdf">交通信息化</text>
             <text>交通信息化</text>
             <text>交通信息化</text>
@@ -22,7 +26,7 @@
             <text>交通信息化</text>
             <text>交通信息化</text>
             <text>交通信息化</text>
-            <text>交通信息化</text>
+            <text>交通信息化</text> -->
         </scroll-view>
         <sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult"></sl-filter>
         <view v-if="kg">
@@ -172,6 +176,7 @@
 </template>
 
 <script>
+    const API = require('../../common/api.js')
     import uniNavBar from '@/components/lib/uni-nav-bar/uni-nav-bar.vue';
     import slFilter from '@/components/sl-filter/myPublish-filter.vue';
     import uniLoadMore from '@/components/lib/uni-load-more/uni-load-more.vue';
@@ -231,17 +236,18 @@
                 ],
                 searchKey: "", //搜索关键词
                 fileTypeId: [], //类型列表
-                productId: "", // 交通信息化/电子政务等的id 
+                productId: 0, // 交通信息化/电子政务等的id 
                 limit: "12",
                 page: 0, //当前第几页
                 orderBy: "", //latest  downloadCount   最新 下载量
                 isAsc: "", //asc desc
                 sortresult_value: 0, //区分不同排序的点击 
                 sortresult_count: 0,
+                lv1list : [] 
             };
         },
         onLoad() {
-
+            this.getlv1list();
         },
         //加载更多
         onReachBottom() {
@@ -253,6 +259,12 @@
            uni.stopPullDownRefresh();
         },
         methods: {
+            product_cli(id){
+                this.productId = id
+            },
+            product_all(){
+                this.productId = 0
+            },
             gomeans() {
                 uni.navigateTo({
                     url: '/pages/means/means'
@@ -266,6 +278,7 @@
                 this.innerVersion = plus.runtime.innerVersion;
             },
             sortresult(param) { //最新
+            console.log("-----");
                 let value = param["jobType"]
                 if (this.sortresult_value != value) { //两次点击不一样是 参数复原 如:点击次数
                     this.sortresult_count = 0
@@ -296,20 +309,33 @@
                 if(this.orderBy != ""){
                     json.orderBy = this.orderBy
                 }
+                if(this.searchKey != ""){
+                    json.searchKey = this.searchKey
+                }
+                 if(this.productId != 0){
+                    json.productId = this.productId
+                }
+                
+               //TODO 下拉框的还没写 
                //isAsc  orderBy searchKey fileTypeId 文件类型  if 
-               
-              
-
-                API.HomeresourceList({
-                    id: this.id,
-                    
-                }).then(res => {
+                API.HomeresourceList(json).then(res => {
                     console.log(res);
-                    this.content = res.data.data.contents;
                 }).catch(err => {
                     console.log(err);
                 })
 
+            },
+            getlv1list(){
+                console.log("getlv1list")
+                API.getlv1list({
+
+                }).then(res => {
+                    this.lv1list = res.data
+                    console.log(res); 
+                }).catch(err => {
+                    console.log(err);
+                })
+                
             }
         },
 

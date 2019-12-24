@@ -67,7 +67,7 @@
 			</view>
 		</scroll-view>
 		<image class="fudongquan" src="../../static/product/fudongquan.png" @click="clickFuDongQuan"></image>
-		<view class="showPhoneInfos" v-show="showPhoneInfos">
+		<view class="showPhoneInfos" v-show="showPhoneInfos" @touchmove.stop.prevent = "">
 			<view class='popup-mask' @click='closePhoneInfos'></view>
 			<view class='phoneInfos'>
 				<view class="namePart">

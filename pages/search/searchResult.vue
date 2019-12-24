@@ -222,13 +222,14 @@
 					uni.navigateTo({
 						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword + '&fromH5=' + '1'
 					})
+					this.callHandler('ObjC Echo', {'key':'inner'});
 				}
 				else if (index == 1) {
 					// util.bridgeAndroidAndIOS({'key':'dangan','id':id});
 					this.callHandler('ObjC Echo', {'key':'dangan','id':id});
 				}
 				else if (index == 2) {
-					
+					this.callHandler('ObjC Echo', {'key':'inner'});
 				}
 				else if (index == 3) {
 					
@@ -247,6 +248,7 @@
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
+				this.tabIndex = index;
 				this.switchTab(index);
 			},
 			switchTab(index) {
@@ -258,7 +260,6 @@
 					return;
 				}
 
-				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {
@@ -403,7 +404,7 @@
 
 				.timePart {
 					color: #6c6e6f;
-					font-size: 30rpx;
+					font-size: 26rpx;
 
 					.time {
 						margin-right: 40rpx;

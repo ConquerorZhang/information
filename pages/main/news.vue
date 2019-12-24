@@ -84,7 +84,7 @@
 			},
 			goDetail(item) {
 				uni.navigateTo({
-					url: 'newsDetail?id=' + item.id + '&keyword=' + this.keyword + '&fromH5=' + '1'
+					url: 'newsDetail?id=' + item.id + '&keyword=' + this.keyword + '&fromH5=1'
 				});
 			},
 			search(res) {

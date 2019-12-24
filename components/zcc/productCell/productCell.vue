@@ -61,7 +61,7 @@
 			}
 
 			.textPart {
-				margin-top: 25rpx;
+				margin-top: 30rpx;
 				width: 390rpx;
 
 				.title {
@@ -82,6 +82,7 @@
 
 				.time {
 					color: #8f9091;
+					font-size: 30rpx;
 				}
 			}
 

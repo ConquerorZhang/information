@@ -152,7 +152,7 @@
 					case 3:
 						{
 							uni.navigateTo({
-								url: "myMessage"
+								url: "myMessage?fromH5=1"
 							})
 							break;
 						}

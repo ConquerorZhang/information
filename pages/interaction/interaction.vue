@@ -184,7 +184,7 @@
 			//消息
 			message() {
 				uni.navigateTo({
-					url: "../myInfo/myMessage"
+					url: "../myInfo/myMessage?" + '&fromH5=1'
 				})
 				
 				// uni.showToast({

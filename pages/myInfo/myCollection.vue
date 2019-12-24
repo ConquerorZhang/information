@@ -223,6 +223,7 @@
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
+				this.tabIndex = index;
 				this.switchTab(index);
 			},
 			switchTab(index) {
@@ -234,7 +235,6 @@
 					return;
 				}
 
-				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {

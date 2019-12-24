@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<uni-nav-bar id="naviBar" left-icon="back" title="动态详情" @clickLeft="back"></uni-nav-bar>
-		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y @scrolltolower="loadMore()">
+		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y>
 			<view class="contentView" v-html="content">{{content}}</view>
 		</scroll-view>
 		<view class="bottomView">

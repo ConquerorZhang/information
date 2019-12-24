@@ -28,6 +28,7 @@
 		}, {
 			"path": "pages/myInfo/myMessage",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的消息"
 			}
 		}, {
@@ -57,6 +58,7 @@
 		}, {
 			"path": "pages/myInfo/MessageDetail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "消息详情"
 			}
 		}, {

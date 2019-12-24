@@ -11,6 +11,8 @@
 </template>
 
 <script>
+	import Vue from 'vue'
+	
 	export default {
 		name: "productCell",
 		props: {
@@ -30,7 +32,7 @@
 		},
 		methods: {
 			navigateToProduct(e) {
-				// console.log(e);
+				console.log(e);
 				if (this.fromH5 == '1') {
 					uni.navigateTo({
 						url:'../../pages/product/product?productId='+e + '&fromH5=' + this.fromH5

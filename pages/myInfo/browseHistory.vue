@@ -146,8 +146,8 @@
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
+				this.tabIndex = index;
 				this.switchTab(index);
-				console.log(index);
 			},
 			switchTab(index) {
 				if (this.newsList[index].length === 0) {
@@ -158,7 +158,6 @@
 					return;
 				}
 
-				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {

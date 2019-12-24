@@ -11,13 +11,19 @@
 </template>
 
 <script>
+	import Vue from 'vue'
+	
 	export default {
 		name: "productCell",
 		props: {
 			data: {
 				type: Object,
 				default: {}
-			}
+			},
+			fromH5: {
+				type: String,
+				default: ''
+			},
 		},
 		data() {
 			return {
@@ -27,9 +33,14 @@
 		methods: {
 			navigateToProduct(e) {
 				console.log(e);
-				uni.navigateTo({
-					url:'../../pages/product/product?productId='+e
-				})
+				if (this.fromH5 == '1') {
+					uni.navigateTo({
+						url:'../../pages/product/product?productId='+e + '&fromH5=' + this.fromH5
+					})
+				}
+				else {
+					this.callHandler('ObjC Echo',{'key':'newProduct','productId':e});
+				}
 			},
 		}
 	}
@@ -50,7 +61,7 @@
 			}
 
 			.textPart {
-				margin-top: 25rpx;
+				margin-top: 30rpx;
 				width: 390rpx;
 
 				.title {
@@ -71,6 +82,7 @@
 
 				.time {
 					color: #8f9091;
+					font-size: 30rpx;
 				}
 			}
 

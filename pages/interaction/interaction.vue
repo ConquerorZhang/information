@@ -81,11 +81,11 @@
 </template>
 
 <script>
+	import Vue from 'vue';
 	const API = require('../../common/api.js');
 	var util = require('../../common/bridge.js');
 	import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
 	import intertctionFilter from '@/components/sl-filter/intertction-filter.vue';
-	var util = require('../../common/bridge.js');
 	export default {
 		data() {
 			return {
@@ -184,12 +184,9 @@
 			//消息
 			message() {
 				uni.navigateTo({
-					url: "../myInfo/myMessage"
+					url: "../myInfo/myMessage?" + '&fromH5=1'
 				})
 				
-				// util.bridgeAndroidAndIOS({
-				// 	'key': 'inner'
-				// });
 				// uni.showToast({
 				// 	title: '111',
 				// });
@@ -336,30 +333,39 @@
 		},
 
 		onLoad() {
-			this.getlistdata(1);
-			this.systemInfo = getApp().globalData.systemInfo;
+			
+			
 			
 			// this.registerHandler('JS Echo', function(data, responseCallback) {
 			// 	// bridgeLog('收到Android数据： ' + data);
 			// 	uni.showToast({
-			// 		title: '收到Android数据： ' + data,
+			// 		title: '1收到Android数据： ' + data,
 
 			// 	})
 			// });
 		},
 		onShow() {
-			// util.bridgeAndroidAndIOS({
-			// 	'key': 'onShow'
+			this.systemInfo = getApp().globalData.systemInfo;
+			
+			// uni.showToast({
+			// 	title:Vue.config.configDic.Authorization,
 			// });
+			
 			this.callHandler('ObjC Echo',{
 				'key': 'onShow'
 			});
-			
+			// this.callHandlerBack('JsGetToken','',function(responseData) {
+			// 	console.log("JS received response:", responseData)
+			// 	uni.showToast({
+			// 		title: 'J'+responseData,
+			// 	})
+			// });
 			// uni.showToast({
 			// 	title:'show'
 			// })
 			// this.resetData();
 			// this.getlistdata(1)
+			setTimeout(this.getlistdata(1),5000);
 		},
 	}
 </script>

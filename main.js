@@ -2,14 +2,13 @@ import Vue from 'vue'
 import App from './App'
 var util = require('./common/bridge.js');
 
-Vue.config.productionTip = false
-App.mpType = 'app'
+Vue.config.productionTip = false;
+App.mpType = 'app';
 
-Vue.config.configDic = {};
+Vue.config.configDic = {
+};
 // 初始化bridge
 util.bridgeAndroidAndIOS();//{'key':'onshow'}
-
-
 // setTimeout(function(){
 	
 // 	util.mregisterHandler('JS Echo', function(data, responseCallback) {
@@ -51,7 +50,10 @@ Vue.prototype.callHandler = function callHandler(name,data){
 			});
 };
 
-
+//调用原生
+Vue.prototype.callHandlerBack = function callHandler(name,data,callback){
+	util.mcallHandler(name,data,callback);
+};
 
 
 const app = new Vue({

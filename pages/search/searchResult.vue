@@ -56,7 +56,7 @@
 							<view class="emptyText">没有找到相关信息～</view>
 						</view>
 						<view class="productPart" v-for="(item,index) in tab" :key="index" @click="goDetail(index1,item.id)">
-							<productCell :data="item"></productCell>
+							<productCell :data="item" fromH5='1'></productCell>
 						</view>
 					</block>
 					<block v-else-if="index1 == 3">
@@ -122,7 +122,7 @@
 					[],
 					[]
 				],
-				canLoad: [true, true, true, true]
+				canLoad: [true, true, true, true],
 			}
 		},
 		onLoad(option) {
@@ -130,6 +130,9 @@
 			this.keyword = option.keyword;
 			
 			this.getList();
+		},
+		onShow() {
+			this.callHandler('ObjC Echo', {'key':'onShow'});
 		},
 		methods: {
 			getList() {
@@ -217,15 +220,16 @@
 			goDetail(index,id) {
 				if (index == 0) {
 					uni.navigateTo({
-						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword
+						url:'../main/newsDetail?id='+id+'&keyword='+this.keyword + '&fromH5=' + '1'
 					})
+					this.callHandler('ObjC Echo', {'key':'inner'});
 				}
 				else if (index == 1) {
 					// util.bridgeAndroidAndIOS({'key':'dangan','id':id});
 					this.callHandler('ObjC Echo', {'key':'dangan','id':id});
 				}
 				else if (index == 2) {
-					
+					this.callHandler('ObjC Echo', {'key':'inner'});
 				}
 				else if (index == 3) {
 					
@@ -244,6 +248,7 @@
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
+				this.tabIndex = index;
 				this.switchTab(index);
 			},
 			switchTab(index) {
@@ -255,7 +260,6 @@
 					return;
 				}
 
-				this.tabIndex = index;
 				this.scrollInto = this.tabBars[index].id;
 			},
 			clearTabData(e) {
@@ -400,7 +404,7 @@
 
 				.timePart {
 					color: #6c6e6f;
-					font-size: 30rpx;
+					font-size: 26rpx;
 
 					.time {
 						margin-right: 40rpx;

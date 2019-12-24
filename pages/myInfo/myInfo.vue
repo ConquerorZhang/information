@@ -106,21 +106,20 @@
 			}).catch(err => {
 				console.log(err);
 			})
+		},
+		onShow() {
+			// util.bridgeAndroidAndIOS({'key':'onShow'});
+			this.callHandler('ObjC Echo',{'key':'onShow'});
 			
 			//我的互动的消息红点
 			API.myInfoRedDots({}).then(res => {
 				// console.log(res);
 				const resData = res.data.data;
-				
 				this.data.interactionArr[1].dot = resData.myAnswer;
 				this.data.interactionArr[2].dot = resData.answerMe;
 			}).catch(err => {
 				console.log(err);
 			})
-		},
-		onShow() {
-			// util.bridgeAndroidAndIOS({'key':'onShow'});
-			this.callHandler('ObjC Echo',{'key':'onShow'});
 		},
 		methods: {
 			clickSetting() {
@@ -153,7 +152,7 @@
 					case 3:
 						{
 							uni.navigateTo({
-								url: "myMessage"
+								url: "myMessage?fromH5=1"
 							})
 							break;
 						}

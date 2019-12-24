@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<uni-nav-bar id="naviBar" left-icon="back" title="我的消息" @clickLeft="back"></uni-nav-bar>
 		<view class="empty" v-if="dataList.length < 1">
 			<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 			<view class="emptyText">暂无消息</view>
@@ -27,8 +28,12 @@
 
 <script>
 	const API = require('../../common/api.js')
+	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
+		components: {
+			uniNavBar
+		},
 		data() {
 			return {
 				dataList: [],
@@ -36,17 +41,19 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				canLoad: true,
+				fromH5: '',
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.fromH5 = option.fromH5;
 			this.getList();
 		},
 		methods: {
-			navigateToDetail(e,index) {
+			navigateToDetail(e, index) {
 				uni.navigateTo({
-					url: "MessageDetail?id=" + e
+					url: "MessageDetail?id=" + e + '&fromH5=1'
 				})
-				
+
 				// 将已读置成未读
 				console.log(index);
 				this.dataList[index].isRead = 1;
@@ -76,6 +83,17 @@
 				setTimeout(() => {
 					this.getList();
 				}, 500)
+			},
+			back() {
+				if (this.fromH5 == '1') {
+					uni.navigateBack({
+						delta: 1
+					})
+				} else {
+					this.callHandler('ObjC Echo', {
+						'key': 'back'
+					});
+				}
 			}
 		}
 	}
@@ -90,7 +108,6 @@
 	.container {
 		position: relative;
 		height: 100%;
-		padding-top: 20rpx;
 
 		.empty {
 			text-align: center;
@@ -99,16 +116,17 @@
 				margin-top: 300rpx;
 				width: 500rpx;
 			}
+
 			.emptyText {
 				color: #969798;
 			}
 		}
 
 		.scroll-v {
-			height: 100%;
-			
+			height: calc(100% - 100rpx);
+
 			.message {
-				margin: 0 20rpx 20rpx;
+				margin: 20rpx 20rpx 20rpx;
 				padding: 20rpx 30rpx;
 				border-radius: 40rpx;
 				background: #FFFFFF;
@@ -132,7 +150,7 @@
 						color: #ee3847;
 					}
 				}
-				
+
 				.pic {
 					border-radius: 10rpx;
 					margin-top: 10rpx;
@@ -154,7 +172,7 @@
 					color: #999999;
 				}
 			}
-			
+
 			.loading-more {
 				align-items: center;
 				justify-content: center;
@@ -162,7 +180,7 @@
 				padding-bottom: 10px;
 				text-align: center;
 			}
-			
+
 			.loading-more-text {
 				font-size: 28upx;
 				color: #999;

@@ -28,6 +28,7 @@
 		}, {
 			"path": "pages/myInfo/myMessage",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的消息"
 			}
 		}, {
@@ -57,6 +58,7 @@
 		}, {
 			"path": "pages/myInfo/MessageDetail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "消息详情"
 			}
 		}, {
@@ -104,6 +106,7 @@
 		}, {
 			"path": "pages/main/newsDetail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "动态详情"
 			}
 		}, {
@@ -130,6 +133,7 @@
         ,{
             "path" : "pages/product/product",
             "style" : {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "产品中心"
 			}
         }

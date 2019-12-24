@@ -23,14 +23,13 @@
 			return {
 				systeminfo:'',
 				id: '',
-				content: '信息化云平台简介按合法is饭卡上季啊看手机发卡机是咖啡机按时间放假啊看手机付款了基拉是积分开奖奥斯卡发接口基拉是积分开奖奥斯卡了发接口季啊及时反馈静安寺咖啡机卡j发的富士达发顺丰发是的发顺丰三',
+				content: '',
 			};
 		},
-		onLoad() {
-			this.id = option.id
-			this.systeminfo = getApp().globalData.systemInfo;
-			API.myMessageDetail({
-				id: this.id,
+		onLoad(option) {
+			console.log("----------------------onload");
+			API.PlateformBriefIntroduction({
+				id:'1'
 			}).then(res => {
 				console.log(res);
 				this.content = res.data.data.contents;
@@ -38,6 +37,11 @@
 				console.log(err);
 			})
 		},
+		
+		onShow() {
+			this.systeminfo = getApp().globalData.systemInfo;
+		},
+		
 		methods: {
 			back() {
 				uni.navigateBack({

@@ -452,7 +452,6 @@
 					this.getNewData(this.datalists.type);
 				}, 500)
 
-
 			},
 			//排序菜单返回结果
 			sortresult(val) {

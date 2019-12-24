@@ -115,7 +115,6 @@
 			API.myInfoRedDots({}).then(res => {
 				// console.log(res);
 				const resData = res.data.data;
-				
 				this.data.interactionArr[1].dot = resData.myAnswer;
 				this.data.interactionArr[2].dot = resData.answerMe;
 			}).catch(err => {

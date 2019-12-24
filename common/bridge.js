@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// import Vue from '../App.vue'
 
 function bridgeAndroidAndIOS() {
 
@@ -37,7 +38,7 @@ function bridgeAndroidAndIOS() {
 
 	function bridgeLog(logContent) {
 		uni.showToast({
-			title: 'responseData1' + logContent,
+			title: logContent,
 		})
 	}
 
@@ -46,7 +47,9 @@ function bridgeAndroidAndIOS() {
 			console.log('运行Android上')
 			connectWebViewJavascriptBridge(function(bridge) {
 				//注册回调函数，第一次连接时调用 初始化函数
-
+				// uni.showToast({
+				// 	title: "55555",
+				// })
 				//js调原生
 				// bridge.callHandler('ObjC Echo', data, function(responseData) {
 				// 	console.log("JS received response:", responseData)
@@ -66,26 +69,27 @@ function bridgeAndroidAndIOS() {
 				// mregisterHandler("JS Echo");
 
 				bridge.registerHandler("JS Echo", function(data, responseCallback) {
-					bridgeLog('接收到来自Android数据： ' + JSON.parse(data).Authorization);
-					
+					// bridgeLog('接收到来自Android数据： ' + JSON.parse(data).Authorization);
+
 					// 初始传入token和guid
 					Vue.config.configDic = {
 						Authorization: JSON.parse(data).Authorization,
+						// Authorization: '45678978345456',
 						// guid: "123456",
 						// token: "abcdefg",
 						// version: "0.0.1",
 						// verCode: "191122",
 						// appCode: "corpMall",
 					};
+					// bridgeLog('接收到来自Android数据： '+Vue.config.configDic.Authorization );
 				});
 
 			})
-
+			// bridge.init();
 			break;
 		case 'ios':
 			{
 				console.log('运行iOS上')
-
 				setupWebViewJavascriptBridge(function(bridge) {
 					/* Initialize your app here */
 					bridge.registerHandler('JS Echo', function(data, responseCallback) {
@@ -102,9 +106,9 @@ function bridgeAndroidAndIOS() {
 							// appCode: "corpMall",
 						};
 					})
-					bridge.callHandler('ObjC Echo', data, function responseCallback(responseData) {
-						console.log("JS received response:", responseData)
-					})
+					// bridge.callHandler('ObjC Echo', data, function responseCallback(responseData) {
+					// 	console.log("JS received response:", responseData)
+					// })
 				})
 
 				break;

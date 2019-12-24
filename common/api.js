@@ -16,10 +16,53 @@ if (process.env.NODE_ENV === 'development') {
 	http = request.test;
 }
 
+function getToken(){
+	// let token = '123456';
+  	Vue.prototype.callHandlerBack('JsGetToken','',function(responseData) {
+		console.log("JS received response:", responseData)
+		// this.token = JSON.parse(responseData).Authorization;
+		Vue.config.configDic = {
+			Authorization: 'JSON.parse(responseData).Authorization',
+			// Authorization: '45678978345456',
+			// guid: "123456",
+			// token: "abcdefg",
+			// version: "0.0.1",
+			// verCode: "191122",
+			// appCode: "corpMall",
+		};
+		// return 'JSON.parse(responseData).Authorization';
+		// return 'JSON.parse(responseData).Authorization';
+		// return token;
+		// uni.showToast({
+		// 	title: 'Jq-'+JSON.parse(responseData).Authorization,
+		// })
+	});
+	
+	// return token;
+}
+
+
 const MyAPI = (url, needSubDomain, method, data) => {
 	let _url = api_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + '/' + url;
+	//  getToken();
+	// uni.showToast({
+	// 	title: Vue.config.configDic.Authorization,
+		
+	// })
 	//todozcc临时的token
-	let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsImV4cCI6MTU3OTMzNjU3NCwidXNlcm5hbWUiOiLogpblvawifQ.RT9sW3EAIxoCG9u2JMiFOPZngROM72uthVxs16Odzrk" : Vue.config.configDic.Authorization;
+	let Authorization = '';
+	if(Vue.prototype.isEmpty(Vue.config.configDic.Authorization)){
+		getToken();
+		setTimeout(()=>{
+			Authorization = Vue.config.configDic.Authorization;
+		},1000);
+		
+	}else{
+		Authorization = Vue.config.configDic.Authorization;
+	}
+	
+	// let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? getToken() : Vue.config.configDic.Authorization;
+	
 	// let token = Vue.config.configDic.token;
 	// let guid = Vue.config.configDic.guid;
 	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);
@@ -47,6 +90,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		}
 		return config
 	})
+	
 	
 	if (method == "GET") {
 		// url拼接参数
@@ -237,7 +281,6 @@ module.exports = {
     HomeresourceList: (data) => {
     	return MyAPI('learnmaterial/list', false, 'GET', data)
     },
-    //获取资源查询时 分类列表
     getlv1list: (data) => {
         return MyAPI('product/getlv1list', false, 'GET', data)
     },
@@ -254,5 +297,8 @@ module.exports = {
     deleteHistory : (data) => {
          return MyAPI('learnmaterial/deletehistory', false, 'GET', data)
     }
-
+	//信息化平台简介
+	PlateformBriefIntroduction: (data) => {
+		return MyAPI('home/intro', false, 'GET', data)
+	},
 }

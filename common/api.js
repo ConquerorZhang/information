@@ -235,6 +235,24 @@ module.exports = {
 	},
       //获取资源列表
     HomeresourceList: (data) => {
-    	return MyAPI('api/learnmaterial/list', false, 'GET', data)
+    	return MyAPI('learnmaterial/list', false, 'GET', data)
     },
+    //获取资源查询时 分类列表
+    getlv1list: (data) => {
+        return MyAPI('product/getlv1list', false, 'GET', data)
+    },
+    //获取文件类型 / doc xls ppt
+    getFileType:(data) => {
+        return MyAPI('learnmaterial/alltype', false, 'GET', data)
+    },
+    getfileDetail: (data) => {
+         return MyAPI('learnmaterial/detail', false, 'GET', data)
+    },
+    getHistoryList:(data) => {
+         return MyAPI('learnmaterial/downloadhistory', false, 'GET', data)
+    },
+    deleteHistory : (data) => {
+         return MyAPI('learnmaterial/deletehistory', false, 'GET', data)
+    }
+
 }

@@ -3,18 +3,25 @@
         <view class="xtnav"></view>
         <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back"></uni-nav-bar>
         <view class="detaile">
-            <view class="title">孵化信息系统资料DOC</view>
-            <view class="time">2019-11-21 15:21</view>
+            <view class="title">{{detailData.docName}}</view>
+            <view class="time">{{detailData.createTime}}</view>
             <view class="tips">
                 <image src="../../static/tab-my.png" mode="aspectFit"></image>
-                <text>负责人:徐鹏</text>
+                <text>负责人:{{detailData.charger}}</text>
                 <image src="../../static/attention.png" mode="aspectFit"></image>
-                <text>浏览: 8484次</text>
+                <text>浏览: {{detailData.visitCount}}次</text>
                 <image src="../../static/arrow_down_black.png" mode="aspectFit"></image>
-                <text>下载: 2132次</text>
+                <text>下载: {{detailData.downloadCount}}次</text>
             </view>
         </view>
-        <view class="main">内容 需要插件 目前需求不明确</view>
+        <view class="main">
+          <!--  <web-view  ></web-view> -->
+            内容 需要插件 目前需求不明确
+             
+            <!-- <iframe src="https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe> -->
+            <!-- <iframe src="https://docs.google.com/viewer?url=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0"></iframe> -->
+       
+        </view>
         <view class="footers">
             <view class="pople" @click="openpopup">
                 <image src="../../static/tab-my.png" mode="aspectFit"></image>
@@ -22,7 +29,7 @@
             </view>
             <view class="btn">
                 <image src="../../static/tab-my.png" mode="aspectFit"></image>
-                <text>下载资料</text>
+                <text @click="todownloadList">下载资料</text>
             </view>
         </view>
         <uni-popup ref="replyPopup" type="center">
@@ -30,15 +37,15 @@
                 <image src="../../static/sc_sec.png" mode="aspectFit" class="close" @click="close"></image>
                 <view class="item">
                     <view class="tip">负责人</view>
-                    <view class="title">张三</view>
+                    <view class="title">{{detailData.charger}}</view>
                 </view>
                 <view class="item">
-                    <view class="tip">负责人</view>
-                    <view class="title">张三</view>
+                    <view class="tip">联系方式</view>
+                    <view class="title">{{detailData.tel}}</view>
                 </view>
                 <view class="item x">
-                    <view class="tip">负责人</view>
-                    <view class="title">张三</view>
+                    <view class="tip">文档说明</view>
+                    <view class="title">{{detailData.docDesc}}</view>
                 </view>
             </view>
         </uni-popup>
@@ -46,132 +53,207 @@
 </template>
 
 <script>
-import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
-import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+    const API = require('../../common/api.js')
+    import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
+    import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+    var wv; //计划创建的webview
+    export default {
+         components: {
+            uniNavBar,
+            uniPopup
+        },
+        onReady() {
+            var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
+            console.log(currentWebview)
+                wv = currentWebview.children()[0]
+                wv.setStyle({
+                    top: 50,
+                    height: 50
+                })
+        },
 
-export default {
-    components: {
-        uniNavBar,
-        uniPopup
-    },
-    data() {
-        return {};
-    },
-    methods: {
-        openpopup(){
-            this.$refs.replyPopup.open()
+       
+        data() {
+            return {
+                src: "https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx",
+                 webviewStyles: {
+                   width : 50,
+                   height: 50
+                },
+                detailData: {
+                    "id": "1206529024577241089",
+                    "docName": "1_1116508171.doc",
+                    "uploadId": "1206529023591215106",
+                    "docUrl": "/aaaa.doc",
+                    "fullDocUrl": "http://10.10.5.33:82/aaaa.doc",
+                    "visitCount": 0,
+                    "downloadCount": 0,
+                    "createBy": 1,
+                    "createTime": "2019-12-16 18:58:30",
+                    "charger": "张三",
+                    "tel": "",
+                    "docDesc": "文档说明。。。。。。。。。。。。。。。。。。。。。。。。。。。。。",
+                    "doctypeImageUrl": null,
+                    "docType": "doc",
+                    "searchKeys": "关键词1 关键词2  关键词3",
+                    "createName": null
+                }
+            };
         },
-        close(){
-            this.$refs.replyPopup.close()
+        onLoad(param) {
+            this.onloadFun(param.fileId)
         },
-        back() {
-        	uni.navigateBack({
-        		delta: 1
-        	})
-        },
-    }
-};
+
+        methods: {
+            onloadFun(id) {
+                API.getfileDetail({
+                    id: id
+                }).then(res => {
+                    let resdata = res.data.data;
+                    this.detailData = resdata
+                }).catch(err => {
+                    console.log(err);
+                })
+
+            },
+            todownloadList() {
+                uni.navigateTo({
+                    url: "/pages/means/means"
+                })
+            },
+
+            openpopup() {
+                this.$refs.replyPopup.open()
+            },
+            close() {
+                this.$refs.replyPopup.close()
+            },
+            back() {
+                uni.navigateBack({
+                    delta: 1
+                })
+            },
+        }
+    };
 </script>
 
 <style lang="scss">
-page {
-    background: rgb(239, 239, 239);
-    padding-bottom: 100rpx;
-}
-.xtnav{
-    height: 25px;
-}
-.detaile {
-    border-top: 1px solid #f2f2f2;
-    background: #fff;
-    padding: 30rpx 20rpx;
-    .title {
-        font-size: 32rpx;
+    page {
+        background: rgb(239, 239, 239);
+        padding-bottom: 100rpx;
     }
-    .time {
-        font-size: 24rpx;
-        color: rgb(142, 142, 142);
+
+    .xtnav {
+        height: 25px;
     }
-    .tips {
-        font-size: 24rpx;
-        color: rgb(142, 142, 142);
-        margin-top: 10rpx;
-        image {
-            width: 36rpx;
-            height: 36rpx;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 6rpx;
+
+    .detaile {
+        border-top: 1px solid #f2f2f2;
+        background: #fff;
+        padding: 30rpx 20rpx;
+
+        .title {
+            font-size: 32rpx;
         }
-        text {
-            vertical-align: middle;
-            margin-right: 24rpx;
-        }
-    }
-}
-.main {
-    margin-top: 10rpx;
-    min-height: 400rpx;
-    background: #fff;
-    text-align: center;
-}
-.footers {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    text-align: center;
-    background: #fff;
-    line-height: 80rpx;
-    font-size: 30rpx;
-    image {
-        width: 50rpx;
-        height: 50rpx;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 8rpx;
-    }
-    .pople {
-        flex-grow: 1;
-        color: #ee3847;
-        border: 1rpx solid #ee3847;
-    }
-    .btn {
-        flex-grow: 1;
-        background: #ee3847;
-        color: #fff;
-        border: 1rpx solid #ee3847;
-    }
-}
-.popupcon{
-    background: #FFF;
-    border-radius: 30rpx;
-    padding: 10rpx 30rpx;
-    position: relative;
-    width: 460rpx;
-    .close{
-        width: 60rpx;
-        height: 60rpx;
-        position: absolute;
-        top: -60rpx;
-        right: -60rpx;
-    }
-    .item{
-        .tip{
+
+        .time {
             font-size: 24rpx;
             color: rgb(142, 142, 142);
-            margin-bottom: 6rpx;
         }
-        .title{
-            font-size: 32rpx;
-            line-height: 1.4;
-        }
-        padding: 15rpx;
-        border-bottom: 1rpx solid #f2f2f2;
-        &.x{
-            border: none;
+
+        .tips {
+            font-size: 24rpx;
+            color: rgb(142, 142, 142);
+            margin-top: 10rpx;
+
+            image {
+                width: 36rpx;
+                height: 36rpx;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 6rpx;
+            }
+
+            text {
+                vertical-align: middle;
+                margin-right: 24rpx;
+            }
         }
     }
-}
+
+    .main {
+        margin-top: 10rpx;
+        min-height: 400rpx;
+        background: #fff;
+        text-align: center;
+    }
+
+    .footers {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        text-align: center;
+        background: #fff;
+        line-height: 80rpx;
+        font-size: 30rpx;
+
+        image {
+            width: 50rpx;
+            height: 50rpx;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8rpx;
+        }
+
+        .pople {
+            flex-grow: 1;
+            color: #ee3847;
+            border: 1rpx solid #ee3847;
+        }
+
+        .btn {
+            flex-grow: 1;
+            background: #ee3847;
+            color: #fff;
+            border: 1rpx solid #ee3847;
+        }
+    }
+
+    .popupcon {
+        background: #FFF;
+        border-radius: 30rpx;
+        padding: 10rpx 30rpx;
+        position: relative;
+        width: 460rpx;
+
+        .close {
+            width: 60rpx;
+            height: 60rpx;
+            position: absolute;
+            top: -60rpx;
+            right: -60rpx;
+        }
+
+        .item {
+            .tip {
+                font-size: 24rpx;
+                color: rgb(142, 142, 142);
+                margin-bottom: 6rpx;
+            }
+
+            .title {
+                font-size: 32rpx;
+                line-height: 1.4;
+            }
+
+            padding: 15rpx;
+            border-bottom: 1rpx solid #f2f2f2;
+
+            &.x {
+                border: none;
+            }
+        }
+    }
 </style>

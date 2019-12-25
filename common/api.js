@@ -56,6 +56,10 @@ const MyAPI = (url, needSubDomain, method, data) => {
 	}else{
 		Authorization = Vue.config.configDic.Authorization;
 	}
+	// uni.showModal({
+	// 	title: 'token',
+	// 	content: Authorization,
+	// });
 	
 	// let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? getToken() : Vue.config.configDic.Authorization;
 	

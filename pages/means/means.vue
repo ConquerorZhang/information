@@ -5,20 +5,30 @@
             @clickLeft="back" @clickRight="clickRightBtn"></uni-nav-bar>
         <view class="bt">最近下载</view>
         <checkbox-group @change="checkboxChange">
-            <view class="means-item" @click="godetile" v-for="(item,index) in historyList">
+            <!-- 正在下载 -->
+            <view class="means-item"  v-for="(item,index) in downloadList">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
-                <view class="tip" v-if="delstar == false">80%</view>
+                <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
+            </view>
+            <!-- 下载完成的 -->
+            <view class="means-item"  v-for="(item,index) in historyList">
+                <image src="../../static/logo.png" mode="aspectFit"></image>
+                <view class="con">
+                    <view class="title">{{item.docName}}</view>
+                    <view class="time">{{item.createTime}}</view>
+                </view>
+                <view class="tip" v-if="delstar == false"></view>
                 <view class="del" v-else>
                     <checkbox :value="index+ ''" :checked="checkList[index]" />
                 </view>
             </view>
         </checkbox-group>
         <view class="footers">
-            <view v-if="delstar == false" class="empty">
+            <view v-if="delstar == false" class="empty" @click="delAll()">
                 <image src="../../static/sc.png" mode="aspectFit"></image>
                 清空
             </view>
@@ -49,6 +59,7 @@
             return {
                 more: "more",
                 delstar: false,
+                downloadList: [],
                 historyList: [{
                         docName: "aa",
                         createTime: "2019-12",
@@ -64,37 +75,37 @@
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
                     },
-                     {
+                    {
                         docName: "cc",
                         createTime: "2019-12",
                         id: "33"
@@ -103,14 +114,25 @@
                 ],
                 page: 1,
                 limit: 7,
-                allchecked: false,  //true 全选  false 取消全选
+                allchecked: false, //true 全选  false 取消全选
                 checkList: [], //直接在historyList 添加check true false 属性存在问题  所以用 单独的变量来存取选中状态
                 paramIds: [], //向后台传递的参数
-                checkValues: [] // 选中的下标数组用于移除
+                checkValues: [], // 选中的下标数组用于移除
+                responseData: 0.0
             };
         },
-        onLoad() {
+        onLoad(param) {
+            //需新建下载任务的
+            if (param.type == "download") {
+                this.downloadList = [{
+                    docName: param.docName,
+                    createTime: "2019-12",
+                    percentage : 0
+                }]
+                this.download_fun(param.fullDocUrl,param.docType);
+            }
             this.getHistoryList();
+          
         },
         //加载更多
         onReachBottom() {
@@ -124,6 +146,24 @@
             this.getHistoryList("Refresh");
         },
         methods: {
+          //下载   加载其他时   往downloadList 后面拼接
+            download_fun(fullDocUrl,docType) {
+                let this_ = this
+                this.callHandlerBack("native_download", {
+                    'downloadUrl': 'http://download.kugou.com/download/kugou_android', //param.fullDocUrl
+                    'contentDisposition': '文件描述',
+                    'mimeType': '.apk' //  param.docType
+                }, function(responseData) {
+                    //注意第一次回调问题
+                    console.log("--------------download:", responseData)
+                    if(responseData == 1.0 || responseData == "100%"){
+                        responseData = "已完成"
+                    }
+                    this_.$set(this_.downloadList[0],"percentage",responseData)
+                    this.prow1 = responseData112;
+                })
+            },
+
             checkAll_cli() {
                 this.allchecked = !this.allchecked
                 this.checkAll()
@@ -166,11 +206,11 @@
                     }
                     //全选状态下 需要勾选上拉取出来的数据
                     let check_moreType = false;
-                    if(this.allchecked == true){
+                    if (this.allchecked == true) {
                         check_moreType = true;
                     }
                     for (let i = 0; i < resdata.length; i++) {
-                        this.$set(this.checkList,i,false)
+                        this.$set(this.checkList, i, false)
                     }
                     this.historyList = this.historyList.concat(resdata)
                 }).catch(err => {
@@ -184,37 +224,41 @@
                 this.checkValues.sort(function(a, b) {
                     return b - a;
                 })
-                if (true) {
-                    for (var i = 0; i < this.checkValues.length; i++) {
-                        this.historyList.splice(this.checkValues[i], 1);
-                        this.checkList.splice(this.checkValues[i], 1);
+                API.deleteHistory({
+                    historyIds: this.paramIds
+                }).then(res => {
+                    if (res.data.code == 0) {
+                        for (var i = 0; i < this.checkValues.length; i++) {
+                            this.historyList.splice(this.checkValues[i], 1);
+                            this.checkList.splice(this.checkValues[i], 1);
+                        }
+                        this.checkList = [];
+                        this.paramIds = [];
                     }
-                    this.checkValues = [];
-                    this.paramIds = [];
-                }
-                //this.getHistoryList("Refresh");
-                this.$forceUpdate();
-                console.log(this.checkValues)
-                console.log(this.checkList)
-                //console.log(this.historyList)
-                
-               // this.$api.prePage().Refresh();
-                /*   API.deleteHistory({
-                       historyIds: this.paramIds
-                   }).then(res => {
-                       if (res.data.code == 0) {
-                           for (var i = 0; i < this.checkValues.length; i++) {
-                               this.historyList.splice(this.checkValues[i], 1);
-                               this.checkList.splice(this.checkValues[i], 1);
-                           }
-                           this.checkList = [];
-                           this.paramIds = [];
-                       }
-                   }).catch(err => {
-                       console.log(err);
-                   }) */
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            delAll() {
+                uni.showModal({
+                    title: '提示',
+                    confirmColor: '#fa436a',
+                    content: '是否确定清空',
+                    success: function(res) {
+                        API.deleteHistory({
+                            historyIds: []
+                        }).then(res => {
+                            if (res.data.code == 0) {
+                                this.historyList = [];
+                            }
+                        }).catch(err => {
+                            console.log(err);
+                        })
+                    }
+                });
 
             },
+
             godetile() {
                 if (this.delstar) {} else {
                     uni.navigateTo({
@@ -229,26 +273,26 @@
                 this.delstar = !this.delstar;
             },
             checkboxChange: function(e) {
-                var values = e.detail.value;  
+                var values = e.detail.value;
                 this.paramIds = [];
-                this.checkValues = [];//向后台传递的id
+                this.checkValues = []; //向后台传递的id
                 let item = this.checkList;
                 for (let i = 0; i < this.historyList.length; i++) {
                     if (values.indexOf(i + "") == -1) {
                         //this.checkList[i] = false;
-                        this.$set(item,i,false)
+                        this.$set(item, i, false)
                     } else {
-                        
+
                         //this.checkList[i] = true;
-                        this.$set(item,i,true)
+                        this.$set(item, i, true)
                         this.paramIds.push(this.historyList[i].id)
                         this.checkValues.push(i)
                     }
                 }
                 console.log(this.checkValues)
                 console.log(this.checkList)
-//                 console.log(this.paramIds)
-//                 console.log(this.checkValues)
+                //                 console.log(this.paramIds)
+                //                 console.log(this.checkValues)
             },
         }
     };

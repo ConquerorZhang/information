@@ -1,3 +1,4 @@
+<!-- 电科动态列表 -->
 <template>
 	<view class="container">
 		<uni-nav-bar id="naviBar" left-icon="back" title="电科动态" @clickLeft="back"></uni-nav-bar>

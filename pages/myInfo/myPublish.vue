@@ -167,7 +167,6 @@
 
 
 
-
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -179,7 +178,7 @@
 		</scroll-view>
 		<uni-popup :show="showpopup" type="bottom" @change="change">
 			<view class="bottom-pop">
-				<text class="popup-content delete" @click="delete_" id="789">删除该回复</text>
+				<text class="popup-content delete" @click="delete_" id="789">datalists.type=='1'?'删除该帖子':'删除该回复'</text>
 				<text class="popup-content" @click="cancel">取消</text>
 			</view>
 

@@ -43,7 +43,7 @@
 			}
 		},
 		onLoad(option) {
-			this.productId = option.productId;
+			this.productId = option.productId;// 
 			
 			this.getProductData();
 		},

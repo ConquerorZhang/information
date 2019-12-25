@@ -89,6 +89,7 @@
 	export default {
 		data() {
 			return {
+				pro: '10',
 				systemInfo: '',
 				currrenIndex: -1,
 				type: '',
@@ -187,18 +188,32 @@
 					url: "../myInfo/myMessage?" + '&fromH5=1'
 				})
 				
+				this.callHandler('ObjC Echo', {
+					'key': 'inner'
+				});
 				// uni.showToast({
 				// 	title: '111',
 				// });
-				this.callHandler('ObjC Echo',{
-					'key': 'inner'
-				});
-				
+
+				// var that = this;
+				// this.callHandlerBack("native_download", {
+				// 	'downloadUrl': 'https://appbundle.holdsoft.cn/holdmall_19011802.apk',
+				// 	'contentDisposition': '文件描述',
+				// 	'mimeType': '.apk',
+				// 	'fileId': ''
+				// }, function(responseData) {
+				// 	console.log("--------------download:", responseData)
+				// 	that.topiccomment(responseData)
+				// 	this.prow = responseData1; //这是一句有用的 废话
+				// })
 			},
 			// 评论
 			topiccomment(topicid) {
+				uni.showToast({
+					title: topicid,
+				})
 				console.log(topicid);
-
+				this.pro = topicid;
 			},
 			// 点赞
 			niubi(topicid) {
@@ -333,9 +348,9 @@
 		},
 
 		onLoad() {
-			
-			
-			
+
+
+
 			// this.registerHandler('JS Echo', function(data, responseCallback) {
 			// 	// bridgeLog('收到Android数据： ' + data);
 			// 	uni.showToast({
@@ -346,12 +361,12 @@
 		},
 		onShow() {
 			this.systemInfo = getApp().globalData.systemInfo;
-			
+
 			// uni.showToast({
 			// 	title:Vue.config.configDic.Authorization,
 			// });
-			
-			this.callHandler('ObjC Echo',{
+
+			this.callHandler('ObjC Echo', {
 				'key': 'onShow'
 			});
 			// this.callHandlerBack('JsGetToken','',function(responseData) {
@@ -365,7 +380,7 @@
 			// })
 			// this.resetData();
 			// this.getlistdata(1)
-			setTimeout(this.getlistdata(1),5000);
+			setTimeout(this.getlistdata(1), 5000);
 		},
 	}
 </script>

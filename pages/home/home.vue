@@ -4,9 +4,9 @@
         <uni-nav-bar class="nav" background-color="#EE3847" fixed="true">
             <view class="nav-input"><input type="text" value="" v-model="searchKey" @input="onKeyInput" placeholder="请输入关键字" /></view>
             <view slot="left" class="nav-logo">
-                <image src="../../static/logo.png" mode="scaleToFill"></image>
+                <image src="../../static/logo_cetc.png" mode="scaleToFill"></image>
             </view>
-            <view slot="right" class="nav-msg">
+            <view slot="right" class="nav-msg" @click="message">
                 <image src="../../static/message_white.png" mode="aspectFit"></image>
             </view>
         </uni-nav-bar>
@@ -148,6 +148,11 @@
             this.getFileList();
             this.getFileType();
         },
+		onShow() {
+			this.callHandler('ObjC Echo',{
+				'key': 'onShow'
+			});
+		},
         //加载更多
         onReachBottom() {
             if (this.more == "noMore") {
@@ -295,7 +300,21 @@
                 uni.navigateTo({
                     url: "/pages/means/means-detile?fileId=" + fileId
                 })
-            }
+            },
+			//消息
+			message() {
+				uni.navigateTo({
+					url: "../myInfo/myMessage?" + '&fromH5=1'
+				})
+				
+				// uni.showToast({
+				// 	title: '111',
+				// });
+				this.callHandler('ObjC Echo',{
+					'key': 'inner'
+				});
+				
+			}
         },
 
 

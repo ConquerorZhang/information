@@ -137,9 +137,10 @@
 						}
 					case 1:
 						{
-							uni.navigateTo({
-								url: "myDownLoad"
-							})
+							// uni.navigateTo({
+							// 	url: "myDownLoad"
+							// })
+							this.callHandler('ObjC Echo',{'key':'download'})
 							break;
 						}
 					case 2:

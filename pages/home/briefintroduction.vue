@@ -12,7 +12,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="contentView" v-bind:style="{'margin-top':(systeminfo.statusBarHeight+85) +'rpx'}" v-html="content"></view>
+		<view class="contentView" v-bind:style="{'margin-top':(systeminfo.statusBarHeight+135) +'rpx'}" v-html="content"></view>
 	</view>
 </template>
 
@@ -24,9 +24,11 @@
 				systeminfo:'',
 				id: '',
 				content: '',
+				fromH5:''
 			};
 		},
 		onLoad(option) {
+			this.fromH5 = option.fromH5;
 			console.log("----------------------onload");
 			API.PlateformBriefIntroduction({
 				id:'1'
@@ -39,14 +41,25 @@
 		},
 		
 		onShow() {
-			this.systeminfo = getApp().globalData.systemInfo;
+			// this.systeminfo = getApp().globalData.systemInfo;
+			uni.getSystemInfo({
+				success: (res) => {
+					this.systeminfo = res
+				}
+			})
 		},
 		
 		methods: {
 			back() {
-				uni.navigateBack({
-					delta: 1,
-				})
+				if (this.fromH5 == '1') {
+					uni.navigateBack({
+						delta: 1
+					})
+				} else {
+					this.callHandler('ObjC Echo', {
+						'key': 'close'
+					});
+				}
 
 			}
 		}
@@ -76,7 +89,7 @@
 			flex-direction: column;
 
 			.statusBar {
-				height: var(--status-bar-height);
+				height: $uni-status-height;
 				width: 100%;
 				background-image: linear-gradient(left, #D74819, #C7161E);
 			}

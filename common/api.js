@@ -296,7 +296,7 @@ module.exports = {
     },
     deleteHistory : (data) => {
          return MyAPI('learnmaterial/deletehistory', false, 'GET', data)
-    }
+    },
 	//信息化平台简介
 	PlateformBriefIntroduction: (data) => {
 		return MyAPI('home/intro', false, 'GET', data)

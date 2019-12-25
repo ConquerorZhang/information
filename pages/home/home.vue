@@ -94,17 +94,17 @@
                         'isMutiple': false,
                         'isSort': false,
                         'key': 'jobType',
-                        'value': '1',
+                        'value': '2',
                         'detailList': [{
                             'title': '全部',
                             'value': '123'
                         }]
                     }, {
-                        'title': '最新上传',
+                        'title': '下载量',
                         'isMutiple': false,
                         'isSort': false,
                         'key': 'jobType',
-                        'value': '2',
+                        'value': '1',
                         'detailList': [{
                             'title': '全部',
                             'value': '123'
@@ -213,6 +213,7 @@
                 this.getFileList("Refresh");
             },
             result(param) {
+                this.$set(this.menuList[0],"title",param["key_type"])
                 this.fileTypeId = param["key_type"];
                 console.log(this.fileTypeId)
                 this.getFileList("Refresh");
@@ -277,7 +278,10 @@
             getFileType() {
                 API.getFileType({}).then(res => {
                     let resList = res.data.data;
-                    let arrya_1 = [];
+                    let arrya_1 = [{
+                        'title': '全部',
+                        'value': ''
+                    }];
                     for (let key in resList) {
                         let json = {
                             title: resList[key].id + "类型",

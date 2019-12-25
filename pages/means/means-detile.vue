@@ -29,7 +29,7 @@
             </view>
             <view class="btn">
                 <image src="../../static/tab-my.png" mode="aspectFit"></image>
-                <text @click="todownloadList">下载资料</text>
+                <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName)">下载资料</text>
             </view>
         </view>
         <uni-popup ref="replyPopup" type="center">
@@ -62,17 +62,6 @@
             uniNavBar,
             uniPopup
         },
-        onReady() {
-            var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
-            console.log(currentWebview)
-                wv = currentWebview.children()[0]
-                wv.setStyle({
-                    top: 50,
-                    height: 50
-                })
-        },
-
-       
         data() {
             return {
                 src: "https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx",
@@ -116,9 +105,9 @@
                 })
 
             },
-            todownloadList() {
+            todownloadList(fullDocUrl,docType,docName) {
                 uni.navigateTo({
-                    url: "/pages/means/means"
+                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&docName=" + docName
                 })
             },
 
@@ -246,6 +235,8 @@
             .title {
                 font-size: 32rpx;
                 line-height: 1.4;
+                word-wrap:break-word;
+                word-break:break-all;
             }
 
             padding: 15rpx;

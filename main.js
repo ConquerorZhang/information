@@ -50,7 +50,7 @@ Vue.prototype.callHandler = function callHandler(name,data){
 			});
 };
 
-//调用原生
+//调用原生 带回调
 Vue.prototype.callHandlerBack = function callHandler(name,data,callback){
 	util.mcallHandler(name,data,callback);
 };

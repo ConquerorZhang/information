@@ -67,7 +67,7 @@
 			</view>
 		</scroll-view>
 		<image class="fudongquan" src="../../static/product/fudongquan.png" @click="clickFuDongQuan"></image>
-		<view class="showPhoneInfos" v-show="showPhoneInfos" @touchmove.stop.prevent = "">
+		<view class="showPhoneInfos" v-show="showPhoneInfos" @touchmove.stop.prevent="">
 			<view class='popup-mask' @click='closePhoneInfos'></view>
 			<view class='phoneInfos'>
 				<view class="namePart">
@@ -113,7 +113,7 @@
 				tabBars: [],
 				productId: '',
 				data: {
-					productAffixList:[],
+					productAffixList: [],
 					level: ''
 				},
 				scrollViewId: '',
@@ -134,7 +134,7 @@
 		methods: {
 			searchClick() {
 				uni.navigateTo({
-					url: '../search/homeSearch?fromH5='+'1'
+					url: '../search/homeSearch?fromH5=' + '1'
 				})
 			},
 			ontabtap(index) {
@@ -152,44 +152,46 @@
 					console.log(res);
 					this.data = res.data.data;
 
-					if (this.data.level == 2) {
-						this.tabBars = [{
+					this.productinfo_url = this.data.productinfo_url;
+					if (!Vue.prototype.isEmpty(this.data.jiagou_url)) {
+						this.tabBars.push({
 							name: '架构',
 							id: 'jiagou_url'
-						}, {
+						})
+						this.jiagou_url = this.data.jiagou_url;
+					} 
+					if (!Vue.prototype.isEmpty(this.data.zucheng_url)) {
+						this.tabBars.push({
 							name: '组成',
 							id: 'zucheng_url'
-						}, {
+						})
+						this.zucheng_url = this.data.zucheng_url;
+					} 
+					if (!Vue.prototype.isEmpty(this.data.youshi_url)) {
+						this.tabBars.push({
 							name: '优势',
 							id: 'youshi_url'
-						}, {
-							name: '相关',
-							id: 'xiangguan'
-						}];
-					} else {
-						this.tabBars = [{
-							name: '架构',
-							id: 'jiagou_url'
-						}, {
+						})
+						this.youshi_url = this.data.youshi_url;
+					} 
+					if (!Vue.prototype.isEmpty(this.data.gongneng_url)) {
+						this.tabBars.push({
 							name: '功能',
 							id: 'gongneng_url'
-						}, {
-							name: '优势',
-							id: 'youshi_url'
-						}, {
+						})
+						this.gongneng_url = this.data.gongneng_url;
+					}
+					if (!Vue.prototype.isEmpty(this.data.anli_url)) {
+						this.tabBars.push({
 							name: '案例',
 							id: 'anli_url'
-						}, {
-							name: '相关',
-							id: 'xiangguan'
-						}];
+						})
+						this.anli_url = this.data.anli_url;
 					}
-					this.productinfo_url = this.data.productinfo_url;
-					this.jiagou_url = this.data.jiagou_url;
-					this.zucheng_url = this.data.zucheng_url;
-					this.youshi_url = this.data.youshi_url;
-					this.gongneng_url = this.data.gongneng_url;
-					this.anli_url = this.data.anli_url;
+					this.tabBars.push({
+						name: '相关',
+						id: 'xiangguan'
+					})
 				}).catch(err => {
 					console.log(err);
 				})
@@ -204,21 +206,26 @@
 				if (!this.data.collect) {
 					API.interactionCollect({
 						bizKey: this.data.id,
-						collectType:'product'
+						collectType: 'product'
 					}).then(res => {
 						console.log(res);
 						this.data.collect = true;
+						uni.showToast({
+							title: '收藏成功'
+						})
 					}).catch(err => {
 						console.log(err);
 					})
-				}
-				else {
+				} else {
 					API.interactionCollect({
 						bizKey: this.data.id,
-						collectType:'product'
+						collectType: 'product'
 					}).then(res => {
 						console.log(res);
 						this.data.collect = false;
+						uni.showToast({
+							title: '取消收藏',
+						})
 					}).catch(err => {
 						console.log(err);
 					})
@@ -226,7 +233,7 @@
 			},
 			makePhoneCall() {
 				uni.makePhoneCall({
-					phoneNumber:this.data.tel,
+					phoneNumber: this.data.tel,
 					success: () => {
 						console.log("成功拨打电话")
 					}
@@ -237,9 +244,10 @@
 					uni.navigateBack({
 						delta: 1
 					})
-				}
-				else {
-					this.callHandler('ObjC Echo',{'key':'back'});
+				} else {
+					this.callHandler('ObjC Echo', {
+						'key': 'back'
+					});
 				}
 			}
 		}
@@ -308,7 +316,8 @@
 			/* #endif */
 			swiper {
 				image {
-					width: 100%;
+					width: 750rpx;
+					height: 300rpx;
 				}
 			}
 
@@ -327,10 +336,10 @@
 					}
 				}
 			}
-			
+
 			.productInfo {
 				background: #FFFFFF;
-				
+
 				.topPart {
 					display: flex;
 					justify-content: space-between;
@@ -338,21 +347,25 @@
 					height: 90rpx;
 					line-height: 90rpx;
 					margin-bottom: -30rpx;
-					
+
 					.title {
 						margin-left: 20rpx;
 					}
+
 					.collectPart {
 						display: flex;
 						align-items: center;
 						margin-right: 20rpx;
+
 						image {
 							width: 40rpx;
 							height: 40rpx;
 						}
+
 						.collectColor {
 							color: #ee3847;
 						}
+
 						.unCollectColor {
 							color: #919191;
 						}
@@ -440,16 +453,18 @@
 				width: 100%;
 				background: white;
 				z-index: 12;
+				border-top-left-radius: 25rpx;
+				border-top-right-radius: 25rpx;
 
 				.namePart {
 					margin-top: 40rpx;
 					padding-left: 60rpx;
 					padding-bottom: 20rpx;
 					border-bottom: 1px solid #eff0f1;
-					.name {
-						
-					}
+
+					.name {}
 				}
+
 				.title {
 					font-size: 30rpx;
 					color: #6b6c6d;
@@ -461,14 +476,12 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					
+
 					.textPart {
-						
-						.phone {
-							
-						}
+
+						.phone {}
 					}
-					
+
 					image {
 						width: 60rpx;
 						height: 60rpx;

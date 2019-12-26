@@ -26,7 +26,7 @@
 
 <script>
 	const API = require('../../common/api.js')
-const CONFIG = require('../../common/config.js')
+	const CONFIG = require('../../common/config.js')
 	
 	var sourceType = [
 		['camera'],
@@ -113,6 +113,15 @@ const CONFIG = require('../../common/config.js')
 						return;
 					}
 				}
+				// 图片服务器地址
+				let imageURL;
+				if (process.env.NODE_ENV === 'development') {
+					// console.log(' 开发环境')
+					http = CONFIG.offlineImageURL;
+				} else {
+					// console.log('生产环境')
+					http = CONFIG.offlineImageURL;
+				}
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
@@ -123,7 +132,7 @@ const CONFIG = require('../../common/config.js')
 						// 上传图片操作
 						for (var i = 0; i < tempFilePaths.length; i++) {
 							uni.uploadFile({
-							            url: CONFIG.imageURL, 
+							            url: imageURL, 
 							            filePath: tempFilePaths[i],
 							            name: 'file',
 							            formData: {

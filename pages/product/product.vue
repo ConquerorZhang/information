@@ -51,7 +51,7 @@
 				<view class="docPart" id="xiangguan" v-if='data.docsList.length > 0'>
 					<view class="topPart">
 						<view class="title">相关资料</view>
-						<view class="subtitle">更多资料</view>
+						<!-- <view class="subtitle">更多资料</view> -->
 					</view>
 					<view class="downCellPart" v-for="(item,index) in data.docsList" :key="index">
 						<downLoadCell :data="item"></downLoadCell>

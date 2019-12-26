@@ -75,7 +75,7 @@
 								type: parseInt(this.selectedIndex) + 1,
 							}).then(res => {
 								console.log(res);
-								uni.navigateTo({
+								uni.redirectTo({
 									url:"publishSucceed?id=" + res.data.data.id
 								})
 							}).catch(err => {

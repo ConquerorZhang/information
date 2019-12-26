@@ -39,7 +39,7 @@
 					})
 				}
 				else {
-					this.callHandler('ObjC Echo',{'key':'newProduct','productId':'e'});
+					this.callHandler('ObjC Echo',{'key':'newProduct','productId':e});
 				}
 			},
 		}

@@ -369,17 +369,6 @@
 			this.callHandler('ObjC Echo', {
 				'key': 'onShow'
 			});
-			// this.callHandlerBack('JsGetToken','',function(responseData) {
-			// 	console.log("JS received response:", responseData)
-			// 	uni.showToast({
-			// 		title: 'J'+responseData,
-			// 	})
-			// });
-			// uni.showToast({
-			// 	title:'show'
-			// })
-			// this.resetData();
-			// this.getlistdata(1)
 			setTimeout(this.getlistdata(1), 5000);
 		},
 	}

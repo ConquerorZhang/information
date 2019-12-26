@@ -56,10 +56,6 @@ const MyAPI = (url, needSubDomain, method, data) => {
 	}else{
 		Authorization = Vue.config.configDic.Authorization;
 	}
-	// uni.showModal({
-	// 	title: 'token',
-	// 	content: Authorization,
-	// });
 	
 	// let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? getToken() : Vue.config.configDic.Authorization;
 	
@@ -99,11 +95,23 @@ const MyAPI = (url, needSubDomain, method, data) => {
 			var item = data[key];
 			_url = _url + key + '=' + item + '&'
 		}
+		// uni.showModal({
+		// 	title: '_url',
+		// 	content: _url,
+		// });
 		return new Promise((resolve, reject) => {
 			http.get(_url)
 				.then(res => {
+					// uni.showModal({
+					// 	title: 'res',
+					// 	content: res,
+					// });
 					resolve(res)
 				}).catch(err => {
+					// uni.showModal({
+					// 	title: 'err',
+					// 	content: err,
+					// });
 					reject(err)
 					// uni.showModal({
 					// 	title: '提示',

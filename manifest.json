@@ -73,8 +73,10 @@
     },
     "h5" : {
         "router" : {
-            "mode" : "history"
+            "mode" : "hash",
+            "base" : "/cpkstatic/"
         },
-        "domain" : "http://117.78.40.206/cpkstatic"
+        "domain" : "http://117.78.40.206/",
+        "title" : "cpkstatic"
     }
 }

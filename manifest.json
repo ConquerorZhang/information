@@ -74,6 +74,7 @@
     "h5" : {
         "router" : {
             "mode" : "history"
-        }
+        },
+        "domain" : "http://117.78.40.206/cpkstatic"
     }
 }

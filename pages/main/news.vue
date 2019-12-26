@@ -194,7 +194,7 @@
 
 					.timePart {
 						color: #6c6e6f;
-						font-size: 30rpx;
+						font-size: 26rpx;
 
 						.time {
 							margin-right: 40rpx;

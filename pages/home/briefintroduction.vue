@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="top">
-			<view class="statusBar"></view>
+			<view class="statusBar" :class="statusBarHeight.length > 0 ? 'statusBarHeightIOS' : 'statusBarHeight'"></view>
 			<!-- 自定义导航 -->
 			<view class="navBar">
 				<view class="left-icon" @click="back">
@@ -18,13 +18,15 @@
 
 <script>
 	const API = require('../../common/api.js')
+	import Vue from 'vue'
 	export default {
 		data() {
 			return {
 				systeminfo:'',
 				id: '',
 				content: '',
-				fromH5:''
+				fromH5:'',
+				statusBarHeight: '',
 			};
 		},
 		onLoad(option) {
@@ -38,6 +40,12 @@
 			}).catch(err => {
 				console.log(err);
 			})
+			
+			// 用来判断iphone11
+			if (!Vue.prototype.isEmpty(Vue.config.configDic.statusBarHeight)) {
+				const height = Vue.config.configDic.statusBarHeight;
+				this.statusBarHeight =  parseFloat(height) > 40 ? height : '';
+			}
 		},
 		
 		onShow() {
@@ -89,9 +97,14 @@
 			flex-direction: column;
 
 			.statusBar {
-				height: $uni-status-height;
 				width: 100%;
 				background-image: linear-gradient(left, #D74819, #C7161E);
+			}
+			.statusBarHeight {
+				height: $uni-status-height;
+			}
+			.statusBarHeightIOS {
+				height: 44px;
 			}
 
 			.navBar {

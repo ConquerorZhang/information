@@ -15,7 +15,7 @@
                 <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
             </view>
             <!-- 下载完成的 -->
-            <view class="means-item" v-for="(item,index) in historyList">
+            <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName}}</view>
@@ -177,7 +177,18 @@
                     this.prow1 = responseData112;
                 })
             },
-
+            openFile(docName){
+                this.callHandlerBack("native_fileOpen",  {filename:docName}, function(responseData) {
+                    //注意第一次回调问题
+                    if(responseData == 0 || responseData == "0"){
+                        uni.showToast({
+                            icon:"none",
+                            title:"文件不存在!"
+                        })
+                        return;  
+                    }
+                })
+            },
             checkAll_cli() {
                 this.allchecked = !this.allchecked
                 this.checkAll()

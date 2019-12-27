@@ -399,9 +399,9 @@
 
 			})
 			//初始化数据
-			setTimeout(() => {
-				this.getNewData(this.datalists.type);
-			}, 500)
+			// setTimeout(() => {
+			// 	this.getNewData(this.datalists.type);
+			// }, 500)
 			this.callHandler('ObjC Echo', {
 				'key': 'inner'
 			});
@@ -466,6 +466,7 @@
 			},
 			//重新拉取数据
 			getNewData(type) {
+				// console.log("-------------触发getNewData")
 				switch (type) {
 					case '1':
 						this.getlistdata1(this.page[0]);

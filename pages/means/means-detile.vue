@@ -3,7 +3,7 @@
         <view class="xtnav"></view>
         <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back" :shadow="shade" :border="shade"></uni-nav-bar>
         <view class="detaile">
-            <view class="title">{{detailData.docName}}</view>
+            <view class="title">{{detailData.docName.split(".")[0]}}</view>
             <view class="time">{{detailData.createTime}}</view>
             <view class="tips">
                 <image src="../../static/my.png" mode="aspectFit"></image>

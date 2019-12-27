@@ -9,16 +9,16 @@
             <view class="means-item" v-for="(item,index) in downloadList">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
-                    <view class="title">{{item.docName}}</view>
+                    <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
                 <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
             </view>
-            <!-- 下载完成的 -->
-            <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
+            <!-- 下载完成的传那个name -->
+            <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.fullDocUrl)">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
-                    <view class="title">{{item.docName}}</view>
+                    <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
                 <view class="tip" v-if="delstar == false"></view>
@@ -65,7 +65,8 @@
                 historyList: [{
                         docName: "aa",
                         createTime: "2019-12",
-                        id: "11"
+                        id: "11",
+                        fullDocUrl: "http://10.10.5.33:82/aaaa.doc"
                     },
                     {
                         docName: "bb",
@@ -127,19 +128,16 @@
             //需新建下载任务的
             this.param = param;
             if (param.type == "download") {
-                //查询是否有证在下载的任务
                 this.downloadList = [{
                     docName: param.docName,
                     createTime: "2019-12",
                     percentage: 0
                 }]
-                this.download_fun(param.fullDocUrl, param.docType);
+                //this.download_fun(param.fullDocUrl, param.docType);
             }
-            this.getHistoryList();
-
+            this.getHistoryList("Refresh");
         },
         onShow() {
-            
         	this.callHandler('ObjC Echo', {
         		'key': 'inner'
         	});
@@ -153,15 +151,13 @@
         },
         //下拉刷新
         onPullDownRefresh() {
-            //下拉刷新 查询是否有正在下载的任务
-            
             this.getHistoryList("Refresh");
         },
         methods: {
             download_fun(fullDocUrl, docType) {
                 let this_ = this
                 this.callHandlerBack("native_download", {
-                    'downloadUrl': 'http://download.kugou.com/download/kugou_android', //param.fullDocUrl
+                    'downloadUrl': 'https://appbundle.holdsoft.cn/information_test_122601.apk', //param.fullDocUrl
                     'contentDisposition': '文件描述',
                     'mimeType': '.apk' //  param.docType
                 }, function(responseData) {
@@ -169,6 +165,8 @@
                     console.log("--------------download:", responseData)
                     if (responseData == 1.0 || responseData == "100%") {
                         responseData = "已完成"
+                        //刷新该页面
+                        this.getHistoryList("Refresh");
                         //下载量加一
                         API.downloadedAdd({}).then(res => {}).catch(err => {
                             console.log(err);
@@ -178,7 +176,9 @@
                     this.prow1 = responseData112;
                 })
             },
-            openFile(docName){
+            openFile(downloadUrl){
+                let docNameArray = downloadUrl.split("/");
+                let docName = docNameArray[(docNameArray.length)-1];
                 this.callHandlerBack("native_fileOpen",  {filename:docName}, function(responseData) {
                     //注意第一次回调问题
                     if(responseData == 0 || responseData == "0"){

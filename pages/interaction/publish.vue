@@ -158,7 +158,8 @@
 										fail:() => {
 											uni.hideLoading();
 											uni.showToast({
-												title:"上传图片失败"
+												title:"上传图片失败",
+												icon:'none'
 											})
 										}
 							        });

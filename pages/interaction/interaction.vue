@@ -186,7 +186,7 @@
 			//消息
 			message() {
 				uni.navigateTo({
-					url: "../myInfo/myMessage?" + '&fromH5=1'
+					url: "../myInfo/myPublish?index=0"
 				})
 				
 				this.callHandler('ObjC Echo', {

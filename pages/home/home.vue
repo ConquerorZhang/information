@@ -2,7 +2,7 @@
     <view class="contents">
         <view class="head">
         	<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
-        	<view class="statusBar"></view>
+        	<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view>
         	<view class="top">
         		<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
         		<!-- 自定义Placeholder 搜索框 -->
@@ -73,6 +73,7 @@
         },
         data() {
             return {
+                statusBarHeight:0,
                 more: "more",
                 version: '',
                 innerVersion: '',
@@ -165,6 +166,7 @@
 			 this.callHandler('ObjC Echo',{
 				'key': 'onShow'
 			}); 
+            this.statusBarHeight = Vue.config.configDic.statusBarHeight;
 		},
         //加载更多
         onReachBottom() {
@@ -353,73 +355,74 @@
         }
     }
     .head {
-        position: fixed;
-        top: 0rpx;
-        width: 100%;
-        z-index: 500;
-        background-image: linear-gradient(#D74819, #C7161E);
-
-        .statusBar {
-            height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
-            width: 100%;
-        }
-
-        .top {
-            display: flex;
-            justify-content: space-between;
-
-            .icon_logo {
-                width: 100upx;
-                height: 40upx;
-                flex-grow: 2;
-                padding: $uni-spacing-row-base $uni-spacing-row-base;
-            }
-
-            .v_search {
-                display: flex;
-                flex-grow: 40;
-                justify-content: center;
-
-                .search {
-                    width: 100%;
-                    height: 50rpx;
-                    margin: 0rpx 10rpx;
-
-                }
-
-            }
-
-            .top-right {
-                width: 100rpx;
-                display: flex;
-                flex-grow: 1;
-                right: $uni-spacing-row-base;
-                top: $uni-spacing-row-base;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-
-                .top-right-icon {
-                    width: 40rpx;
-                    height: 40rpx;
-                    display: flex;
-                    justify-content: center;
-
-                }
-
-                .top-right-text {
-                    display: flex;
-                    justify-content: center;
-                    font-size: $uni-font-size-20;
-                }
-            }
-        }
-
-        .filter {
-            width: 100%;
-        }
+    	position: fixed;
+    	top: 0rpx;
+    	width: 100%;
+    	z-index: 500;
+    	background-image: linear-gradient(#D74819, #C7161E);
+    
+    	.statusBar {
+    		height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
+    		width: 100%;
+    	}
+    
+    	.top {
+    		display: flex;
+    		justify-content: space-between;
+    
+    		.icon_logo {
+    			width: 100upx;
+    			height: 40upx;
+    			flex-grow: 2;
+    			padding: $uni-spacing-row-base $uni-spacing-row-base;
+    		}
+    
+    		.v_search {
+    			display: flex;
+    			flex-grow: 40;
+    			justify-content: center;
+    
+    			.search {
+    				width: 100%;
+    				height: 50rpx;
+    				margin: 0rpx 10rpx;
+    
+    			}
+    
+    		}
+    
+    		.top-right {
+    			width: 100rpx;
+    			display: flex;
+    			flex-grow: 1;
+    			right: $uni-spacing-row-base;
+    			top: $uni-spacing-row-base;
+    			flex-direction: column;
+    			justify-content: center;
+    			align-items: center;
+    
+    			.top-right-icon {
+    				width: 40rpx;
+    				height: 40rpx;
+    				display: flex;
+    				justify-content: center;
+    
+    			}
+    
+    			.top-right-text {
+    				display: flex;
+    				justify-content: center;
+    				font-size: $uni-font-size-20;
+    			}
+    		}
+    	}
+    
+    	.filter {
+    		width: 100%;
+    		height: 60rpx;
+    	}
     }
-
+    
     .xtnav {
         height: 25px;
         background: #EE3847;

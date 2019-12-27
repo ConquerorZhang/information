@@ -37,8 +37,9 @@ function bridgeAndroidAndIOS() {
 	}
 
 	function bridgeLog(logContent) {
-		uni.showToast({
-			title: logContent,
+		uni.showModal({
+			title:"原始数据",
+			content: logContent,
 		})
 	}
 
@@ -69,11 +70,12 @@ function bridgeAndroidAndIOS() {
 				// mregisterHandler("JS Echo");
 
 				bridge.registerHandler("JS Echo", function(data, responseCallback) {
-					// bridgeLog('接收到来自Android数据： ' + JSON.parse(data).Authorization);
+					// bridgeLog('接收到来自Android数据： '+ JSON.parse(data).stateBarHeight);
 
 					// 初始传入token和guid
 					Vue.config.configDic = {
 						Authorization: JSON.parse(data).Authorization,
+						statusBarHeight:Number.parseInt(JSON.parse(data).statusBarHeight),
 						// Authorization: '45678978345456',
 						// guid: "123456",
 						// token: "abcdefg",

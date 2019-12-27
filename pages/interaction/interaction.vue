@@ -5,13 +5,13 @@
 			<meta name="format-detection" content="telephone=no">
 		</head>
 		<view class="head">
-			<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
-			<view class="statusBar"></view>
+			<!-- v-bind:style="{height:stateBarHeight +'px'}" -->
+			<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
 				<view class="v_search">
-					<uni-search-bar placeholder="关键字" radius="8" clearButton="auto" @confirm="search" class="search" />
+					<uni-search-bar placeholder="关键字" radius="20" clearButton="auto" @confirm="search" class="search" />
 				</view>
 				<view class="top-right" @click="message">
 					<!--@click="window.android.click('77777777777')"-->
@@ -26,8 +26,8 @@
 			</view>
 		</view>
 
-		<!-- <view class="top-zhanwei"></view> -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':systemInfo.statusBarHeight+87 +'px'}"
+		<!-- <view class="top-zhanwei"></view>     -->
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':statusBarHeight+140 +'rpx'}"
 		 enableBackToTop="true" @scrolltolower="loadMore(page)">
 
 			<view class="empty" v-if="data.datalsit.length < 1">
@@ -89,6 +89,7 @@
 	export default {
 		data() {
 			return {
+				statusBarHeight:0,
 				pro: '10',
 				systemInfo: '',
 				currrenIndex: -1,
@@ -361,9 +362,10 @@
 		},
 		onShow() {
 			this.systemInfo = getApp().globalData.systemInfo;
+			this.statusBarHeight = Vue.config.configDic.statusBarHeight;
 
 			// uni.showToast({
-			// 	title:Vue.config.configDic.Authorization,
+			// 	title:Vue.config.configDic.statusBarHeight,
 			// });
 
 			this.callHandler('ObjC Echo', {
@@ -458,7 +460,7 @@
 		// }
 
 		.list {
-			margin-top: 190rpx;
+			// margin-top: 190rpx;
 			height: 100%;
 			width: 100%;
 

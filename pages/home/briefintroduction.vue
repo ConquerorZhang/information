@@ -1,7 +1,7 @@
 <template>
-	<view class="content">
+	<view class="contents">
 		<view class="top">
-			<view class="statusBar" :class="statusBarHeight.length > 0 ? 'statusBarHeightIOS' : 'statusBarHeight'"></view>
+			<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view>
 			<!-- 自定义导航 -->
 			<view class="navBar">
 				<view class="left-icon" @click="back">
@@ -12,25 +12,29 @@
 				</view>
 			</view>
 		</view>
-		<view class="contentView" v-bind:style="{'margin-top':(systeminfo.statusBarHeight+135) +'rpx'}" v-html="content"></view>
+		<view class="contentView" v-bind:style="{'margin-top':(statusBarHeight+100) +'rpx'}" v-html="content"></view>
 	</view>
 </template>
 
 <script>
-	const API = require('../../common/api.js')
-	import Vue from 'vue'
+	const API = require('../../common/api.js');
+	import Vue from 'vue';
 	export default {
 		data() {
 			return {
+				statusBarHeight:0,
 				systeminfo:'',
 				id: '',
 				content: '',
-				fromH5:'',
-				statusBarHeight: '',
+				fromH5:''
 			};
 		},
 		onLoad(option) {
 			this.fromH5 = option.fromH5;
+			// uni.showModal({
+			// 	title:'qh',
+			// 	content:Vue.config.configDic.statusBarHeight
+			// });
 			console.log("----------------------onload");
 			API.PlateformBriefIntroduction({
 				id:'1'
@@ -50,11 +54,16 @@
 		
 		onShow() {
 			// this.systeminfo = getApp().globalData.systemInfo;
-			uni.getSystemInfo({
-				success: (res) => {
-					this.systeminfo = res
-				}
-			})
+			this.statusBarHeight = Vue.config.configDic.statusBarHeight;
+			// uni.showModal({
+			// 	title:'h',
+			// 	content:Vue.config.configDic.statusBarHeight
+			// });
+			// uni.getSystemInfo({
+			// 	success: (res) => {
+			// 		this.systeminfo = res
+			// 	}
+			// });
 		},
 		
 		methods: {
@@ -81,7 +90,7 @@
 		background: linear-gradient(left, #D74819, #C7161E);
 	}
 
-	.content {
+	.contents {
 
 		height: 100%;
 		width: 100%;
@@ -109,7 +118,6 @@
 
 			.navBar {
 				width: 100%;
-				height: 80upx;
 				display: flex;
 				flex-direction: row;
 				background-image: linear-gradient(left, #D74819, #C7161E);

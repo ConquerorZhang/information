@@ -23,7 +23,7 @@
 		</view>
 		<view class="myFunctionModel">
 			<view class="content" v-for="(item,index) in data.myFunctionArr" :key="index">
-				<image class="myFunctionImage" :src="item.image" mode="scaleToFill" v-on:click="navigateToFunc(index)"></image>
+				<image :class="index == 1 ? 'downImage' : 'myFunctionImage'" :src="item.image" mode="scaleToFill" v-on:click="navigateToFunc(index)"></image>
 				<view class="myFunctionImageLabel">{{item.text}}</view>
 			</view>
 		</view>
@@ -278,9 +278,14 @@
 			position: relative;
 			margin-top: 30rpx;
 			text-align: center;
-
+			
 			.myFunctionImage {
 				width: 60rpx;
+				height: 58rpx;
+			}
+			
+			.downImage {
+				width: 71.4rpx;
 				height: 58rpx;
 			}
 

@@ -59,17 +59,6 @@ const MyAPI = (url, needSubDomain, method, data) => {
 	
 	// let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? getToken() : Vue.config.configDic.Authorization;
 	
-	// let token = Vue.config.configDic.token;
-	// let guid = Vue.config.configDic.guid;
-	// let nonce = Math.floor(Math.random() * 800000000 + 100000000);
-	// let ttl = Date.parse(new Date()) / 1000;
-	// let sign = SIGN.sign(url, guid, nonce, ttl, token, data);
-
-	// data['guid'] = guid;
-	// data['nonce'] = nonce;
-	// data['sign'] = sign;
-	// data['ttl'] = ttl;
-
 	http.setConfig((config) => { /* config 为默认全局配置*/
 		config.baseUrl = api_BASE_URL; /* 根域名 */
 		config.header = {

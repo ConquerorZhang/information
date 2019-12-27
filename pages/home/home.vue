@@ -1,24 +1,34 @@
 <template>
-    <view>
-        <view class="xtnav"></view>
-        <uni-nav-bar class="nav" background-color="#EE3847" fixed="true">
-            <view class="nav-input"><input type="text" value="" v-model="searchKey" @input="onKeyInput" placeholder="请输入关键字" /></view>
-            <view slot="left" class="nav-logo">
-                <image src="../../static/logo_cetc.png" mode="scaleToFill"></image>
-            </view>
-            <view slot="right" class="nav-msg" @click="message">
-                <image src="../../static/message_white.png" mode="aspectFit"></image>
-            </view>
-        </uni-nav-bar>
-        <scroll-view class="scroll" scroll-x="true">
-            <text :class="0 == productId ? 'x' : ''" @click="product_all">全部</text>
-            <text v-for="(item,index) in lv1list" @click="product_cli(item.id)" :class="item.id == productId ? 'x' : ''">
-                {{item.productName}}
-            </text>
-
-        </scroll-view>
+    <view class="contents">
+        <view class="head">
+        	<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
+        	<view class="statusBar"></view>
+        	<view class="top">
+        		<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
+        		<!-- 自定义Placeholder 搜索框 -->
+        		<view class="v_search">
+        			<uni-search-bar placeholder="关键字" radius="8" clearButton="auto"  @input="onKeyInput"  v-model="searchKey" class="search" />
+        		</view>
+        		<view class="top-right" @click="message">
+        			<!--@click="window.android.click('77777777777')"-->
+        			<image class="top-right-icon" mode="aspectFit" src="../../static/message_white.png"></image>
+        			<!-- <text class="top-right-text" v-show='false' >消息</text> -->
+        		</view>
+        	</view>
+       
+        	<view class="filter">
+        		<scroll-view class="scroll" scroll-x="true">
+        		    <text :class="0 == productId ? 'x' : ''" @click="product_all">全部</text>
+        		    <text v-for="(item,index) in lv1list" @click="product_cli(item.id)" :class="item.id == productId ? 'x' : ''">
+        		        {{item.productName}}
+        		    </text>
+        		</scroll-view>
+        		<sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult" @result="result"></sl-filter>
+        	</view>
+        </view>
+        
         <!-- 筛选组件 -->
-        <sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult" @result="result"></sl-filter>
+        
         <view v-if="fileList.length > 0">
             <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
                 <view class="means">
@@ -28,7 +38,7 @@
                             {{item.docName}}
                         </view>
                     </view>
-                    <image src="../../static/logo.png" mode="aspectFit"></image>
+                    <image src="../../static/docs/down.png" mode="aspectFit"></image>
                 </view>
                 <view class="time">
                     <view>{{item.createTime}}</view>
@@ -43,18 +53,21 @@
             <image src="../../static/interaction/commentEmpty.png" mode="aspectFit" class="empty"></image>
         </view> -->
         <uni-load-more :status="more"></uni-load-more>
+        <view class="drift">
+            <image src="../../static/down.png" mode="aspectFit"></image>
+        </view>
     </view>
 </template>
 
 <script>
     const API = require('../../common/api.js')
-    import uniNavBar from '@/components/lib/uni-nav-bar/uni-nav-bar.vue';
+    import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue";
     import slFilter from '@/components/sl-filter/myPublish-filter.vue';
     import uniLoadMore from '@/components/lib/uni-load-more/uni-load-more.vue';
 
     export default {
         components: {
-            uniNavBar,
+            uniSearchBar,
             slFilter,
             uniLoadMore
         },
@@ -327,6 +340,85 @@
     page {
         background: rgb(239, 239, 239);
     }
+    .contents{
+        padding-top: 260rpx;
+    }
+    .drift{
+        position: fixed;
+        bottom: 100rpx;
+        right: 100rpx;
+        image{
+            width: 100rpx;
+            height: 100rpx;
+        }
+    }
+    .head {
+        position: fixed;
+        top: 0rpx;
+        width: 100%;
+        z-index: 500;
+        background-image: linear-gradient(#D74819, #C7161E);
+
+        .statusBar {
+            height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
+            width: 100%;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+
+            .icon_logo {
+                width: 100upx;
+                height: 40upx;
+                flex-grow: 2;
+                padding: $uni-spacing-row-base $uni-spacing-row-base;
+            }
+
+            .v_search {
+                display: flex;
+                flex-grow: 40;
+                justify-content: center;
+
+                .search {
+                    width: 100%;
+                    height: 50rpx;
+                    margin: 0rpx 10rpx;
+
+                }
+
+            }
+
+            .top-right {
+                width: 100rpx;
+                display: flex;
+                flex-grow: 1;
+                right: $uni-spacing-row-base;
+                top: $uni-spacing-row-base;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                .top-right-icon {
+                    width: 40rpx;
+                    height: 40rpx;
+                    display: flex;
+                    justify-content: center;
+
+                }
+
+                .top-right-text {
+                    display: flex;
+                    justify-content: center;
+                    font-size: $uni-font-size-20;
+                }
+            }
+        }
+
+        .filter {
+            width: 100%;
+        }
+    }
 
     .xtnav {
         height: 25px;
@@ -376,7 +468,6 @@
     }
 
     .scroll {
-        background: #ee3847;
         font-size: 32rpx;
         padding: 10rpx 0;
         color: #fff;
@@ -416,8 +507,9 @@
             padding: 20rpx;
 
             image {
-                width: 80rpx;
-                height: 80rpx;
+                width: 50rpx;
+                height: 50rpx;
+                margin-right: 20rpx;
             }
 
             .con {

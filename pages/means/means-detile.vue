@@ -183,6 +183,7 @@
         background: #fff;
         font-size: 28rpx;
         color: #666666;
+        word-wrap:break-word;
     }
 
     .footers {

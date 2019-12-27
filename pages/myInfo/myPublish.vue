@@ -1123,7 +1123,7 @@
 						}
 
 						.bottom-text {
-							font-size: 20upx;
+							font-size: 25upx;
 							color: #525252;
 						}
 

@@ -16,8 +16,7 @@
         </view>
         <view class="main">
           <!--  <web-view  ></web-view> -->
-            内容 需要插件 目前需求不明确
-             
+            {{detailData.docDesc}}
             <!-- <iframe src="https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe> -->
             <!-- <iframe src="https://docs.google.com/viewer?url=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0"></iframe> -->
        

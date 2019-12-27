@@ -49,12 +49,12 @@
             </view>
             <!-- {{version}} ---- {{innerVersion}} -->
         </view>
-        <!-- <view>
+        <view v-else>
             <image src="../../static/interaction/commentEmpty.png" mode="aspectFit" class="empty"></image>
-        </view> -->
+        </view>
         <uni-load-more :status="more"></uni-load-more>
         <view class="drift">
-            <image src="../../static/down.png" mode="aspectFit"></image>
+            <image src="../../static/down.png" mode="aspectFit" @click="mydown"></image>
         </view>
     </view>
 </template>
@@ -126,7 +126,6 @@
 
                 ],
                 searchKey: "", //搜索关键词
-                fileTypeId: [], //类型列表
                 productId: 0, // 交通信息化/电子政务等的id 
                 limit: "7",
                 page: 1, //当前第几页
@@ -329,7 +328,12 @@
 					'key': 'inner'
 				});
 				
-			}
+			},
+            mydown(){
+               uni.navigateTo({
+               	url: "/pages/means/means"
+               }) 
+            }
         },
 
 

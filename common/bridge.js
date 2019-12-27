@@ -100,6 +100,7 @@ function bridgeAndroidAndIOS() {
 						Vue.config.configDic = {
 							Authorization: data.Authorization,
 							productID: data.productID,
+							statusBarHeight: data.statusBarHeight,
 							// token: "abcdefg",
 							// version: "0.0.1",
 							// verCode: "191122",

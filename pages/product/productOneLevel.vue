@@ -36,15 +36,15 @@
 			return {
 				productId: '',
 				data: {
-					productAffixList:[],
+					productAffixList: [],
 					level: ''
 				},
 				productinfo_url: '',
 			}
 		},
 		onLoad(option) {
-			this.productId = option.productId;
-			
+			this.productId = option.productId; // option.productId
+
 			this.getProductData();
 		},
 		methods: {
@@ -93,7 +93,7 @@
 					width: 100%;
 				}
 			}
-			
+
 			.productInfo {
 				background: #FFFFFF;
 			}

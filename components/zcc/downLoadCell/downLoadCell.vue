@@ -5,7 +5,8 @@
 				<image :src="data.image" mode="scaleToFill"></image>
 				<view class="title">{{data.docName}}</view>
 			</view>
-			<image class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill"></image>
+			<image v-if="progress == ''" class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill" @click="downLoad(data.fullDocUrl)"></image>
+			<view v-else class="progressView">{{progress.length > 3 ? '完成' : progress}}</view>
 		</view>
 		<view class="bottomPart">
 			<text class="time">{{data.createTime}}</text>
@@ -15,21 +16,34 @@
 </template>
 
 <script>
+	import Vue from 'vue'
+
 	export default {
 		name: "downLoadCell",
 		props: {
 			data: {
 				type: Object,
 				default: {}
-			}
+			},
 		},
 		data() {
 			return {
-				
+				progress:''
 			}
 		},
 		methods: {
-
+			downLoad(url) {
+				var that = this;
+				this.callHandlerBack("native_download", {
+				     'downloadUrl': this.data.fullDocUrl,'contentDisposition':'文件描述','mimeType':'','fileId':this.data.id,'fileName':this.data.docName
+				    },function(responseData) {
+						that.reFreshProgress(responseData)//更新值用
+						this.progress = responseData;//有一句话就行，不知原因
+				   })
+			},
+			reFreshProgress (progress) {
+				this.progress = progress;
+			}
 		}
 	}
 </script>
@@ -55,6 +69,10 @@
 				// line-height: 100rpx;
 				width: 500rpx;
 			}
+		}
+		
+		.progressView {
+			color: #737576;
 		}
 
 		image {

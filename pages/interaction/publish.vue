@@ -26,7 +26,7 @@
 
 <script>
 	const API = require('../../common/api.js')
-const CONFIG = require('../../common/config.js')
+	const CONFIG = require('../../common/config.js')
 	
 	var sourceType = [
 		['camera'],
@@ -75,7 +75,7 @@ const CONFIG = require('../../common/config.js')
 								type: parseInt(this.selectedIndex) + 1,
 							}).then(res => {
 								console.log(res);
-								uni.navigateTo({
+								uni.redirectTo({
 									url:"publishSucceed?id=" + res.data.data.id
 								})
 							}).catch(err => {
@@ -113,6 +113,15 @@ const CONFIG = require('../../common/config.js')
 						return;
 					}
 				}
+				// 图片服务器地址
+				let imageURL;
+				if (process.env.NODE_ENV === 'development') {
+					// console.log(' 开发环境')
+					imageURL = CONFIG.offlineImageURL;
+				} else {
+					// console.log('生产环境')
+					imageURL = CONFIG.offlineImageURL;
+				}
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
@@ -122,23 +131,38 @@ const CONFIG = require('../../common/config.js')
 						// console.log(res);
 						// 上传图片操作
 						for (var i = 0; i < tempFilePaths.length; i++) {
+							// console.log(tempFilePaths);
+							uni.showLoading({
+								title:'正在上传图片'
+							})
+							var num = 0;
 							uni.uploadFile({
-							            url: CONFIG.imageURL, 
+							            url: imageURL, 
 							            filePath: tempFilePaths[i],
 							            name: 'file',
 							            formData: {
 							                'image': 'publishImage'
 							            },
 							            success: (uploadFileRes) => {
+											uni.hideLoading();
+											this.imageList.push(tempFilePaths[num++]);
+											if (this.imageList.length > 6) {
+												this.imageList = this.imageList.splice(0,6);
+											}
+											
+											// 图片数组
 											var obj = JSON.parse(uploadFileRes.data);
 											this.submitImageIdList.push(obj.data.fileid);
-											console.log(this.submitImageIdList);
-							            }
+											// console.log(this.submitImageIdList);
+							            },
+										fail:() => {
+											uni.hideLoading();
+											uni.showToast({
+												title:"上传图片失败"
+											})
+										}
 							        });
 						}
-						
-						var tmpPicList = this.imageList.concat(tempFilePaths);
-						this.imageList = tmpPicList.length > 6 ? tmpPicList.splice(0,6) : tmpPicList;
 					},
 					fail: (err) => {
 						// #ifdef APP-PLUS

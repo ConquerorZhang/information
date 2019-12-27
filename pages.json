@@ -119,9 +119,7 @@
 		}, {
 			"path": "pages/means/means-detile",
 			"style": {
-				"navigationStyle": "custom",
 				"navigationBarTitleText": "资料详情"
-              
 			}
 		}, {
 			"path": "pages/myInfo/myDownLoad",

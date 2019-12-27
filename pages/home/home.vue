@@ -149,9 +149,9 @@
             this.getFileType();
         },
 		onShow() {
-			this.callHandler('ObjC Echo',{
+			 this.callHandler('ObjC Echo',{
 				'key': 'onShow'
-			});
+			}); 
 		},
         //加载更多
         onReachBottom() {
@@ -213,7 +213,9 @@
                 this.getFileList("Refresh");
             },
             result(param) {
-                this.$set(this.menuList[0],"title",param["key_type"])
+                //选择后 展示 title
+                let title = param["key_type"] != "" ? param["key_type"] : "全部";
+                this.$set(this.menuList[0],"title",title)
                 this.fileTypeId = param["key_type"];
                 console.log(this.fileTypeId)
                 this.getFileList("Refresh");

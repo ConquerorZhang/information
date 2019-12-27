@@ -76,6 +76,16 @@
 				}
 			}
 		},
+        watch: {
+            menuListTemp: {
+                //下拉框选择后 titie改变
+                handler(newValue, oldValue) {
+                    let title =  newValue[0]["title"]
+                    this.$set(this.titleList[0],"title",title)
+                },
+                deep: true,
+            }
+        },
 		// #ifndef H5
 		onReady: function() {
 			let arr = [];

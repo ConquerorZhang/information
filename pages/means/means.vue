@@ -6,7 +6,7 @@
         <view class="bt">最近下载</view>
         <checkbox-group @change="checkboxChange">
             <!-- 正在下载 -->
-            <view class="means-item"  v-for="(item,index) in downloadList">
+            <view class="means-item" v-for="(item,index) in downloadList">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName}}</view>
@@ -15,7 +15,7 @@
                 <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
             </view>
             <!-- 下载完成的 -->
-            <view class="means-item"  v-for="(item,index) in historyList">
+            <view class="means-item" v-for="(item,index) in historyList">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName}}</view>
@@ -60,6 +60,7 @@
                 more: "more",
                 delstar: false,
                 downloadList: [],
+                param:{},
                 historyList: [{
                         docName: "aa",
                         createTime: "2019-12",
@@ -123,16 +124,24 @@
         },
         onLoad(param) {
             //需新建下载任务的
+            this.param = param;
             if (param.type == "download") {
+                //查询是否有证在下载的任务
                 this.downloadList = [{
                     docName: param.docName,
                     createTime: "2019-12",
-                    percentage : 0
+                    percentage: 0
                 }]
-                this.download_fun(param.fullDocUrl,param.docType);
+                this.download_fun(param.fullDocUrl, param.docType);
             }
             this.getHistoryList();
-          
+
+        },
+        onShow() {
+            
+        	this.callHandler('ObjC Echo', {
+        		'key': 'inner'
+        	});
         },
         //加载更多
         onReachBottom() {
@@ -143,11 +152,12 @@
         },
         //下拉刷新
         onPullDownRefresh() {
+            //下拉刷新 查询是否有正在下载的任务
+            
             this.getHistoryList("Refresh");
         },
         methods: {
-          //下载   加载其他时   往downloadList 后面拼接
-            download_fun(fullDocUrl,docType) {
+            download_fun(fullDocUrl, docType) {
                 let this_ = this
                 this.callHandlerBack("native_download", {
                     'downloadUrl': 'http://download.kugou.com/download/kugou_android', //param.fullDocUrl
@@ -156,10 +166,14 @@
                 }, function(responseData) {
                     //注意第一次回调问题
                     console.log("--------------download:", responseData)
-                    if(responseData == 1.0 || responseData == "100%"){
+                    if (responseData == 1.0 || responseData == "100%") {
                         responseData = "已完成"
+                        //下载量加一
+                        API.downloadedAdd({}).then(res => {}).catch(err => {
+                            console.log(err);
+                        })
                     }
-                    this_.$set(this_.downloadList[0],"percentage",responseData)
+                    this_.$set(this_.downloadList[0], "percentage", responseData)
                     this.prow1 = responseData112;
                 })
             },

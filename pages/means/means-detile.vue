@@ -92,6 +92,12 @@
         onLoad(param) {
             this.onloadFun(param.fileId)
         },
+        onShow() {
+            
+        	this.callHandler('ObjC Echo', {
+        		'key': 'inner'
+        	});
+        },
 
         methods: {
             onloadFun(id) {

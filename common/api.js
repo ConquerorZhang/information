@@ -295,4 +295,8 @@ module.exports = {
 	PlateformBriefIntroduction: (data) => {
 		return MyAPI('home/intro', false, 'GET', data)
 	},
+    //下载量加一 
+    downloadedAdd: (data) => {
+    	return MyAPI('learnmaterial/downloaded', false, 'GET', data)
+    },
 }

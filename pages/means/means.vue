@@ -42,7 +42,7 @@
                 <view class="btn" @click="deleteHistory">删除</view>
             </view>
         </view>
-        <uni-load-more :status="more"></uni-load-more>
+        <uni-load-more :status="more" style="margin-bottom: 60rpx;"></uni-load-more>
     </view>
 </template>
 
@@ -398,7 +398,7 @@
             text-align: center;
             padding: 20rpx 0;
             font-size: 32rpx;
-
+            background: rgb(239, 239, 239);
             image {
                 width: 40rpx;
                 height: 40rpx;

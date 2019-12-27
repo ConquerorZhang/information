@@ -35,7 +35,7 @@
                     <view class="con">
                         <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
                         <view class="title">
-                            {{item.docName}}
+                            {{item.docName.split(".")[0]}}
                         </view>
                     </view>
                     <image src="../../static/docs/down.png" mode="aspectFit"></image>

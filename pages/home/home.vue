@@ -1,13 +1,15 @@
 <template>
     <view class="contents">
+        
+        
         <view class="head">
-        	<!-- v-bind:style="{height:systemInfo.statusBarHeight +'px'}" -->
-        	<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view>
+        	<!-- v-bind:style="{height:stateBarHeight +'px'}" -->
+        	<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
         	<view class="top">
         		<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
         		<!-- 自定义Placeholder 搜索框 -->
         		<view class="v_search">
-        			<uni-search-bar placeholder="关键字" radius="8" clearButton="auto"  @input="onKeyInput"  v-model="searchKey" class="search" />
+        			<uni-search-bar placeholder="关键字" radius="20" clearButton="auto"  @input="onKeyInput"  v-model="searchKey" class="search" />
         		</view>
         		<view class="top-right" @click="message">
         			<!--@click="window.android.click('77777777777')"-->
@@ -15,7 +17,7 @@
         			<!-- <text class="top-right-text" v-show='false' >消息</text> -->
         		</view>
         	</view>
-       
+        
         	<view class="filter">
         		<scroll-view class="scroll" scroll-x="true">
         		    <text :class="0 == productId ? 'x' : ''" @click="product_all">全部</text>
@@ -25,8 +27,7 @@
         		</scroll-view>
         		<sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult" @result="result"></sl-filter>
         	</view>
-        </view>
-        
+        </view>        
         <!-- 筛选组件 -->
         
         <view v-if="fileList.length > 0">
@@ -358,6 +359,7 @@
             height: 100rpx;
         }
     }
+    
     .head {
     	position: fixed;
     	top: 0rpx;
@@ -423,7 +425,6 @@
     
     	.filter {
     		width: 100%;
-    		height: 60rpx;
     	}
     }
     

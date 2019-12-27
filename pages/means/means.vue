@@ -2,7 +2,7 @@
     <view class="conter">
         <view class="xtnav"></view>
         <uni-nav-bar class="collectionBar" left-icon="back" :rightText="delstar == false ? '管理' : '完成'" title="资料下载"
-            @clickLeft="back" @clickRight="clickRightBtn"></uni-nav-bar>
+            @clickLeft="back" @clickRight="clickRightBtn" :shadow="shade" :border="shade"></uni-nav-bar>
         <view class="bt">最近下载</view>
         <checkbox-group @change="checkboxChange">
             <!-- 正在下载 -->
@@ -57,6 +57,7 @@
         },
         data() {
             return {
+                shade:false,
                 more: "more",
                 delstar: false,
                 downloadList: [],
@@ -328,9 +329,17 @@
         background: rgb(239, 239, 239);
         padding-bottom: 100rpx;
     }
-
+    /deep/ uni-checkbox .uni-checkbox-input{
+        border-radius: 50%;
+    }
+    /deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked{
+        border: 1px solid rgb(199, 22, 30);
+        background-color: rgb(199, 22, 30);
+        color: #FFF !important;
+    }
     .xtnav {
         height: 25px;
+        background: #FFF;
     }
 
     .conter {

@@ -1,16 +1,16 @@
 <template>
     <view class="conter">
         <view class="xtnav"></view>
-        <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back"></uni-nav-bar>
+        <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back" :shadow="shade" :border="shade"></uni-nav-bar>
         <view class="detaile">
             <view class="title">{{detailData.docName}}</view>
             <view class="time">{{detailData.createTime}}</view>
             <view class="tips">
-                <image src="../../static/tab-my.png" mode="aspectFit"></image>
+                <image src="../../static/my.png" mode="aspectFit"></image>
                 <text>负责人:{{detailData.charger}}</text>
                 <image src="../../static/attention.png" mode="aspectFit"></image>
                 <text>浏览: {{detailData.visitCount}}次</text>
-                <image src="../../static/arrow_down_black.png" mode="aspectFit"></image>
+                <image src="../../static/down-detile.png" mode="aspectFit"></image>
                 <text>下载: {{detailData.downloadCount}}次</text>
             </view>
         </view>
@@ -24,11 +24,11 @@
         </view>
         <view class="footers">
             <view class="pople" @click="openpopup">
-                <image src="../../static/tab-my.png" mode="aspectFit"></image>
+                <image src="../../static/mys.png" mode="aspectFit"></image>
                 <text>负责人</text>
             </view>
             <view class="btn">
-                <image src="../../static/tab-my.png" mode="aspectFit"></image>
+                <image src="../../static/downb.png" mode="aspectFit"></image>
                 <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName)">下载资料</text>
             </view>
         </view>
@@ -64,6 +64,7 @@
         },
         data() {
             return {
+                shade:false,
                 src: "https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx",
                  webviewStyles: {
                    width : 50,
@@ -140,6 +141,7 @@
 
     .xtnav {
         height: 25px;
+        background: #FFFFFF;
     }
 
     .detaile {
@@ -162,8 +164,8 @@
             margin-top: 10rpx;
 
             image {
-                width: 36rpx;
-                height: 36rpx;
+                width: 30rpx;
+                height: 30rpx;
                 display: inline-block;
                 vertical-align: middle;
                 margin-right: 6rpx;
@@ -177,10 +179,11 @@
     }
 
     .main {
+        padding: 30rpx 20rpx;
         margin-top: 10rpx;
-        min-height: 400rpx;
         background: #fff;
-        text-align: center;
+        font-size: 28rpx;
+        color: #666666;
     }
 
     .footers {
@@ -195,8 +198,8 @@
         font-size: 30rpx;
 
         image {
-            width: 50rpx;
-            height: 50rpx;
+            width: 40rpx;
+            height: 40rpx;
             display: inline-block;
             vertical-align: middle;
             margin-right: 8rpx;
@@ -242,7 +245,6 @@
                 font-size: 32rpx;
                 line-height: 1.4;
                 word-wrap:break-word;
-                word-break:break-all;
             }
 
             padding: 15rpx;

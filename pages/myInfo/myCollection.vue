@@ -200,9 +200,9 @@
 			interDetail(index1,id) {
 				console.log(id);
 				if (index1 == 0) {
-					uni.navigateTo({
-						url: '../product/product?productId='+id
-					});
+					// uni.navigateTo({
+					// 	url: '../product/product?productId='+id + '&fromH5=1'
+					// });
 				}
 				else {
 					uni.navigateTo({

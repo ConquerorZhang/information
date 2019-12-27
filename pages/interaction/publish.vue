@@ -131,6 +131,11 @@
 						// console.log(res);
 						// 上传图片操作
 						for (var i = 0; i < tempFilePaths.length; i++) {
+							// console.log(tempFilePaths);
+							uni.showLoading({
+								title:'正在上传图片'
+							})
+							var num = 0;
 							uni.uploadFile({
 							            url: imageURL, 
 							            filePath: tempFilePaths[i],
@@ -139,15 +144,25 @@
 							                'image': 'publishImage'
 							            },
 							            success: (uploadFileRes) => {
+											uni.hideLoading();
+											this.imageList.push(tempFilePaths[num++]);
+											if (this.imageList.length > 6) {
+												this.imageList = this.imageList.splice(0,6);
+											}
+											
+											// 图片数组
 											var obj = JSON.parse(uploadFileRes.data);
 											this.submitImageIdList.push(obj.data.fileid);
-											console.log(this.submitImageIdList);
-							            }
+											// console.log(this.submitImageIdList);
+							            },
+										fail:() => {
+											uni.hideLoading();
+											uni.showToast({
+												title:"上传图片失败"
+											})
+										}
 							        });
 						}
-						
-						var tmpPicList = this.imageList.concat(tempFilePaths);
-						this.imageList = tmpPicList.length > 6 ? tmpPicList.splice(0,6) : tmpPicList;
 					},
 					fail: (err) => {
 						// #ifdef APP-PLUS

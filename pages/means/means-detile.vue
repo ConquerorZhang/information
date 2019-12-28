@@ -1,7 +1,5 @@
 <template>
     <view class="conter">
-        <view class="xtnav"></view>
-        <uni-nav-bar id="naviBar" left-icon="back" title="资料详情" @clickLeft="back" :shadow="shade" :border="shade"></uni-nav-bar>
         <view class="detaile">
             <view class="title">{{detailData.docName.split(".")[0]}}</view>
             <view class="time">{{detailData.createTime}}</view>
@@ -54,16 +52,13 @@
 <script>
     const API = require('../../common/api.js')
     import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
-    import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
     var wv; //计划创建的webview
     export default {
          components: {
-            uniNavBar,
             uniPopup
         },
         data() {
             return {
-                shade:false,
                 src: "https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx",
                  webviewStyles: {
                    width : 50,
@@ -139,8 +134,10 @@
     }
 
     .xtnav {
-        height: 25px;
         background: #FFFFFF;
+        position: fixed;
+        left: 0;
+        right: 0;
     }
 
     .detaile {

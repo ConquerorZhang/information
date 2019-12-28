@@ -1,9 +1,9 @@
 <template>
-    <view class="contents">
+    <view class="contents" v-bind:style="{ paddingTop: parseFloat(statusBarHeight) + blg + 'rpx' }">
         <view class="page">
             <view class="head">
                 <!-- v-bind:style="{height:stateBarHeight +'px'}" -->
-                <view class="statusBar" v-bind:style="{ height: statusBarHeight + 'rpx' }"></view>
+                <view class="statusBar" v-bind:style="{ height: parseFloat(statusBarHeight) + 'rpx' }"></view>
                 <!--{{Vue.config.configDic.stateBarHeight}}-->
                 <view class="top">
                     <image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
@@ -45,6 +45,7 @@
             </view>
             <!-- {{version}} ---- {{innerVersion}} -->
         </view>
+        
         <view v-else><image src="../../static/interaction/commentEmpty.png" mode="aspectFit" class="empty"></image></view>
         <uni-load-more :status="more"></uni-load-more>
         <view class="drift"><image src="../../static/down.png" mode="aspectFit" @click="mydown"></image></view>
@@ -67,6 +68,7 @@ export default {
     data() {
         return {
             statusBarHeight: 0,
+            blg:220,
             systemInfo: '',
             more: 'more',
             version: '',
@@ -152,7 +154,7 @@ export default {
                     charger: '',
                     tel: '',
                     docDesc: '',
-                    doctypeImageUrl: 'http://10.10.5.32:81/pics/filetype/doc.png',
+                    doctypeImageUrl: '',
                     docType: 'html',
                     searchKeys: '',
                     createName: null
@@ -359,9 +361,6 @@ export default {
 <style lang="scss">
 page {
     background: rgb(239, 239, 239);
-}
-.contents {
-    padding-top: 270rpx;
 }
 .drift {
     position: fixed;

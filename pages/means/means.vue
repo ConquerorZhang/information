@@ -1,8 +1,7 @@
 <template>
     <view class="conter">
-        <view class="xtnav"></view>
         <uni-nav-bar class="collectionBar" left-icon="back" :rightText="delstar == false ? '管理' : '完成'" title="资料下载"
-            @clickLeft="back" @clickRight="clickRightBtn" :shadow="shade" :border="shade"></uni-nav-bar>
+            @clickLeft="back" @clickRight="clickRightBtn" :shadow="shade" :border="shade" :fixed="statusBar" :statusBar="statusBar"></uni-nav-bar>
         <view class="bt">最近下载</view>
         <checkbox-group @change="checkboxChange">
             <!-- 正在下载 -->
@@ -58,6 +57,8 @@
         data() {
             return {
                 shade:false,
+                statusBar:true,
+                statusBarHeight:0,
                 more: "more",
                 delstar: false,
                 downloadList: [],
@@ -336,10 +337,16 @@
         color: #FFF !important;
     }
     .xtnav {
-        height: 25px;
-        background: #FFF;
+        background: #FFFFFF;
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        top: 0;
     }
+    .collectionBar{
 
+    }
     .conter {
         overflow: hidden;
     }

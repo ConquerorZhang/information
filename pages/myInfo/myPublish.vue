@@ -148,7 +148,7 @@
 									</view>
 								</view>
 
-								<view class="comment">
+								<view class="comment" @click="navToDetailPage(item,index,'bizkey')">
 									<view class="comment-title">
 										<text class="item-text title">我的帖子：</text>
 									</view>

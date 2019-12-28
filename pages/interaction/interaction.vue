@@ -6,7 +6,7 @@
 		</head>
 		<view class="head">
 			<!-- v-bind:style="{height:stateBarHeight +'px'}" -->
-			<view class="statusBar" v-bind:style="{height:statusBarHeight+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
+			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
@@ -27,7 +27,7 @@
 		</view>
 
 		<!-- <view class="top-zhanwei"></view>     -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':statusBarHeight+140 +'rpx'}"
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+140) +'rpx'}"
 		 enableBackToTop="true" @scrolltolower="loadMore(page)">
 
 			<view class="empty" v-if="data.datalsit.length < 1">
@@ -186,7 +186,7 @@
 			//消息
 			message() {
 				uni.navigateTo({
-					url: "../myInfo/myMessage?" + '&fromH5=1'
+					url: "../myInfo/myPublish?index=0"
 				})
 				
 				this.callHandler('ObjC Echo', {
@@ -307,9 +307,11 @@
 						this.data.hasmore = true;
 					}
 					this.data.datalsit = this.data.datalsit.concat(res.data.data);
+					 uni.stopPullDownRefresh();
 					// this.data.datalsit=[];
 					// console.log(this.data.datalsit);
 				}).catch(err => {
+					 uni.stopPullDownRefresh();
 					this.data.hasmore = true;
 					console.log(err);
 				})
@@ -346,6 +348,11 @@
 			back() {
 				console.log(uni.onBackPress())
 			}
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			this.resetData();
+		    setTimeout(this.getlistdata(1), 5000);
 		},
 
 		onLoad() {

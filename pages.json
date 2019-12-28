@@ -23,7 +23,8 @@
 		}, {
 			"path": "pages/interaction/interaction",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true 
 			}
 		}, {
 			"path": "pages/myInfo/myMessage",
@@ -119,9 +120,7 @@
 		}, {
 			"path": "pages/means/means-detile",
 			"style": {
-				"navigationStyle": "custom",
 				"navigationBarTitleText": "资料详情"
-              
 			}
 		}, {
 			"path": "pages/myInfo/myDownLoad",
@@ -163,6 +162,10 @@
             "style" : {
 				"navigationStyle": "custom"
 			}
+        }
+        ,{
+            "path" : "components/zcc/homeSearchBar/homeSearchBar",
+            "style" : {}
         }
     ],
 	"globalStyle": {

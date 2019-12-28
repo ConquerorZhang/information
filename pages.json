@@ -23,7 +23,8 @@
 		}, {
 			"path": "pages/interaction/interaction",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true 
 			}
 		}, {
 			"path": "pages/myInfo/myMessage",

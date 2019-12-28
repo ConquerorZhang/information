@@ -307,9 +307,11 @@
 						this.data.hasmore = true;
 					}
 					this.data.datalsit = this.data.datalsit.concat(res.data.data);
+					 uni.stopPullDownRefresh();
 					// this.data.datalsit=[];
 					// console.log(this.data.datalsit);
 				}).catch(err => {
+					 uni.stopPullDownRefresh();
 					this.data.hasmore = true;
 					console.log(err);
 				})
@@ -346,6 +348,11 @@
 			back() {
 				console.log(uni.onBackPress())
 			}
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			this.resetData();
+		    setTimeout(this.getlistdata(1), 5000);
 		},
 
 		onLoad() {

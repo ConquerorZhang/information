@@ -204,15 +204,15 @@
 
         .pople {
             flex-grow: 1;
-            color: #ee3847;
-            border: 1rpx solid #ee3847;
+            color: #CA2729;
+            border: 1rpx solid #CA2729;
         }
 
         .btn {
             flex-grow: 1;
-            background: #ee3847;
+            background: #CA2729;
             color: #fff;
-            border: 1rpx solid #ee3847;
+            border: 1rpx solid #CA2729;
         }
     }
 

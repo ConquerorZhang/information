@@ -6,7 +6,7 @@
         <checkbox-group @change="checkboxChange">
             <!-- 正在下载 -->
             <view class="means-item" v-for="(item,index) in downloadList">
-                <image src="../../static/logo.png" mode="aspectFit"></image>
+                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
@@ -15,7 +15,7 @@
             </view>
             <!-- 下载完成的传那个name -->
             <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
-                <image src="../../static/logo.png" mode="aspectFit"></image>
+                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
@@ -89,7 +89,8 @@
                 this.downloadList = [{
                     docName: param.fileName,
                     createTime: year + "-" + (month+1) +"-"+date,
-                    percentage: "0"
+                    percentage: "0",
+                    doctypeImageUrl : param.doctypeImageUrl
                 }]
                 this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);
             }

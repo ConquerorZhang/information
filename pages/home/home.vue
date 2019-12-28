@@ -1,9 +1,9 @@
 <template>
-    <view class="contents" v-bind:style="{ paddingTop: statusBarHeight + blg + 'rpx' }">
+    <view class="contents" v-bind:style="{ paddingTop: parseFloat(statusBarHeight) + blg + 'rpx' }">
         <view class="page">
             <view class="head">
                 <!-- v-bind:style="{height:stateBarHeight +'px'}" -->
-                <view class="statusBar" v-bind:style="{ height: statusBarHeight + 'rpx' }"></view>
+                <view class="statusBar" v-bind:style="{ height: parseFloat(statusBarHeight) + 'rpx' }"></view>
                 <!--{{Vue.config.configDic.stateBarHeight}}-->
                 <view class="top">
                     <image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>

@@ -26,7 +26,7 @@
             </view>
             <view class="btn">
                 <image src="../../static/downb.png" mode="aspectFit"></image>
-                <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName,detailData.id)">下载资料</text>
+                <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName,detailData.id,detailData.doctypeImageUrl)">下载资料</text>
             </view>
         </view>
         <uni-popup ref="replyPopup" type="center">
@@ -87,7 +87,7 @@
         	this.callHandler('ObjC Echo', {
         		'key': 'inner'
         	});
-        },
+        }, 
 
         methods: {
             onloadFun(id) {
@@ -101,9 +101,9 @@
                 })
 
             },
-            todownloadList(fullDocUrl,docType,docName,id) {
+            todownloadList(fullDocUrl,docType,docName,id,doctypeImageUrl) {
                 uni.navigateTo({
-                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName + "&id=" + id
+                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName + "&id=" + id + "&doctypeImageUrl=" + doctypeImageUrl
                 })
             },
 
@@ -199,15 +199,15 @@
 
         .pople {
             flex-grow: 1;
-            color: #CA2729;
-            border: 1rpx solid #CA2729;
+            color: #ee3847;
+            border: 1rpx solid #ee3847;
         }
 
         .btn {
             flex-grow: 1;
-            background: #CA2729;
+            background: #ee3847;
             color: #fff;
-            border: 1rpx solid #CA2729;
+            border: 1rpx solid #ee3847;
         }
     }
 

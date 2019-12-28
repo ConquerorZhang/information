@@ -83,9 +83,13 @@
             //需新建下载任务的
             this.param = param;
             if (param.type == "download") {
+                var now = new Date();
+                var year = now.getFullYear(); //得到年份
+                var month = now.getMonth();//得到月份
+                var date = now.getDate();//得到日期
                 this.downloadList = [{
-                    docName: param.docName,
-                    createTime: "2019-12",
+                    docName: param.fileName,
+                    createTime: year + "-" + (month+1) +"-"+date,
                     percentage: 0
                 }]
                 this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);

@@ -162,6 +162,10 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "components/zcc/homeSearchBar/homeSearchBar",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

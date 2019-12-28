@@ -154,7 +154,7 @@ export default {
                     charger: '',
                     tel: '',
                     docDesc: '',
-                    doctypeImageUrl: 'http://10.10.5.32:81/pics/filetype/doc.png',
+                    doctypeImageUrl: '',
                     docType: 'html',
                     searchKeys: '',
                     createName: null

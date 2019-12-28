@@ -83,12 +83,16 @@
             //需新建下载任务的
             this.param = param;
             if (param.type == "download") {
+                var now = new Date();
+                var year = now.getFullYear(); //得到年份
+                var month = now.getMonth();//得到月份
+                var date = now.getDate();//得到日期
                 this.downloadList = [{
-                    docName: param.docName,
-                    createTime: "2019-12",
+                    docName: param.fileName,
+                    createTime: year + "-" + (month+1) +"-"+date,
                     percentage: 0
                 }]
-                this.download_fun(param.fullDocUrl, param.docType,param.fileName);
+                this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);
             }
             this.getHistoryList("Refresh");
         },
@@ -109,13 +113,13 @@
             this.getHistoryList("Refresh");
         },
         methods: {
-            download_fun(fullDocUrl, docType,fileName) {
+            download_fun(fullDocUrl, docType,fileName,id) {
                 let this_ = this
                 this.callHandlerBack("native_download", {
                     'downloadUrl': fullDocUrl, //param.fullDocUrl
                     'contentDisposition': '文件描述',
                     'mimeType': docType,
-                    'fileName': fileName  //param.docType
+                    'filename': fileName  //param.docType
                 }, function(responseData) {
                     //注意第一次回调问题
                     console.log("--------------download:", responseData)
@@ -124,7 +128,7 @@
                         //刷新该页面
                         this.getHistoryList("Refresh");
                         //下载量加一
-                        API.downloadedAdd({}).then(res => {}).catch(err => {
+                        API.downloadedAdd({id:id}).then(res => {}).catch(err => {
                             console.log(err);
                         })
                     }
@@ -171,6 +175,7 @@
                     //刷新 数据 , 页数重置
                     this.page = 1;
                     this.historyList = [];
+                    this.more = "more"
                     uni.stopPullDownRefresh();
                 }
                 let json = {

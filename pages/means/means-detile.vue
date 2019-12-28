@@ -26,7 +26,7 @@
             </view>
             <view class="btn">
                 <image src="../../static/downb.png" mode="aspectFit"></image>
-                <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName)">下载资料</text>
+                <text @click="todownloadList(detailData.fullDocUrl,detailData.docType,detailData.docName,detailData.id)">下载资料</text>
             </view>
         </view>
         <uni-popup ref="replyPopup" type="center">
@@ -101,9 +101,9 @@
                 })
 
             },
-            todownloadList(fullDocUrl,docType,docName) {
+            todownloadList(fullDocUrl,docType,docName,id) {
                 uni.navigateTo({
-                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName
+                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName + "&id=" + id
                 })
             },
 

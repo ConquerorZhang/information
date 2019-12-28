@@ -27,7 +27,7 @@
 		</view>
 
 		<!-- <view class="top-zhanwei"></view>     -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':statusBarHeight+140 +'rpx'}"
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':parseFloat(statusBarHeight)+140 +'rpx'}"
 		 enableBackToTop="true" @scrolltolower="loadMore(page)">
 
 			<view class="empty" v-if="data.datalsit.length < 1">

@@ -42,8 +42,7 @@
 			initShowClose: {
 				type: Boolean,
 				default: true
-			}
-		},
+			}		},
 		data() {
 			return {
 				show: true,

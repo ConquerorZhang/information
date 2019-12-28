@@ -9,7 +9,7 @@
 			<!-- mSearch组件 如果使用原样式，删除组件元素-->
 			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 
-			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword"
+			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" 
 			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel"></uni-search-bar>
 
 			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
@@ -121,6 +121,7 @@
 			loadDefaultKeyword() {
 				//定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
 				this.defaultKeyword = "关键字搜索";
+				this.keyword = 'keyword';
 			},
 			//加载历史搜索,自动读取本地Storage
 			loadOldKeyword() {
@@ -154,6 +155,7 @@
 			//监听输入
 			inputChange(event) {
 				//兼容引入组件时传入参数情况
+				console.log("------------inputChange:"+event.value)
 				var keyword = event ? event.value : event;
 				console.log(event.value);
 				if (!keyword) {
@@ -225,6 +227,7 @@
 				// 	icon: 'none',
 				// 	duration: 2000
 				// });
+				this.defaultKeyword = key;
 				uni.navigateTo({
 					url:'./searchResult?keyword='+key
 				})

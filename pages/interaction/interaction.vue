@@ -378,7 +378,8 @@
 			this.callHandler('ObjC Echo', {
 				'key': 'onShow'
 			});
-			setTimeout(this.getlistdata(1), 5000);
+			this.resetData();
+			setTimeout(this.getlistdata(1), 1000);
 		},
 	}
 </script>

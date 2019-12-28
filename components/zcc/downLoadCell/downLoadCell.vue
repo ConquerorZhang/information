@@ -35,7 +35,7 @@
 			downLoad(url) {
 				var that = this;
 				this.callHandlerBack("native_download", {
-				     'downloadUrl': this.data.fullDocUrl,'contentDisposition':'文件描述','mimeType':'','fileId':this.data.id,'fileName':this.data.docName
+				     'downloadUrl': this.data.fullDocUrl,'contentDisposition':'文件描述','mimeType':'','fileId':this.data.id,'filename':this.data.docName
 				    },function(responseData) {
 						that.reFreshProgress(responseData)//更新值用
 						this.progress = responseData;//有一句话就行，不知原因

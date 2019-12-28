@@ -141,7 +141,7 @@ export default {
             lv1list: [],
             fileTypeId: '', //文件类型 doc  ppt
             fileList: [
-                {
+                /* {
                     id: '1206497536238469122',
                     docName: 'travel.html',
                     uploadId: '1206497521398616065',
@@ -158,7 +158,7 @@ export default {
                     docType: 'html',
                     searchKeys: '',
                     createName: null
-                }
+                } */
             ]
         };
     },
@@ -175,7 +175,7 @@ export default {
         this.callHandler('ObjC Echo', {
             key: 'onShow'
         }); 
-    },
+    }, 
     //加载更多
     onReachBottom() {
         if (this.more == 'noMore') {

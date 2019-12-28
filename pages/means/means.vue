@@ -63,58 +63,12 @@
                 delstar: false,
                 downloadList: [],
                 param:{},
-                historyList: [{
+                historyList: [/* {
                         docName: "aa",
                         createTime: "2019-12",
                         id: "11",
                         fullDocUrl: "http://10.10.5.33:82/aaaa.doc"
-                    },
-                    {
-                        docName: "bb",
-                        createTime: "2019-12",
-                        id: "22"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    }
-
+                    }, */
                 ],
                 page: 1,
                 limit: 7,

@@ -120,7 +120,7 @@
 					imageURL = CONFIG.offlineImageURL;
 				} else {
 					// console.log('生产环境')
-					imageURL = CONFIG.offlineImageURL;
+					imageURL = CONFIG.onlineImageURL;
 				}
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],

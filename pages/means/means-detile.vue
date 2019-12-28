@@ -59,13 +59,8 @@
         },
         data() {
             return {
-                src: "https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx",
-                 webviewStyles: {
-                   width : 50,
-                   height: 50
-                },
                 detailData: {
-                    "id": "1206529024577241089",
+                    /* "id": "1206529024577241089",
                     "docName": "1_1116508171.doc",
                     "uploadId": "1206529023591215106",
                     "docUrl": "/aaaa.doc",
@@ -80,7 +75,7 @@
                     "doctypeImageUrl": null,
                     "docType": "doc",
                     "searchKeys": "关键词1 关键词2  关键词3",
-                    "createName": null
+                    "createName": null */
                 }
             };
         },
@@ -108,7 +103,7 @@
             },
             todownloadList(fullDocUrl,docType,docName) {
                 uni.navigateTo({
-                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&docName=" + docName
+                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName
                 })
             },
 

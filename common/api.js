@@ -302,4 +302,7 @@ module.exports = {
     downloadedAdd: (data) => {
     	return MyAPI('learnmaterial/downloaded', false, 'GET', data)
     },
+    deletealthistory: (data) => {
+        return MyAPI('learnmaterial/deleteallhistory', false, 'GET', data)
+    },
 }

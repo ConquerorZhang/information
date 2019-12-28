@@ -14,7 +14,7 @@
                 <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
             </view>
             <!-- 下载完成的传那个name -->
-            <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.fullDocUrl)">
+            <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
                 <image src="../../static/logo.png" mode="aspectFit"></image>
                 <view class="con">
                     <view class="title">{{item.docName.split(".")[0]}}</view>
@@ -63,58 +63,12 @@
                 delstar: false,
                 downloadList: [],
                 param:{},
-                historyList: [{
+                historyList: [/* {
                         docName: "aa",
                         createTime: "2019-12",
                         id: "11",
                         fullDocUrl: "http://10.10.5.33:82/aaaa.doc"
-                    },
-                    {
-                        docName: "bb",
-                        createTime: "2019-12",
-                        id: "22"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    },
-                    {
-                        docName: "cc",
-                        createTime: "2019-12",
-                        id: "33"
-                    }
-
+                    }, */
                 ],
                 page: 1,
                 limit: 7,
@@ -134,7 +88,7 @@
                     createTime: "2019-12",
                     percentage: 0
                 }]
-                //this.download_fun(param.fullDocUrl, param.docType);
+                this.download_fun(param.fullDocUrl, param.docType,param.fileName);
             }
             this.getHistoryList("Refresh");
         },
@@ -155,12 +109,13 @@
             this.getHistoryList("Refresh");
         },
         methods: {
-            download_fun(fullDocUrl, docType) {
+            download_fun(fullDocUrl, docType,fileName) {
                 let this_ = this
                 this.callHandlerBack("native_download", {
-                    'downloadUrl': 'https://appbundle.holdsoft.cn/information_test_122601.apk', //param.fullDocUrl
+                    'downloadUrl': fullDocUrl, //param.fullDocUrl
                     'contentDisposition': '文件描述',
-                    'mimeType': '.apk' //  param.docType
+                    'mimeType': docType,
+                    'fileName': fileName  //param.docType
                 }, function(responseData) {
                     //注意第一次回调问题
                     console.log("--------------download:", responseData)
@@ -177,10 +132,8 @@
                     this.prow1 = responseData112;
                 })
             },
-            openFile(downloadUrl){
-                let docNameArray = downloadUrl.split("/");
-                let docName = docNameArray[(docNameArray.length)-1];
-                this.callHandlerBack("native_fileOpen",  {filename:docName}, function(responseData) {
+            openFile(fileName){
+                this.callHandlerBack("native_fileOpen",  {filename:fileName}, function(responseData) {
                     //注意第一次回调问题
                     if(responseData == 0 || responseData == "0"){
                         uni.showToast({
@@ -272,8 +225,7 @@
                     confirmColor: '#fa436a',
                     content: '是否确定清空',
                     success: function(res) {
-                        API.deleteHistory({
-                            historyIds: []
+                        API.deletealthistory({
                         }).then(res => {
                             if (res.data.code == 0) {
                                 this.historyList = [];

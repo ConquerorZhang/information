@@ -113,7 +113,7 @@
             },
             todownloadList(fullDocUrl,docType,docName) {
                 uni.navigateTo({
-                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&docName=" + docName
+                    url: "/pages/means/means?type=download&fullDocUrl=" + fullDocUrl + "&docType=." + docType  + "&fileName=" + docName
                 })
             },
 

@@ -162,8 +162,8 @@ export default {
     },
     onLoad() {
         this.getlv1list(); //获取分类列表
-        this.getFileList();
-        this.getFileType();
+        this.getFileList("Refresh");
+        this.getFileType(); 
     },
     onShow() {
         this.systemInfo = getApp().globalData.systemInfo;
@@ -172,7 +172,7 @@ export default {
         console.log(this.statusBarHeight);
         this.callHandler('ObjC Echo', {
             key: 'onShow'
-        });
+        }); 
     },
     //加载更多
     onReachBottom() {
@@ -202,7 +202,9 @@ export default {
             });
         },
         onKeyInput: function(event) {
-            this.searchKey = event.target.value;
+            this.searchKey = event.value;
+            console.log(this.searchKey)
+            
             this.getFileList('Refresh');
         },
         sdfdf() {
@@ -225,7 +227,7 @@ export default {
             if (value == 1) {
                 this.orderBy = 'downloadCount';
             } else if (value == 2) {
-                this.orderBy = 'latest';
+                this.orderBy = 'createTime';
             }
             if (this.sortresult_count % 2 != 0) {
                 this.isAsc = 'asc';
@@ -258,7 +260,7 @@ export default {
                 page: this.page
             };
             if (this.fileTypeId != '') {
-                json.fileTypeId = this.fileTypeId;
+                json.fileType = this.fileTypeId;
             }
             if (this.isAsc != '') {
                 json.isAsc = this.isAsc;

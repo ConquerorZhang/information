@@ -71,7 +71,7 @@
                     }, */
                 ],
                 page: 1,
-                limit: 7,
+                limit: 9,
                 allchecked: false, //true 全选  false 取消全选
                 checkList: [], //直接在historyList 添加check true false 属性存在问题  所以用 单独的变量来存取选中状态
                 paramIds: [], //向后台传递的参数

@@ -252,6 +252,7 @@ export default {
                 //页数重置
                 this.page = 1;
                 this.fileList = [];
+                this.more = 'more';
                 uni.stopPullDownRefresh();
             }
 

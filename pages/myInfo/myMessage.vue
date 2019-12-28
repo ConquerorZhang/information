@@ -137,15 +137,18 @@
 					align-items: center;
 
 					.title {
+						width: 90%;
 						font-size: 40rpx;
 					}
 
 					.read {
+						width: 10%;
 						font-size: 30rpx;
 						color: #999999;
 					}
 
 					.unread {
+						width: 10%;
 						font-size: 30rpx;
 						color: #ee3847;
 					}

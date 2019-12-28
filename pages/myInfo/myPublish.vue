@@ -28,7 +28,7 @@
 			</view>
 		</view>
 		<!-- 列表 -->
-		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':(datalists.type == 1 || datalists.type == 2)?(systemInfo.statusBarHeight+75)+'px':(systemInfo.statusBarHeight+43) +'px'}"
+		<scroll-view scroll-y="true" class="list" v-bind:style="{'margin-top':(datalists.type == 1 || datalists.type == 2)?'75px':'43px'}"
 		 @scrolltolower="loadMore(datalists.type)">
 			<!-- 列表item  我的发布-->
 			<view class="item-one" v-if="datalists.type=='1'">
@@ -354,7 +354,6 @@
 						}]
 					}
 				],
-				systemInfo: '',
 			}
 		},
 		onLoad(option) {
@@ -362,11 +361,11 @@
 			console.log(option);
 			let index = option.index;
 			// this.systemInfo = getApp().globalData.systemInfo;
-			uni.getSystemInfo({
-				success: (res) => {
-					this.systemInfo = res
-				}
-			})
+			// uni.getSystemInfo({
+			// 	success: (res) => {
+			// 		this.systemInfo = res
+			// 	}
+			// })
 			this.labelList.forEach((item) => {
 				switch (index) {
 					case "0":

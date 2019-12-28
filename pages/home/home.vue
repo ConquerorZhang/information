@@ -68,7 +68,7 @@ export default {
     data() {
         return {
             statusBarHeight: 0,
-            blg:220,
+            blg:230,
             systemInfo: '',
             more: 'more',
             version: '',

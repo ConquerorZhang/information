@@ -71,12 +71,11 @@
                     }, */
                 ],
                 page: 1,
-                limit: 7,
+                limit: 9,
                 allchecked: false, //true 全选  false 取消全选
                 checkList: [], //直接在historyList 添加check true false 属性存在问题  所以用 单独的变量来存取选中状态
                 paramIds: [], //向后台传递的参数
                 checkValues: [], // 选中的下标数组用于移除
-                responseData: 0.0
             };
         },
         onLoad(param) {
@@ -90,7 +89,7 @@
                 this.downloadList = [{
                     docName: param.fileName,
                     createTime: year + "-" + (month+1) +"-"+date,
-                    percentage: 0
+                    percentage: "0"
                 }]
                 this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);
             }
@@ -121,15 +120,18 @@
                     'mimeType': docType,
                     'filename': fileName  //param.docType
                 }, function(responseData) {
-                    //注意第一次回调问题
-                    console.log("--------------download:", responseData)
-                    if (responseData == 1.0 || responseData == "100%") {
+                    responseData = responseData.toString()
+                    if (responseData.indexOf("100") != -1) {
                         responseData = "已完成"
                         //刷新该页面
-                        this.getHistoryList("Refresh");
+                        this_.downloadList = []
                         //下载量加一
-                        API.downloadedAdd({id:id}).then(res => {}).catch(err => {
+                        API.downloadedAdd({id:id}).then(res => {
+                            this_.historyList = []
+                           this_.getHistoryList("Refresh");
+                        }).catch(err => {
                             console.log(err);
+                            
                         })
                     }
                     this_.$set(this_.downloadList[0], "percentage", responseData)
@@ -209,8 +211,9 @@
                 this.checkValues.sort(function(a, b) {
                     return b - a;
                 })
+                let paramIds_str = this.paramIds.toString();
                 API.deleteHistory({
-                    historyIds: this.paramIds
+                    historyIds: paramIds_str
                 }).then(res => {
                     if (res.data.code == 0) {
                         for (var i = 0; i < this.checkValues.length; i++) {

@@ -1,67 +1,72 @@
 <template>
-	<view class="page">
-		<view class="item">
-			<view class="item-top">
-				<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl"></image>
-				<view class="info">
-					<text class="item-text name">{{detailData.createName}}</text>
-					<view class="info-bottom">
-						<text class="item-text time">{{detailData.createTime}}</text>
-						<text class="item-text number">{{detailData.visitCountShow}}</text>
+	<view class="container">
+		<scroll-view class="scroll-v" scroll-y enableBackToTop>
+			<view class="item">
+				<view class="item-top">
+					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl"></image>
+					<view class="info">
+						<text class="item-text name">{{detailData.createName}}</text>
+						<view class="info-bottom">
+							<text class="item-text time">{{detailData.createTime}}</text>
+							<text class="item-text number">{{detailData.visitCountShow}}</text>
+						</view>
+					</view>
+					<view class="item-top-collect" :class="detailData.collect ? 'item-top-collect-color' : 'item-top-uncollect-color'"
+					 @click="detailData.collect?Uncollect():collect()">
+						<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/interaction/collected.png" : "../../static/interaction/unCollected.png"'></image>
+						<text class="collect-text">收藏</text>
 					</view>
 				</view>
-				<view class="item-top-collect" :class="detailData.collect ? 'item-top-collect-color' : 'item-top-uncollect-color'"
-				 @click="detailData.collect?Uncollect():collect()">
-					<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/interaction/collected.png" : "../../static/interaction/unCollected.png"'></image>
-					<text class="collect-text">收藏</text>
+				<text class="item-text title">{{detailData.title}}</text>
+				<text class="item-text brief">{{detailData.contents}}</text>
+				<view class="item-image">
+					<block v-for="(itemImage,indexImage) in detailData.pics" :key="indexImage">
+						<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(detailData.pics,indexImage)"></image>
+					</block>
+				</view>
+			
+				<!-- 底部 -->
+				<view class="bottom">
+					<view class="bottom-left" @click="detailData.favour?unniubi():niubi()">
+						<image class="bottom-icon-left" mode="aspectFit" :src='detailData.favour ? "../../static/zan_sec.png" : "../../static/zan.png"'></image>
+						<text class="bottom-text" :class="detailData.favour ? 'bottom-red-text' : 'bottom-gray-text'">{{detailData.favourCount}}</text>
+					</view>
+					<view class="bottom-right" @click="comment(-1)">
+						<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
+						<text class="bottom-text">{{detailData.replyCount}}</text>
+					</view>
 				</view>
 			</view>
-			<text class="item-text title">{{detailData.title}}</text>
-			<text class="item-text brief">{{detailData.contents}}</text>
-			<view class="item-image">
-				<block v-for="(itemImage,indexImage) in detailData.pics" :key="indexImage">
-					<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(detailData.pics,indexImage)"></image>
+			<!-- 评论 -->
+			<view class="comment-model" v-if="alreadyLoadComment">
+				<view class="commentTitle">用户评论</view>
+				<view class="emptyView" v-if="commentList == undefined || commentList == null ||  commentList.length < 1">
+					<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+					<view class="emptyText">还没有人评论哦～</view>
+				</view>
+				<block v-for="(item,index) in commentList" :key="index">
+					<view class="commentPart">
+						<view class="headModel">
+							<image class="headImage" :src="item.avatarUrl" mode="scaleToFill"></image>
+							<view class="headPart">
+								<view class="headPartName">{{item.createName}}</view>
+								<view class="headPartTime">{{item.createTime}}</view>
+							</view>
+							<image class="replyImage" src="../../static/message_black.png" mode="scaleToFill" @tap="reply(index,item.id,item.createName)"></image>
+						</view>
+						<view class="replyContent">{{item.contents}}</view>
+						<view v-if="item.subComments.length > 0" class="subContent">
+							<view v-for="(subItem,subIndex) in item.subComments" :key="subIndex">
+								<text class="subContentName">{{subItem.createName}}</text>
+								<text class="subContentContent">：{{subItem.contents}}</text>
+							</view>
+						</view>
+					</view>
 				</block>
+					
 			</view>
-
-			<!-- 底部 -->
-			<view class="bottom">
-				<view class="bottom-left" @click="detailData.favour?unniubi():niubi()">
-					<image class="bottom-icon-left" mode="aspectFit" :src='detailData.favour ? "../../static/zan_sec.png" : "../../static/zan.png"'></image>
-					<text class="bottom-text" :class="detailData.favour ? 'bottom-red-text' : 'bottom-gray-text'">{{detailData.favourCount}}</text>
-				</view>
-				<view class="bottom-right" @click="comment(-1)">
-					<image class="bottom-icon-right" mode="aspectFit" src="../../static/message_black.png"></image>
-					<text class="bottom-text">{{detailData.replyCount}}</text>
-				</view>
-			</view>
-		</view>
-		<!-- 评论 -->
-		<view class="comment-model">
-			<view class="commentTitle">用户评论</view>
-			<view class="emptyView" v-if="commentList.length == 0">
-				<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
-				<view class="emptyText">还没有人评论哦～</view>
-			</view>
-			<view class="commentBlock" v-for="(item,index) in commentList" :key="index">
-				<view class="headModel" :id="'commentList-'+index">
-					<image class="headImage" :src="item.avatarUrl" mode="scaleToFill"></image>
-					<view class="headPart">
-						<view class="headPartName">{{item.createName}}</view>
-						<view class="headPartTime">{{item.createTime}}</view>
-					</view>
-					<image class="replyImage" src="../../static/message_black.png" mode="scaleToFill" @tap="reply(index,item.id,item.title)"></image>
-				</view>
-				<view class="replyContent">{{item.contents}}</view>
-				<view v-if="item.subComments.length > 0" class="subContent">
-					<view v-for="(subItem,subIndex) in item.subComments" :key="subIndex">
-						<text class="subContentName">{{subItem.createName}}</text>
-						<text class="subContentContent">：{{subItem.contents}}</text>
-					</view>
-				</view>
-			</view>
-		</view>
-
+		</scroll-view>
+		
 		<view class="foot" v-show="showInput">
 			<chat-input @send-message="send_comment" @blur="blur" :focus="focus" :placeholder="input_placeholder"></chat-input>
 		</view>
@@ -117,6 +122,7 @@
 				index: '-1',
 				// comment_index: '',
 				commentList: [],
+				alreadyLoadComment: false,
 				parentId: '', //如果是评论帖子，则为空，如果是评论评论，那位被评论的id
 			};
 		},
@@ -178,10 +184,12 @@
 				API.interCommentList({
 					issueid: this.id
 				}).then(res => {
+					this.alreadyLoadComment = true;
 					console.log(res);
 					this.commentList = res.data.data;
 				
 				}).catch(err => {
+					this.alreadyLoadComment = true;
 					console.log(err);
 				})
 			},
@@ -388,313 +396,250 @@
 <style lang="scss">
 	page {
 		background: #FFFFFF;
+		height: 100%;
 	}
 
-	/* 插屏广告 */
-	.uni-image {
-		position: relative;
-		z-index: 9999;
-	}
-
-	.pop_view {
-		display: flex;
-		flex-direction: column;
-
-		.popcontent {
-			width: 70vw;
-			background-color: #FFFFFF;
-			border: 0;
-		}
-
-		.image {
-			width: 70vw;
-			height: 19vh;
+	.container {
+		height: 100%;
+		
+		.scroll-v {
 			background: #FFFFFF;
-		}
-
-		.pop-view-success {
-			display: flex;
-			height: 80px;
-			color: #C7161E;
-			font: 28px;
-			font-weight: bold;
-			justify-content: center;
-			align-items: center;
-			border: 0;
-
-		}
-
-		.pop-view-success-text {
-			display: flex;
-			color: #666666;
-			font: 19px;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.pop_bt {
-			display: flex;
-			color: #666666;
-			font: 19px;
-			padding: 10px 0 15px 0;
-			justify-content: center;
-			align-items: center;
-			border: 0;
-
-			.pop_btn {
-				display: flex;
-				height: 70upx;
-				width: 50%;
-				align-items: center;
-				justify-content: center;
-				color: #FFFFFF;
-				font-size: $uni-font-size-article-brief;
-				background-image: linear-gradient(left, #D74819, #C7161E);
-				border-radius: 40upx;
-			}
-		}
-	}
-
-
-	.uni-image-close {
-		margin-top: 20px;
-		text-align: center;
-	}
-
-	.page {
-
-		.item {
-			background: #FFFFFF;
-
-			.item-text {
-				display: block;
-			}
-
-			.item-top {
-				display: flex;
-				flex-wrap: nowrap;
-				align-items: center;
-
-				.circleicon {
-					border-radius: 42.5rpx;
-					margin: 20rpx;
-					width: 85rpx;
-					height: 85rpx;
-					// background: url("../../static/logo.png") no-repeat center;
-					background-size: 50px;
+			height: calc(100% - 90rpx);
+			width: 100%;
+			
+			.item {
+				background: #FFFFFF;
+			
+				.item-text {
+					display: block;
 				}
-
-				.info {
+			
+				.item-top {
 					display: flex;
-					padding: 15rpx 10rpx;
-					flex-direction: column;
-					flex-grow: 10;
-
-					.info-bottom {
+					flex-wrap: nowrap;
+					align-items: center;
+			
+					.circleicon {
+						border-radius: 42.5rpx;
+						margin: 20rpx;
+						width: 85rpx;
+						height: 85rpx;
+						// background: url("../../static/logo.png") no-repeat center;
+						background-size: 50px;
+					}
+			
+					.info {
+						display: flex;
+						padding: 15rpx 10rpx;
+						flex-direction: column;
+						flex-grow: 10;
+			
+						.info-bottom {
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							height: 30rpx;
+							line-height: 30rpx;
+			
+							.number {
+								margin-left: 20rpx;
+							}
+						}
+			
+						.name {
+							color: #585858;
+							font-size: $uni-font-size-name;
+						}
+			
+						.time,
+						.number {
+							color: #8D8D8D;
+							font-size: $uni-font-size-time;
+						}
+					}
+			
+					.item-top-collect {
+						display: flex;
+						border-radius: 30upx;
+						width: 120upx;
+						height: 40upx;
+						align-items: center;
+						justify-content: center;
+						margin-right: 20upx;
+			
+						.collect-icon {
+							width: 30upx;
+							height: 30upx;
+							margin-right: 5upx;
+						}
+			
+						.collect-text {
+							font-size: 25upx;
+							margin-left: 5upx;
+						}
+					}
+			
+					.item-top-collect-color {
+						border: 1px solid #D74819;
+						color: #D74819;
+					}
+			
+					.item-top-uncollect-color {
+						border: 1px solid #909192;
+						color: #909192;
+					}
+				}
+			
+				.title,
+				.brief {
+					margin: 0 20rpx;
+					line-height: 1.6em;
+					display: -webkit-box;
+					/** 对象作为伸缩盒子模型显示 **/
+					-webkit-line-clamp: 5;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					-webkit-box-orient: vertical;
+				}
+			
+				.title {
+					color: #282828;
+					font-size: $uni-font-size-article-title;
+				}
+			
+				.brief {
+					color: #525252;
+					font-size: $uni-font-size-article-brief;
+				}
+			
+				.item-image {
+					display: flex;
+					flex-wrap: wrap;
+					margin: 10rpx 20rpx;
+			
+					.item-image-image {
+						padding: 10rpx 11rpx;
+						width: 200rpx;
+						height: 200rpx;
+					}
+				}
+			
+				.bottom {
+					display: flex;
+					justify-content: flex-end;
+			
+			
+					.bottom-right {
 						display: flex;
 						flex-direction: row;
 						align-items: center;
-						height: 30rpx;
-						line-height: 30rpx;
-
-						.number {
-							margin-left: 20rpx;
+						margin: 0 20rpx 20rpx 0;
+					}
+			
+					.bottom-left {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						margin: 0 5rpx 20rpx 0;
+					}
+			
+					.bottom-icon-left,
+					.bottom-icon-right {
+						width: 30rpx;
+						height: 35rpx;
+						padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
+					}
+			
+					.bottom-text {
+						font-size: 30upx;
+					}
+			
+					.bottom-red-text {
+						color: #D74819;
+					}
+			
+					.bottom-gray-text {
+						color: #525252;
+					}
+				}
+			}
+			
+			.comment-model {
+				padding-bottom: 90rpx;
+				background: #FFFFFF;
+				border-top: 6px solid #eeeff0;
+			
+				.commentTitle {
+					padding: 30rpx 20rpx 20rpx;
+					border-bottom: 1px solid #eeeff0;
+				}
+			
+				.emptyView {
+					margin: 80rpx 0 200rpx;
+					text-align: center;
+			
+					.emptyImage {
+						width: 600rpx;
+					}
+			
+					.emptyText {
+						color: #969798;
+					}
+				}
+			
+				.commentPart {
+					padding: 30rpx;
+			
+					.headModel {
+						display: flex;
+						align-items: center;
+			
+						.headImage {
+							width: 85rpx;
+							height: 85rpx;
+							border-radius: 42.5rpx;
+						}
+			
+						.headPart {
+							padding-left: 20rpx;
+							width: 530rpx;
+			
+							.headPartName {
+								color: #585858;
+							}
+			
+							.headPartTime {
+								color: #8D8D8D;
+							}
+						}
+			
+						.replyImage {
+							width: 32rpx;
+							height: 26rpx;
 						}
 					}
-
-					.name {
-						color: #585858;
-						font-size: $uni-font-size-name;
+			
+					.replyContent {
+						color: #282828;
+						margin: 20rpx 20rpx 20rpx 105rpx;
+						white-space: pre-wrap;
+						word-break: break-all;
 					}
-
-					.time,
-					.number {
-						color: #8D8D8D;
-						font-size: $uni-font-size-time;
+			
+					.subContent {
+						margin: 20rpx 20rpx 30rpx 105rpx;
+						background: #E7E7E7;
+						padding: 10rpx 20rpx;
+						border-radius: 15rpx;
+			
+						.subContentName {
+							color: #C91E25;
+						}
+			
+						.subContentContent {
+							color: #272829;
+						}
 					}
-				}
-
-				.item-top-collect {
-					display: flex;
-					border-radius: 30upx;
-					width: 120upx;
-					height: 40upx;
-					align-items: center;
-					justify-content: center;
-					margin-right: 20upx;
-
-					.collect-icon {
-						width: 30upx;
-						height: 30upx;
-						margin-right: 5upx;
-					}
-
-					.collect-text {
-						font-size: 25upx;
-						margin-left: 5upx;
-					}
-				}
-
-				.item-top-collect-color {
-					border: 1px solid #D74819;
-					color: #D74819;
-				}
-
-				.item-top-uncollect-color {
-					border: 1px solid #909192;
-					color: #909192;
-				}
-			}
-
-			.title,
-			.brief {
-				margin: 0 20rpx;
-				line-height: 1.6em;
-				display: -webkit-box;
-				/** 对象作为伸缩盒子模型显示 **/
-				-webkit-line-clamp: 5;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				-webkit-box-orient: vertical;
-			}
-
-			.title {
-				color: #282828;
-				font-size: $uni-font-size-article-title;
-			}
-
-			.brief {
-				color: #525252;
-				font-size: $uni-font-size-article-brief;
-			}
-
-			.item-image {
-				display: flex;
-				flex-wrap: wrap;
-				margin: 10rpx 20rpx;
-
-				.item-image-image {
-					padding: 10rpx 11rpx;
-					width: 200rpx;
-					height: 200rpx;
-				}
-			}
-
-			.bottom {
-				display: flex;
-				justify-content: flex-end;
-
-
-				.bottom-right {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					margin: 0 20rpx 20rpx 0;
-				}
-
-				.bottom-left {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					margin: 0 5rpx 20rpx 0;
-				}
-
-				.bottom-icon-left,
-				.bottom-icon-right {
-					width: 30rpx;
-					height: 35rpx;
-					padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
-				}
-
-				.bottom-text {
-					font-size: 30upx;
-				}
-
-				.bottom-red-text {
-					color: #D74819;
-				}
-
-				.bottom-gray-text {
-					color: #525252;
-				}
-			}
-		}
-	}
-
-	.comment-model {
-		padding-bottom: 90rpx;
-		background: #FFFFFF;
-		border-top: 6px solid #eeeff0;
-
-		.commentTitle {
-			padding: 30rpx 20rpx 20rpx;
-			border-bottom: 1px solid #eeeff0;
-		}
-
-		.emptyView {
-			margin: 80rpx 0 200rpx;
-			text-align: center;
-
-			.emptyImage {
-				width: 600rpx;
-			}
-
-			.emptyText {
-				color: #969798;
-			}
-		}
-
-		.commentBlock {
-			padding: 30rpx;
-
-			.headModel {
-				display: flex;
-				align-items: center;
-
-				.headImage {
-					width: 85rpx;
-					height: 85rpx;
-					border-radius: 42.5rpx;
-				}
-
-				.headPart {
-					padding-left: 20rpx;
-					width: 530rpx;
-
-					.headPartName {
-						color: #585858;
-					}
-
-					.headPartTime {
-						color: #8D8D8D;
-					}
-				}
-
-				.replyImage {
-					width: 32rpx;
-					height: 26rpx;
-				}
-			}
-
-			.replyContent {
-				color: #282828;
-				margin: 20rpx 20rpx 20rpx 105rpx;
-				white-space: pre-wrap;
-				word-break: break-all;
-			}
-
-			.subContent {
-				margin: 20rpx 20rpx 30rpx 105rpx;
-				background: #E7E7E7;
-				padding: 10rpx 20rpx;
-				border-radius: 15rpx;
-
-				.subContentName {
-					color: #C91E25;
-				}
-
-				.subContentContent {
-					color: #272829;
 				}
 			}
 		}
@@ -707,5 +652,75 @@
 		left: 0rpx;
 		bottom: 0rpx;
 		// overflow: hidden;
+	}
+	
+	/* 插屏广告 */
+	.uni-image {
+		position: relative;
+		z-index: 9999;
+		
+		.pop_view {
+			display: flex;
+			flex-direction: column;
+		
+			.popcontent {
+				width: 70vw;
+				background-color: #FFFFFF;
+				border: 0;
+			}
+		
+			.image {
+				width: 70vw;
+				height: 19vh;
+				background: #FFFFFF;
+			}
+		
+			.pop-view-success {
+				display: flex;
+				height: 80px;
+				color: #C7161E;
+				font: 28px;
+				font-weight: bold;
+				justify-content: center;
+				align-items: center;
+				border: 0;
+		
+			}
+		
+			.pop-view-success-text {
+				display: flex;
+				color: #666666;
+				font: 19px;
+				justify-content: center;
+				align-items: center;
+			}
+		
+			.pop_bt {
+				display: flex;
+				color: #666666;
+				font: 19px;
+				padding: 10px 0 15px 0;
+				justify-content: center;
+				align-items: center;
+				border: 0;
+		
+				.pop_btn {
+					display: flex;
+					height: 70upx;
+					width: 50%;
+					align-items: center;
+					justify-content: center;
+					color: #FFFFFF;
+					font-size: $uni-font-size-article-brief;
+					background-image: linear-gradient(left, #D74819, #C7161E);
+					border-radius: 40upx;
+				}
+			}
+		}
+		
+		.uni-image-close {
+			margin-top: 20px;
+			text-align: center;
+		}
 	}
 </style>

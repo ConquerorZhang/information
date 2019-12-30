@@ -26,7 +26,7 @@
 			</view>
 		</view>
 		<swiper class="swiper" style="height:100%"  @change="changeType" :current="current">
-			<swiper-item v-for="(item, index) in lv1list">
+			<swiper-item v-for="(item_lv1list, index) in lv1list">
 				<scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
                     <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
                         <view class="means">

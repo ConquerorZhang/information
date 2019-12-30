@@ -17,7 +17,7 @@
 				</view>
 
 				<view class="filter">
-					<scroll-view class="scroll" scroll-x="true">
+					<scroll-view class="scroll" scroll-x="true" :scroll-left="scrollLeft">
 						<text v-for="(item, index) in lv1list" @click="product_cli(item.id,index)" :class="item.id == productId ? 'x item' : 'item'">{{ item.productName }}</text>
 					</scroll-view>
 					<!-- 筛选组件 -->
@@ -69,6 +69,7 @@ export default {
 		return {
             current:0,//滑块所处位置
 			statusBarHeight: 0,
+            scrollLeft:0,
 			blg: 220,
 			systemInfo: '',
 			more: 'more',
@@ -146,18 +147,16 @@ export default {
 		this.getFileType();
 	},
 	updated() {
-	    // if(this.gdleft.length == 0){
-	    //     const query = uni.createSelectorQuery().in(this);
-	    //     query.selectAll('.scroll .item').boundingClientRect(data => {
-	    //         this.gdleft = data;
-	    //     }).exec();
-	    // }
+	    if(this.gdleft.length == 0){
+	        const query = uni.createSelectorQuery().in(this);
+	        query.selectAll('.scroll .item').boundingClientRect(data => {
+	            this.gdleft = data;
+	        }).exec();
+	    }
 	},
 	onShow() {
 		this.systemInfo = getApp().globalData.systemInfo;
-		console.log(this.statusBarHeight);
 		this.statusBarHeight = Vue.config.configDic.statusBarHeight;
-		console.log(this.statusBarHeight);
 		this.callHandler('ObjC Echo', {
 			key: 'onShow'
 		});
@@ -169,7 +168,7 @@ export default {
 	methods: {
 		product_cli(id,index) {
 			this.productId = id;
-			console.log('productId:' + this.productId);
+            this.scrollLeft = (this.gdleft[index].left - 5);
 			//列表方法
             this.current = index
 			this.getFileList('Refresh');
@@ -181,8 +180,6 @@ export default {
 		},
 		onKeyInput: function(event) {
 			this.searchKey = event.value;
-			console.log(this.searchKey);
-
 			this.getFileList('Refresh');
 		},
 		sdfdf() {
@@ -194,7 +191,6 @@ export default {
 		},
 		sortresult(param) {
 			//最新
-			console.log('-----');
 			let value = param['jobType'];
 			if (this.sortresult_value != value) {
 				//两次点击不一样是 参数复原 如:点击次数
@@ -212,7 +208,6 @@ export default {
 			} else {
 				this.isAsc = 'desc';
 			}
-			console.log('orderBy:' + this.orderBy + ' ,isAsc:' + this.isAsc);
 			this.getFileList('Refresh');
 		},
 		result(param) {
@@ -220,7 +215,6 @@ export default {
 			let title = param['key_type'] != '' ? param['key_type'] : '全部';
 			this.$set(this.menuList[0], 'title', title);
 			this.fileTypeId = param['key_type'];
-			console.log(this.fileTypeId);
 			this.getFileList('Refresh');
 		},
 		//获取文件列表
@@ -255,13 +249,11 @@ export default {
 				json.productId = this.productId;
 			}
 
-			console.log(json);
 			//TODO 下拉框的还没写
 			//isAsc  orderBy searchKey fileTypeId 文件类型  if
 			API.HomeresourceList(json)
 				.then(res => {
 					let resdata = res.data.data;
-					console.log(resdata);
 					if (resdata.length < this.limit) {
 						this.more = 'noMore';
 					} else {
@@ -276,7 +268,6 @@ export default {
                 
 		},
 		getlv1list() {
-			console.log('getlv1list');
             this.lv1list.push({
                 "id":0,
                 "productName":"全部"
@@ -284,7 +275,6 @@ export default {
 			API.getlv1list({})
 				.then(res => {
 					this.lv1list = this.lv1list.concat(res.data.data);
-					console.log(res);
 				})
 				.catch(err => {
 					console.log(err);
@@ -314,7 +304,6 @@ export default {
 				});
 		},
 		fileDetail(fileId) {
-			console.log(fileId);
 			uni.navigateTo({
 				url: '/pages/means/means-detile?fileId=' + fileId
 			});
@@ -339,8 +328,8 @@ export default {
 		},
         changeType(e) {
             //返回 type的下标
-            console.log(e.target.current)
             this.productId = this.lv1list[e.target.current].id;
+            this.scrollLeft = (this.gdleft[e.target.current].left - 5);
             //把滑动到该 type选中
             this.getFileList('Refresh');
         },

@@ -12,12 +12,11 @@
                 <text>下载: {{detailData.downloadCount}}次</text>
             </view>
         </view>
-        <view class="main">
-          <!--  <web-view  ></web-view> -->
+        <view class="main" v-if="detailData.docDesc != '' && detailData.docDesc != null ">
             {{detailData.docDesc}}
-            <!-- <iframe src="https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe> -->
-            <!-- <iframe src="https://docs.google.com/viewer?url=http%3A%2F%2Fteacher.91yixi.com%2FW008%2Ftest.docx" frameborder="0"></iframe> -->
-       
+        </view>
+        <view class="main">
+        	暂无说明
         </view>
         <view class="footers">
             <view class="pople" @click="openpopup">

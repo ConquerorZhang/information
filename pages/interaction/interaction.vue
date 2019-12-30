@@ -120,11 +120,11 @@
 								'value': ''
 							},
 							{
-								'title': '业务资讯区',
+								'title': '业务咨询区',
 								'value': '1'
 							},
 							{
-								'title': '需求资讯区',
+								'title': '需求咨询区',
 								'value': '2'
 							},
 							{
@@ -368,16 +368,16 @@
 			// });
 		},
 		onShow() {
+			this.callHandler('ObjC Echo', {
+				'key': 'onShow'
+			});
 			this.systemInfo = getApp().globalData.systemInfo;
 			this.statusBarHeight = Vue.config.configDic.statusBarHeight;
 
 			// uni.showToast({
 			// 	title:Vue.config.configDic.statusBarHeight,
 			// });
-
-			this.callHandler('ObjC Echo', {
-				'key': 'onShow'
-			});
+			
 			this.resetData();
 			setTimeout(this.getlistdata(1), 1000);
 		},

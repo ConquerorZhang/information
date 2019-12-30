@@ -16,6 +16,9 @@
             <!-- 下载完成的传那个name -->
             <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
                 <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
+                <view class="" v-for="">
+                	
+                </view>
                 <view class="con">
                     <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
@@ -63,19 +66,14 @@
                 delstar: false,
                 downloadList: [],
                 param:{},
-                historyList: [/* {
-                        docName: "aa",
-                        createTime: "2019-12",
-                        id: "11",
-                        fullDocUrl: "http://10.10.5.33:82/aaaa.doc"
-                    }, */
-                ],
+                historyList: [],
                 page: 1,
                 limit: 9,
                 allchecked: false, //true 全选  false 取消全选
                 checkList: [], //直接在historyList 添加check true false 属性存在问题  所以用 单独的变量来存取选中状态
                 paramIds: [], //向后台传递的参数
                 checkValues: [], // 选中的下标数组用于移除
+                
             };
         },
         onLoad(param) {
@@ -93,7 +91,8 @@
                     doctypeImageUrl : param.doctypeImageUrl
                 }]
                 this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);
-            }
+            } 
+            //查询图标  成功后(失败后) 请求下载列表
             this.getHistoryList("Refresh");
         },
         onShow() {
@@ -132,7 +131,6 @@
                            this_.getHistoryList("Refresh");
                         }).catch(err => {
                             console.log(err);
-                            
                         })
                     }
                     this_.$set(this_.downloadList[0], "percentage", responseData)
@@ -140,6 +138,9 @@
                 })
             },
             openFile(fileName){
+                if(this.delstar == true){
+                    return false;
+                }
                 this.callHandlerBack("native_fileOpen",  {filename:fileName}, function(responseData) {
                     //注意第一次回调问题
                     if(responseData == 0 || responseData == "0"){
@@ -162,7 +163,7 @@
                     for (var i = 0; i < this.historyList.length; i++) {
                         //this.historyList[i].
                         this.checkList[i] = true;
-                        this.paramIds.push(this.historyList[i].id)
+                        this.paramIds.push(this.historyList[i].downloadhistoryid)
                         this.checkValues.push(i)
                     }
                 } else {
@@ -193,11 +194,11 @@
                         this.page += 1;
                     }
                     //全选状态下 需要勾选上拉取出来的数据
-                    let check_moreType = false;
                     if (this.allchecked == true) {
-                        check_moreType = true;
-                    }
-                    for (let i = 0; i < resdata.length; i++) {
+                        this.allchecked = false;
+                    }    
+                    let resdata_i = this.historyList.length;
+                    for (let i = resdata_i; i < (resdata.length + resdata_i); i++) {
                         this.$set(this.checkList, i, false)
                     }
                     this.historyList = this.historyList.concat(resdata)
@@ -244,7 +245,6 @@
                         })
                     }
                 });
-
             },
 
             godetile() {
@@ -270,17 +270,14 @@
                         //this.checkList[i] = false;
                         this.$set(item, i, false)
                     } else {
-
                         //this.checkList[i] = true;
                         this.$set(item, i, true)
-                        this.paramIds.push(this.historyList[i].id)
+                        this.paramIds.push(this.historyList[i].downloadhistoryid)
                         this.checkValues.push(i)
                     }
                 }
                 console.log(this.checkValues)
                 console.log(this.checkList)
-                //                 console.log(this.paramIds)
-                //                 console.log(this.checkValues)
             },
         }
     };

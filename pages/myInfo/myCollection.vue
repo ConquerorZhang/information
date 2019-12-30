@@ -120,7 +120,9 @@
 						data: [],
 					});
 				});
-				if (option.index == 1) {
+				if (option.index == '1') {
+					this.tabIndex = 1;
+					this.scrollInto = this.tabBars[this.tabIndex].id;
 					this.switchTab(1);
 				}
 				else {

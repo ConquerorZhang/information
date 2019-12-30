@@ -16,7 +16,7 @@
 				</swiper-item>
 			</swiper>
 			<view class="modelPart">
-				<view class="productInfo" v-if='data.subProductList.length > 0'>
+				<view class="productInfo" v-if='data.productName.length > 0'>
 					<view class="topPart">
 						<view class="title">{{data.productName}}</view>
 						<view class="collectPart" @click="clickCollect">

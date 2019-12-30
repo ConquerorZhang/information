@@ -1,5 +1,5 @@
 <template>
-	<view class="contents" v-bind:style="{ paddingTop: blg + 'rpx' }">
+	<view class="contents" v-bind:style="{ paddingTop:parseFloat(statusBarHeight) + blg + 'rpx' }">
 		<view class="page">
 			<view class="head">
 				<!-- v-bind:style="{height:stateBarHeight +'px'}" -->

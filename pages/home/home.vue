@@ -168,10 +168,11 @@ export default {
 	methods: {
 		product_cli(id,index) {
 			this.productId = id;
-            this.scrollLeft = (this.gdleft[index].left - 5);
-			//列表方法
+            //this.scrollLeft = (this.gdleft[index].left - 5);
+			//列表方法 会触发onchnge
+            console.log(index)
             this.current = index
-			this.getFileList('Refresh');
+			//this.getFileList('Refresh');
 		},
 		gomeans() {
 			uni.navigateTo({

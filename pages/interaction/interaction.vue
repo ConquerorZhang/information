@@ -261,98 +261,109 @@
 
 				this.currrenIndex = index;
 				uni.$once('interation$detailback', this.detailBack);
-				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
-				})
-				// util.bridgeAndroidAndIOS({
-				// 	'key': 'inner'
-				// });
-			},
-			//页面跳转到发布
-			navToPublish(item) {
-				uni.navigateTo({
-					url: '/pages/interaction/publish'
-				})
-				// util.bridgeAndroidAndIOS({
-				// 	'key': 'inner'
-				// });
-			},
-			//键盘触发搜索
-			search(key) {
-				console.log(key);
-				this.resetData();
-				this.getlistdata(1);
-			},
-			getlistdata(page) {
-				console.log('page----' + page);
-				this.data.hasmore = false;
-				API.interactionList({
-					searchKey: this.searchKey,
-					type: this.type,
-					limit: this.limit,
-					page: page,
-					orderBy: this.orderBy,
-					isAsc: this.isAsc,
 
-					// contents: this.contentText,
-					// pics: this.submitImageIdList,
-					// type: parseInt(this.selectedIndex) + 1,
-				}).then(res => {
-					console.log(res);
-					if (res.data.data.length < this.limit) {
-						this.data.loadingText = "没有更多数据了"
-						this.data.hasmore = false;
-					} else {
-						this.page = page + 1;
-						this.data.hasmore = true;
-					}
-					this.data.datalsit = this.data.datalsit.concat(res.data.data);
-					 uni.stopPullDownRefresh();
-					// this.data.datalsit=[];
-					// console.log(this.data.datalsit);
-				}).catch(err => {
-					 uni.stopPullDownRefresh();
+				// 区分平台跳转互动详情
+				switch (uni.getSystemInfoSync().platform) {
+					case 'android':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					case 'ios':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					default:
+						console.log('运行在开发者工具上')
+						break;
+				}
+			},
+		//页面跳转到发布
+		navToPublish(item) {
+			uni.navigateTo({
+				url: '/pages/interaction/publish'
+			})
+			// util.bridgeAndroidAndIOS({
+			// 	'key': 'inner'
+			// });
+		},
+		//键盘触发搜索
+		search(key) {
+			console.log(key);
+			this.resetData();
+			this.getlistdata(1);
+		},
+		getlistdata(page) {
+			console.log('page----' + page);
+			this.data.hasmore = false;
+			API.interactionList({
+				searchKey: this.searchKey,
+				type: this.type,
+				limit: this.limit,
+				page: page,
+				orderBy: this.orderBy,
+				isAsc: this.isAsc,
+
+				// contents: this.contentText,
+				// pics: this.submitImageIdList,
+				// type: parseInt(this.selectedIndex) + 1,
+			}).then(res => {
+				console.log(res);
+				if (res.data.data.length < this.limit) {
+					this.data.loadingText = "没有更多数据了"
+					this.data.hasmore = false;
+				} else {
+					this.page = page + 1;
 					this.data.hasmore = true;
-					console.log(err);
-				})
-			},
-			loadMore(currentpage) {
-				if (this.data.hasmore) {
-					console.log("加载更多")
-					this.getlistdata(this.page);
 				}
-			},
-			resetData() {
-				this.data = {
-					isLoading: false,
-					hasmore: true,
-					refreshText: "",
-					loadingText: '加载更多...',
-					datalsit: [],
-					currrenIndex: -1
-				};
-				this.page = 1;
-			},
-			//详情回调函数
-			detailBack(data) {
-				console.log("回传数据呀--------------------");
-				// console.log(data.item);
-				if (this.currrenIndex != -1) {
-					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
-					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
-					this.data.datalsit[this.currrenIndex] = data.item;
-					this.$forceUpdate();
-				}
-				uni.$off('interation$detailback');
-			},
-			back() {
-				console.log(uni.onBackPress())
+				this.data.datalsit = this.data.datalsit.concat(res.data.data);
+				uni.stopPullDownRefresh();
+				// this.data.datalsit=[];
+				// console.log(this.data.datalsit);
+			}).catch(err => {
+				uni.stopPullDownRefresh();
+				this.data.hasmore = true;
+				console.log(err);
+			})
+		},
+		loadMore(currentpage) {
+			if (this.data.hasmore) {
+				console.log("加载更多")
+				this.getlistdata(this.page);
 			}
 		},
-		//下拉刷新
-		onPullDownRefresh() {
+		resetData() {
+			this.data = {
+				isLoading: false,
+				hasmore: true,
+				refreshText: "",
+				loadingText: '加载更多...',
+				datalsit: [],
+				currrenIndex: -1
+			};
+			this.page = 1;
+		},
+		//详情回调函数
+		detailBack(data) {
+			console.log("回传数据呀--------------------");
+			// console.log(data.item);
+			if (this.currrenIndex != -1) {
+				// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
+				// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+				this.data.datalsit[this.currrenIndex] = data.item;
+				this.$forceUpdate();
+			}
+			uni.$off('interation$detailback');
+		},
+		back() {
+			console.log(uni.onBackPress())
+		}
+	},
+	//下拉刷新
+	onPullDownRefresh() {
 			this.resetData();
-		    setTimeout(this.getlistdata(1), 5000);
+			setTimeout(this.getlistdata(1), 5000);
 		},
 
 		onLoad() {

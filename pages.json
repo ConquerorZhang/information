@@ -168,6 +168,10 @@
             "path" : "components/zcc/homeSearchBar/homeSearchBar",
             "style" : {}
         }
+        ,{
+            "path" : "pages/interaction/interactionDetailIOS",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

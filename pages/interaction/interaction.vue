@@ -6,12 +6,13 @@
 		</head>
 		<view class="head">
 			<!-- v-bind:style="{height:stateBarHeight +'px'}" -->
-			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
+			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view>
+			<!--{{Vue.config.configDic.stateBarHeight}}-->
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
 				<view class="v_search">
-					<uni-search-bar placeholder="关键字" radius="20" clearButton="auto" @confirm="search" class="search" />
+					<uni-search-bar placeholder="关键字搜索" radius="20" clearButton="auto" @confirm="search" class="search" />
 				</view>
 				<view class="top-right" @click="message">
 					<!--@click="window.android.click('77777777777')"-->
@@ -89,7 +90,7 @@
 	export default {
 		data() {
 			return {
-				statusBarHeight:0,
+				statusBarHeight: 0,
 				pro: '10',
 				systemInfo: '',
 				currrenIndex: -1,
@@ -188,7 +189,7 @@
 				uni.navigateTo({
 					url: "../myInfo/myPublish?index=0"
 				})
-				
+
 				this.callHandler('ObjC Echo', {
 					'key': 'inner'
 				});
@@ -388,7 +389,7 @@
 			// uni.showToast({
 			// 	title:Vue.config.configDic.statusBarHeight,
 			// });
-			
+
 			this.resetData();
 			setTimeout(this.getlistdata(1), 1000);
 		},
@@ -398,6 +399,17 @@
 <style lang="scss">
 	page {
 		height: 100%;
+	}
+
+	/deep/ .uni-searchbar__box {
+		border: none;
+		height: 58rpx;
+		background: #fff;
+	}
+
+	/deep/ .uni-input-placeholder {
+		color: #b1b1b1;
+		font-size: 24rpx;
 	}
 
 	.page {
@@ -410,7 +422,7 @@
 			top: 0rpx;
 			width: 100%;
 			z-index: 500;
-			background-image: linear-gradient(#D74819, #C7161E);
+			background-image: linear-gradient(#C7161E, #D74819);
 
 			.statusBar {
 				height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
@@ -422,42 +434,41 @@
 				justify-content: space-between;
 
 				.icon_logo {
-					width: 100upx;
-					height: 40upx;
-					flex-grow: 2;
-					padding: $uni-spacing-row-base $uni-spacing-row-base;
+					width: 121upx;
+					height: 60upx;
+					padding: 0 20rpx;
+					margin-top: -8rpx;
 				}
 
 				.v_search {
 					display: flex;
-					flex-grow: 40;
 					justify-content: center;
+					flex-grow: 1;
+					margin-top: -6rpx;
 
 					.search {
 						width: 100%;
-						height: 50rpx;
-						margin: 0rpx 10rpx;
-
+						padding: 0;
 					}
 
+					input {
+						border: none;
+					}
 				}
 
 				.top-right {
-					width: 100rpx;
+					padding: 0 20rpx;
 					display: flex;
-					flex-grow: 1;
-					right: $uni-spacing-row-base;
-					top: $uni-spacing-row-base;
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
+					margin-right: 4rpx;
 
 					.top-right-icon {
 						width: 40rpx;
 						height: 40rpx;
 						display: flex;
 						justify-content: center;
-
 					}
 
 					.top-right-text {
@@ -470,7 +481,7 @@
 
 			.filter {
 				width: 100%;
-				height: 60rpx;
+				height: 90rpx;
 			}
 		}
 

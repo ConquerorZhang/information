@@ -8,11 +8,11 @@
 					<uni-icons background-color="#FFFFFF" color="#333333" type="arrowleft" size="24" />
 				</view>
 				<view class="content">
-					<view class="navBar-title">问题详情1</view>
+					<view class="navBar-title">问题详情</view>
 				</view>
 			</view>
 		</view>
-		<scroll-view class="scroll-v" scroll-y enableBackToTop v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+120) +'rpx'}">
+		<scroll-view class="scroll-v" scroll-y enableBackToTop v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}">
 			<view class="item">
 				<view class="item-top">
 					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl"></image>
@@ -430,14 +430,14 @@
 			z-index: 500;
 			
 			.statusBar {
-				height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
+				// height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
 				background: #FFFFFF;
 				width: 100%;
 			}
 
 			.navBar {
 				width: 100%;
-				height: 90upx;
+				height: 60rpx;
 				display: flex;
 				flex-direction: row;
 				background-color: #FFFFFF;
@@ -445,7 +445,7 @@
 				.left-icon {
 					display: flex;
 					height: 100%;
-					width: 50upx;
+					width: 60rpx;
 					padding: 0 10px;
 					align-items: center;
 				}
@@ -564,10 +564,10 @@
 					line-height: 1.6em;
 					display: -webkit-box;
 					/** 对象作为伸缩盒子模型显示 **/
-					-webkit-line-clamp: 5;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					-webkit-box-orient: vertical;
+					// -webkit-line-clamp: 5;
+					// overflow: hidden;
+					// text-overflow: ellipsis;
+					// -webkit-box-orient: vertical;
 				}
 
 				.title {

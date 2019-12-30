@@ -54,7 +54,8 @@
 		}, {
 			"path": "pages/interaction/interactionDetail",
 			"style": {
-				"navigationBarTitleText": "问题详情"
+				"navigationBarTitleText": "问题详情",
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/myInfo/MessageDetail",

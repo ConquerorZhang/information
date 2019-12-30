@@ -1,6 +1,18 @@
 <template>
 	<view class="container">
-		<scroll-view class="scroll-v" scroll-y enableBackToTop>
+		<view class="top">
+			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view>
+			<!-- 自定义导航 -->
+			<view class="navBar">
+				<view class="left-icon" @click="back">
+					<uni-icons background-color="#FFFFFF" color="#333333" type="arrowleft" size="24" />
+				</view>
+				<view class="content">
+					<view class="navBar-title">问题详情1</view>
+				</view>
+			</view>
+		</view>
+		<scroll-view class="scroll-v" scroll-y enableBackToTop v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+120) +'rpx'}">
 			<view class="item">
 				<view class="item-top">
 					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl"></image>
@@ -24,7 +36,7 @@
 						<image class="item-image-image" mode="scaleToFill" :src="itemImage" @tap="previewImage(detailData.pics,indexImage)"></image>
 					</block>
 				</view>
-			
+
 				<!-- 底部 -->
 				<view class="bottom">
 					<view class="bottom-left" @click="detailData.favour?unniubi():niubi()">
@@ -63,10 +75,10 @@
 						</view>
 					</view>
 				</block>
-					
+
 			</view>
 		</scroll-view>
-		
+
 		<view class="foot" v-show="showInput">
 			<chat-input @send-message="send_comment" @blur="blur" :focus="focus" :placeholder="input_placeholder"></chat-input>
 		</view>
@@ -95,7 +107,7 @@
 
 <script>
 	const API = require('../../common/api.js')
-
+	import Vue from 'vue';
 	import chatInput from '../../components/comment/chatinput.vue'; //input框
 	// import uniPopup from '@/components/lib/uni-popup/uni-popup.vue';
 	// import uniIcons from '@/components/lib/uni-icons/uni-icons.vue'
@@ -107,10 +119,11 @@
 		},
 		data() {
 			return {
-				item:'',
+				statusBarHeight: 0,
+				item: '',
 				id: '',
 				detailData: {
-					favour:false
+					favour: false
 				},
 				showimage: false,
 				type: '',
@@ -127,15 +140,15 @@
 			};
 		},
 		onLoad(option) {
-			console.log("-----pages:"+getCurrentPages())
+			console.log("-----pages:" + getCurrentPages())
 			console.log(option);
 			// console.log(JSON.parse(option.item).id)
 			this.item = JSON.parse(option.item);
-			if(!this.isEmpty(option.idkey) && option.idkey == 'id'){
+			if (!this.isEmpty(option.idkey) && option.idkey == 'id') {
 				this.id = this.item.id;
-			}else if(!this.isEmpty(option.idkey) && option.idkey == 'bizkey'){
+			} else if (!this.isEmpty(option.idkey) && option.idkey == 'bizkey') {
 				this.id = this.item.bizkey;
-			}else{
+			} else {
 				this.id = this.item.id;
 			}
 			uni.getSystemInfo({ //获取设备信息
@@ -159,12 +172,15 @@
 			// 评论列表
 			this.commentData();
 		},
-		onBackPress(){
-			uni.$emit('interation$detailback',{'item':this.item})
+		onBackPress() {
+			uni.$emit('interation$detailback', {
+				'item': this.item
+			})
 		},
 		onShow() {
-			this.callHandler('ObjC Echo',{
-				'key': 'inner'
+			this.statusBarHeight = Vue.config.configDic.statusBarHeight-20;
+			this.callHandler('ObjC Echo', {
+				'key': 'innerSelf'
 			});
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
 				if (this.platform === 'ios') {
@@ -179,6 +195,11 @@
 			});
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			commentData() {
 				// 评论列表
 				API.interCommentList({
@@ -187,7 +208,7 @@
 					this.alreadyLoadComment = true;
 					console.log(res);
 					this.commentList = res.data.data;
-				
+
 				}).catch(err => {
 					this.alreadyLoadComment = true;
 					console.log(err);
@@ -204,19 +225,19 @@
 				// 收藏
 				API.interactionCollect({
 					bizKey: this.id,
-					collectType:'issue'
+					collectType: 'issue'
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
+					if (res.data.code == '0') {
 						console.log(this.detailData.collect);
 						this.detailData.collect = !this.detailData.collect;
 						console.log(this.detailData.collect);
 						// this.togglePopup('center', 'image');
-						setTimeout(()=>{
-							 this.togglePopup('center', 'image');
-						},500)
+						setTimeout(() => {
+							this.togglePopup('center', 'image');
+						}, 500)
 					}
-					
+
 					// this.commentData();
 				}).catch(err => {
 					console.log(err);
@@ -225,18 +246,18 @@
 			Uncollect() {
 				console.log("取消收藏");
 				// this.togglePopup('center', 'image');
-				
+
 				// 取消收藏
 				API.interactionUnCollect({
 					bizkey: this.id,
-					collecttype:'issue'
+					collecttype: 'issue'
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
+					if (res.data.code == '0') {
 						console.log(this.detailData.favour);
 						this.detailData.collect = !this.detailData.collect;
 					}
-					
+
 					// this.commentData();
 				}).catch(err => {
 					console.log(err);
@@ -246,44 +267,44 @@
 			lookCollection(o) {
 				this.showimage = false;
 				uni.navigateTo({
-					url:'../myInfo/myCollection?index=1'
+					url: '../myInfo/myCollection?index=1'
 				})
 			},
 			// 点赞
 			niubi() {
 				API.interactionFavour({
 					id: this.id,
-					type:'issue'
+					type: 'issue'
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
+					if (res.data.code == '0') {
 						console.log(this.detailData.favour);
 						this.detailData.favour = !this.detailData.favour;
-						this.detailData.favourCount +=1;
+						this.detailData.favourCount += 1;
 						this.item.favour = this.detailData.favour;
 						this.item.favourCount = this.detailData.favourCount;
 					}
-					
+
 					// this.commentData();
 				}).catch(err => {
 					console.log(err);
 				})
 			},
-			unniubi(){
+			unniubi() {
 				// 取消点赞
 				API.interactionUnFavour({
 					id: this.id,
-					type:'issue'
+					type: 'issue'
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == '0'){
+					if (res.data.code == '0') {
 						console.log(this.detailData.favour);
 						this.detailData.favour = !this.detailData.favour;
-						this.detailData.favourCount -=1;
+						this.detailData.favourCount -= 1;
 						this.item.favour = this.detailData.favour;
 						this.item.favourCount = this.detailData.favourCount;
 					}
-					
+
 					// this.commentData();
 				}).catch(err => {
 					console.log(err);
@@ -375,7 +396,7 @@
 						parentId: '',
 					}).then(res => {
 						console.log(res);
-						
+
 						this.commentData();
 					}).catch(err => {
 						console.log(err);
@@ -401,24 +422,71 @@
 
 	.container {
 		height: 100%;
-		
+
+		.top {
+			position: fixed;
+			top: 0rpx;
+			width: 100%;
+			z-index: 500;
+			
+			.statusBar {
+				height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
+				background: #FFFFFF;
+				width: 100%;
+			}
+
+			.navBar {
+				width: 100%;
+				height: 90upx;
+				display: flex;
+				flex-direction: row;
+				background-color: #FFFFFF;
+
+				.left-icon {
+					display: flex;
+					height: 100%;
+					width: 50upx;
+					padding: 0 10px;
+					align-items: center;
+				}
+
+				.content {
+					width: 100%;
+					height: 100%;
+					margin-right: 60upx;
+					// border: 1px solid #1AAD19;
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+
+					.navBar-title {
+						font-size: 33upx;
+						font-weight: bold;
+
+					}
+				}
+			}
+		}
+
+
 		.scroll-v {
 			background: #FFFFFF;
 			height: calc(100% - 90rpx);
 			width: 100%;
-			
+
 			.item {
 				background: #FFFFFF;
-			
+
 				.item-text {
 					display: block;
 				}
-			
+
 				.item-top {
 					display: flex;
 					flex-wrap: nowrap;
 					align-items: center;
-			
+
 					.circleicon {
 						border-radius: 42.5rpx;
 						margin: 20rpx;
@@ -427,37 +495,37 @@
 						// background: url("../../static/logo.png") no-repeat center;
 						background-size: 50px;
 					}
-			
+
 					.info {
 						display: flex;
 						padding: 15rpx 10rpx;
 						flex-direction: column;
 						flex-grow: 10;
-			
+
 						.info-bottom {
 							display: flex;
 							flex-direction: row;
 							align-items: center;
 							height: 30rpx;
 							line-height: 30rpx;
-			
+
 							.number {
 								margin-left: 20rpx;
 							}
 						}
-			
+
 						.name {
 							color: #585858;
 							font-size: $uni-font-size-name;
 						}
-			
+
 						.time,
 						.number {
 							color: #8D8D8D;
 							font-size: $uni-font-size-time;
 						}
 					}
-			
+
 					.item-top-collect {
 						display: flex;
 						border-radius: 30upx;
@@ -466,30 +534,30 @@
 						align-items: center;
 						justify-content: center;
 						margin-right: 20upx;
-			
+
 						.collect-icon {
 							width: 30upx;
 							height: 30upx;
 							margin-right: 5upx;
 						}
-			
+
 						.collect-text {
 							font-size: 25upx;
 							margin-left: 5upx;
 						}
 					}
-			
+
 					.item-top-collect-color {
 						border: 1px solid #D74819;
 						color: #D74819;
 					}
-			
+
 					.item-top-uncollect-color {
 						border: 1px solid #909192;
 						color: #909192;
 					}
 				}
-			
+
 				.title,
 				.brief {
 					margin: 0 20rpx;
@@ -501,141 +569,141 @@
 					text-overflow: ellipsis;
 					-webkit-box-orient: vertical;
 				}
-			
+
 				.title {
 					color: #282828;
 					font-size: $uni-font-size-article-title;
 				}
-			
+
 				.brief {
 					color: #525252;
 					font-size: $uni-font-size-article-brief;
 				}
-			
+
 				.item-image {
 					display: flex;
 					flex-wrap: wrap;
 					margin: 10rpx 20rpx;
-			
+
 					.item-image-image {
 						padding: 10rpx 11rpx;
 						width: 200rpx;
 						height: 200rpx;
 					}
 				}
-			
+
 				.bottom {
 					display: flex;
 					justify-content: flex-end;
-			
-			
+
+
 					.bottom-right {
 						display: flex;
 						flex-direction: row;
 						align-items: center;
 						margin: 0 20rpx 20rpx 0;
 					}
-			
+
 					.bottom-left {
 						display: flex;
 						flex-direction: row;
 						align-items: center;
 						margin: 0 5rpx 20rpx 0;
 					}
-			
+
 					.bottom-icon-left,
 					.bottom-icon-right {
 						width: 30rpx;
 						height: 35rpx;
 						padding: $uni-spacing-row-base 5upx $uni-spacing-row-base 20upx;
 					}
-			
+
 					.bottom-text {
 						font-size: 30upx;
 					}
-			
+
 					.bottom-red-text {
 						color: #D74819;
 					}
-			
+
 					.bottom-gray-text {
 						color: #525252;
 					}
 				}
 			}
-			
+
 			.comment-model {
 				padding-bottom: 90rpx;
 				background: #FFFFFF;
 				border-top: 6px solid #eeeff0;
-			
+
 				.commentTitle {
 					padding: 30rpx 20rpx 20rpx;
 					border-bottom: 1px solid #eeeff0;
 				}
-			
+
 				.emptyView {
 					margin: 80rpx 0 200rpx;
 					text-align: center;
-			
+
 					.emptyImage {
 						width: 600rpx;
 					}
-			
+
 					.emptyText {
 						color: #969798;
 					}
 				}
-			
+
 				.commentPart {
 					padding: 30rpx;
-			
+
 					.headModel {
 						display: flex;
 						align-items: center;
-			
+
 						.headImage {
 							width: 85rpx;
 							height: 85rpx;
 							border-radius: 42.5rpx;
 						}
-			
+
 						.headPart {
 							padding-left: 20rpx;
 							width: 530rpx;
-			
+
 							.headPartName {
 								color: #585858;
 							}
-			
+
 							.headPartTime {
 								color: #8D8D8D;
 							}
 						}
-			
+
 						.replyImage {
 							width: 32rpx;
 							height: 26rpx;
 						}
 					}
-			
+
 					.replyContent {
 						color: #282828;
 						margin: 20rpx 20rpx 20rpx 105rpx;
 						white-space: pre-wrap;
 						word-break: break-all;
 					}
-			
+
 					.subContent {
 						margin: 20rpx 20rpx 30rpx 105rpx;
 						background: #E7E7E7;
 						padding: 10rpx 20rpx;
 						border-radius: 15rpx;
-			
+
 						.subContentName {
 							color: #C91E25;
 						}
-			
+
 						.subContentContent {
 							color: #272829;
 						}
@@ -653,28 +721,28 @@
 		bottom: 0rpx;
 		// overflow: hidden;
 	}
-	
+
 	/* 插屏广告 */
 	.uni-image {
 		position: relative;
 		z-index: 9999;
-		
+
 		.pop_view {
 			display: flex;
 			flex-direction: column;
-		
+
 			.popcontent {
 				width: 70vw;
 				background-color: #FFFFFF;
 				border: 0;
 			}
-		
+
 			.image {
 				width: 70vw;
 				height: 19vh;
 				background: #FFFFFF;
 			}
-		
+
 			.pop-view-success {
 				display: flex;
 				height: 80px;
@@ -684,9 +752,9 @@
 				justify-content: center;
 				align-items: center;
 				border: 0;
-		
+
 			}
-		
+
 			.pop-view-success-text {
 				display: flex;
 				color: #666666;
@@ -694,7 +762,7 @@
 				justify-content: center;
 				align-items: center;
 			}
-		
+
 			.pop_bt {
 				display: flex;
 				color: #666666;
@@ -703,7 +771,7 @@
 				justify-content: center;
 				align-items: center;
 				border: 0;
-		
+
 				.pop_btn {
 					display: flex;
 					height: 70upx;
@@ -717,7 +785,7 @@
 				}
 			}
 		}
-		
+
 		.uni-image-close {
 			margin-top: 20px;
 			text-align: center;

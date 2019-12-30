@@ -18,14 +18,14 @@
 
 				<view class="filter">
 					<scroll-view class="scroll" scroll-x="true">
-						<text v-for="(item, index) in lv1list" @click="product_cli(item.id)" :class="item.id == productId ? 'x item' : 'item'">{{ item.productName }}</text>
+						<text v-for="(item, index) in lv1list" @click="product_cli(item.id,index)" :class="item.id == productId ? 'x item' : 'item'">{{ item.productName }}</text>
 					</scroll-view>
 					<!-- 筛选组件 -->
 					<sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult" @result="result"></sl-filter>
 				</view>
 			</view>
 		</view>
-		<swiper class="swiper" style="height:100%"  @change="changeType">
+		<swiper class="swiper" style="height:100%"  @change="changeType" :current="current">
 			<swiper-item v-for="(item, index) in lv1list">
 				<scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
                     <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
@@ -67,6 +67,7 @@ export default {
 	},
 	data() {
 		return {
+            current:0,//滑块所处位置
 			statusBarHeight: 0,
 			blg: 220,
 			systemInfo: '',
@@ -166,10 +167,11 @@ export default {
 		this.getFileList('Refresh');
 	},
 	methods: {
-		product_cli(id) {
+		product_cli(id,index) {
 			this.productId = id;
 			console.log('productId:' + this.productId);
 			//列表方法
+            this.current = index
 			this.getFileList('Refresh');
 		},
 		gomeans() {

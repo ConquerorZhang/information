@@ -94,6 +94,7 @@
 			},
 			close(e){
 			    this.imageList.splice(e,1);
+				this.submitImageIdList.splice(e,1);
 			},
 			chooseImage: async function() {
 				// #ifdef APP-PLUS
@@ -145,15 +146,17 @@
 							            },
 							            success: (uploadFileRes) => {
 											uni.hideLoading();
+											// 展示图片的数组
 											this.imageList.push(tempFilePaths[num++]);
-											if (this.imageList.length > 6) {
-												this.imageList = this.imageList.splice(0,6);
-											}
 											
-											// 图片数组
+											// 图片id数组
 											var obj = JSON.parse(uploadFileRes.data);
 											this.submitImageIdList.push(obj.data.fileid);
-											// console.log(this.submitImageIdList);
+											
+											if (this.imageList.length > 6) {
+												this.imageList = this.imageList.splice(0,6);
+												this.submitImageIdList = this.submitImageIdList.splice(0,6);
+											}
 							            },
 										fail:() => {
 											uni.hideLoading();

@@ -20,7 +20,7 @@
 					<view class="topPart">
 						<view class="title">{{data.productName}}</view>
 						<view class="collectPart" @click="clickCollect">
-							<image :src="data.collect ? '../../static/sc_sec.png' : '../../static/sc.png'" mode="scaleToFill"></image>
+							<image :src="data.collect ? '../../static/interaction/collected.png' : '../../static/interaction/unCollected.png'" mode="scaleToFill"></image>
 							<text :class="data.collect ? 'collectColor' : 'unCollectColor'">收藏</text>
 						</view>
 					</view>

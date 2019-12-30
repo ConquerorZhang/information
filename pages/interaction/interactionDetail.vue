@@ -12,7 +12,7 @@
 				</view>
 				<view class="item-top-collect" :class="detailData.collect ? 'item-top-collect-color' : 'item-top-uncollect-color'"
 				 @click="detailData.collect?Uncollect():collect()">
-					<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/sc_sec.png" : "../../static/sc.png"'></image>
+					<image class="collect-icon" mode="aspectFit" :src='detailData.collect ? "../../static/interaction/collected.png" : "../../static/interaction/unCollected.png"'></image>
 					<text class="collect-text">收藏</text>
 				</view>
 			</view>

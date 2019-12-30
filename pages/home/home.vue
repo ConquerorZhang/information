@@ -26,27 +26,33 @@
 			</view>
 		</view>
 		<swiper class="swiper" style="height:100%"  @change="changeType" :current="current">
-			<swiper-item v-for="(item_lv1list, index) in lv1list">
-				<scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
-                    <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
-                        <view class="means">
-                            <view class="con">
-                                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
-                                <view class="title">
-                                    {{item.docName.split(".")[0]}}
+                <swiper-item v-for="(item_lv1list, index) in lv1list">
+                    <scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
+                        <view v-if="fileList.length > 0">
+                            <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
+                                <view class="means">
+                                    <view class="con">
+                                        <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
+                                        <view class="title">
+                                            {{item.docName.split(".")[0]}}
+                                        </view>
+                                    </view>
+                                    <image src="../../static/docs/down.png" mode="aspectFit"></image>
+                                </view>
+                                <view class="time">
+                                    <view>{{ item.createTime }}</view>
+                                    <view class="tip">下载量:{{ item.downloadCount }}</view>
                                 </view>
                             </view>
-                            <image src="../../static/docs/down.png" mode="aspectFit"></image>
                         </view>
-                        <view class="time">
-                            <view>{{ item.createTime }}</view>
-                            <view class="tip">下载量:{{ item.downloadCount }}</view>
+                        <view v-else class="empty">
+                        	<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+                        	<view class="emptyText">没有找到相关信息～</view>
                         </view>
-                    </view>
-                
-					<uni-load-more :status="more"></uni-load-more>
-				</scroll-view>
-			</swiper-item>
+                        <uni-load-more :status="more" v-if="more== 'more'"></uni-load-more>
+                    </scroll-view>
+                </swiper-item>	
+            
 		</swiper>
 		<view class="drift"><image src="../../static/down.png" mode="aspectFit" @click="mydown"></image></view>
 	</view>
@@ -168,10 +174,11 @@ export default {
 	methods: {
 		product_cli(id,index) {
 			this.productId = id;
-            this.scrollLeft = (this.gdleft[index].left - 5);
-			//列表方法
+            //this.scrollLeft = (this.gdleft[index].left - 5);
+			//列表方法 会触发onchnge
+            console.log(index)
             this.current = index
-			this.getFileList('Refresh');
+			//this.getFileList('Refresh');
 		},
 		gomeans() {
 			uni.navigateTo({
@@ -502,9 +509,15 @@ page {
 }
 
 .empty {
-	width: 600rpx;
-	height: 300rpx;
-	display: block;
-	margin: 300rpx auto 0 auto;
+    text-align: center;
+
+    .emptyImage {
+        margin-top: 300rpx;
+        width: 500rpx;
+    }
+
+    .emptyText {
+        color: #969798;
+    }
 }
 </style>

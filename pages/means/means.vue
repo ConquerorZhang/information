@@ -15,7 +15,7 @@
             </view>
             <!-- 下载完成的传那个name -->
             <view class="means-item" v-for="(item,index) in historyList" @click="openFile(item.docName)">
-                <image :src="item.iconimgurl" mode="aspectFit"></image>
+                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
                 <view class="" v-for="">
                 	
                 </view>
@@ -73,13 +73,7 @@
                 checkList: [], //直接在historyList 添加check true false 属性存在问题  所以用 单独的变量来存取选中状态
                 paramIds: [], //向后台传递的参数
                 checkValues: [], // 选中的下标数组用于移除
-                fileTypeJson:{
-                    doc: "pics/filetype/doc.png",
-                    xls: "pics/filetype/xls.png",
-                    ppt: "pics/filetype/ppt.png",
-                    zip: "pics/filetype/zip.png",
-                    pdf: "pics/filetype/pdf.png"
-                }, //文件类型列表
+                
             };
         },
         onLoad(param) {
@@ -99,7 +93,7 @@
                 this.download_fun(param.fullDocUrl, param.docType,param.fileName,param.id);
             } 
             //查询图标  成功后(失败后) 请求下载列表
-            this.getFileType();
+            this.getHistoryList("Refresh");
         },
         onShow() {
         	this.callHandler('ObjC Echo', {
@@ -194,10 +188,6 @@
                 };
                 API.getHistoryList(json).then(res => {
                     let resdata = res.data.data;
-                    //把图标放进去
-                    for (var i = 0; i < resdata.length; i++) {
-                        resdata[i].iconimgurl = this.fileTypeJson[resdata[i].docType]
-                    }
                     if (resdata.length < this.limit) {
                         this.more = "noMore"
                     } else {
@@ -288,24 +278,6 @@
                 }
                 console.log(this.checkValues)
                 console.log(this.checkList)
-                //                 console.log(this.paramIds)
-                //                 console.log(this.checkValues)
-            },
-            getFileType() {
-                API.getFileType({})
-                    .then(res => {
-                        let typeList_res = res.data.data;
-                        let json = {};
-                        for (let key in typeList_res) {
-                            let key_json = typeList_res[key]["id"];
-                            json[key_json] = typeList_res[key]["doctypeImageUrl"];
-                        }
-                        this.fileTypeJson = json;
-                        this.getHistoryList("Refresh");
-                    })
-                    .catch(err => {
-                        this.getHistoryList("Refresh");
-                    });
             },
         }
     };

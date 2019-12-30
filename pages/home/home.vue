@@ -18,18 +18,6 @@
 
 				<view class="filter">
 					<scroll-view class="scroll" scroll-x="true">
-						<text :class="0 == productId ? 'x item' : 'item'" @click="product_all">全部</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
-						<text class="item">类别</text>
 						<text v-for="(item, index) in lv1list" @click="product_cli(item.id)" :class="item.id == productId ? 'x item' : 'item'">{{ item.productName }}</text>
 					</scroll-view>
 					<!-- 筛选组件 -->
@@ -37,77 +25,28 @@
 				</view>
 			</view>
 		</view>
-		<swiper class="swiper" style="height:100%">
-			<swiper-item>
-				<scroll-view style="height:100%" scroll-y="true" class="scroll-Y">
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
-					<view class="swiper-item uni-bg-red">A</view>
+		<swiper class="swiper" style="height:100%"  @change="changeType">
+			<swiper-item v-for="(item, index) in lv1list">
+				<scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
+                    <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
+                        <view class="means">
+                            <view class="con">
+                                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
+                                <view class="title">
+                                    {{item.docName.split(".")[0]}}
+                                </view>
+                            </view>
+                            <image src="../../static/docs/down.png" mode="aspectFit"></image>
+                        </view>
+                        <view class="time">
+                            <view>{{ item.createTime }}</view>
+                            <view class="tip">下载量:{{ item.downloadCount }}</view>
+                        </view>
+                    </view>
+                
 					<uni-load-more :status="more"></uni-load-more>
 				</scroll-view>
 			</swiper-item>
-			<swiper-item><view class="swiper-item uni-bg-green">B</view></swiper-item>
-			<swiper-item><view class="swiper-item uni-bg-blue">C</view></swiper-item>
 		</swiper>
 		<view class="drift"><image src="../../static/down.png" mode="aspectFit" @click="mydown"></image></view>
 	</view>
@@ -171,12 +110,7 @@ export default {
 					isSort: false,
 					key: 'jobType',
 					value: '2',
-					detailList: [
-						{
-							title: '全部',
-							value: '123'
-						}
-					]
+					detailList: []
 				},
 				{
 					title: '下载量',
@@ -184,12 +118,7 @@ export default {
 					isSort: false,
 					key: 'jobType',
 					value: '1',
-					detailList: [
-						{
-							title: '全部',
-							value: '123'
-						}
-					]
+					detailList: []
 				}
 			],
 			searchKey: '', //搜索关键词
@@ -202,26 +131,7 @@ export default {
 			sortresult_count: 0, //区分正序倒叙
 			lv1list: [],
 			fileTypeId: '', //文件类型 doc  ppt
-			fileList: [
-				/* {
-                    id: '1206497536238469122',
-                    docName: 'travel.html',
-                    uploadId: '1206497521398616065',
-                    docUrl: null,
-                    fullDocUrl: null,
-                    visitCount: 0,
-                    downloadCount: 0,
-                    createBy: 1,
-                    createTime: '2019-12-16 16:53:23',
-                    charger: '',
-                    tel: '',
-                    docDesc: '',
-                    doctypeImageUrl: '',
-                    docType: 'html',
-                    searchKeys: '',
-                    createName: null
-                } */
-			]
+			fileList: []
 		};
 	},
 	computed: {
@@ -251,13 +161,6 @@ export default {
 			key: 'onShow'
 		});
 	},
-	//加载更多
-	onReachBottom() {
-		if (this.more == 'noMore') {
-			return;
-		}
-		this.getFileList('more');
-	},
 	//下拉刷新
 	onPullDownRefresh() {
 		this.getFileList('Refresh');
@@ -267,10 +170,6 @@ export default {
 			this.productId = id;
 			console.log('productId:' + this.productId);
 			//列表方法
-			this.getFileList('Refresh');
-		},
-		product_all() {
-			this.productId = 0;
 			this.getFileList('Refresh');
 		},
 		gomeans() {
@@ -376,9 +275,13 @@ export default {
 		},
 		getlv1list() {
 			console.log('getlv1list');
+            this.lv1list.push({
+                "id":0,
+                "productName":"全部"
+            })
 			API.getlv1list({})
 				.then(res => {
-					this.lv1list = res.data.data;
+					this.lv1list = this.lv1list.concat(res.data.data);
 					console.log(res);
 				})
 				.catch(err => {
@@ -431,7 +334,21 @@ export default {
 			uni.navigateTo({
 				url: '/pages/means/means'
 			});
-		}
+		},
+        changeType(e) {
+            //返回 type的下标
+            console.log(e.target.current)
+            this.productId = this.lv1list[e.target.current].id;
+            //把滑动到该 type选中
+            this.getFileList('Refresh');
+        },
+        //加载更多
+        onMoreLoad() {
+        	if (this.more == 'noMore') {
+        		return;
+        	}
+        	this.getFileList('more');
+        },
 	}
 };
 </script>

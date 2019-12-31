@@ -458,8 +458,9 @@ page {
                 content: '';
                 display: block;
                 height: 4rpx;
-                width: 110%;
-                left: -5%;
+                width: 50%;
+                margin-left: -25%;
+                left: 50%;
                 bottom: 0;
                 position: absolute;
                 background: #fff;

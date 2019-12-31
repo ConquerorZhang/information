@@ -142,11 +142,11 @@
 		onLoad(option) {
 			console.log("-----pages:" + getCurrentPages())
 			console.log(option);
-			// console.log(JSON.parse(option.item).id)
+			console.log(JSON.parse(option.item))
 			this.item = JSON.parse(option.item);
 			if (!this.isEmpty(option.idkey) && option.idkey == 'id') {
 				this.id = this.item.id;
-			} else if (!this.isEmpty(option.idkey) && option.idkey == 'bizkey') {
+			} else if (!this.isEmpty(option.idkey) && option.idkey == 'bizKey') {
 				this.id = this.item.bizKey;
 			} else {
 				this.id = this.item.id;

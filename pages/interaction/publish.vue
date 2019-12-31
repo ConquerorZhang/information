@@ -85,9 +85,11 @@
 			}
 		},
 		onShow() {
-			this.callHandler('ObjC Echo',{
-				'key': 'innerSelf'
-			});
+			setTimeout(()=>{
+				this.callHandler('ObjC Echo',{
+					'key': 'innerSelf'
+				});
+			},3000)
 		},
 		methods: {
 			back() {

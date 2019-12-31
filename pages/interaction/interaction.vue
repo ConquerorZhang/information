@@ -285,6 +285,9 @@
 			uni.navigateTo({
 				url: '/pages/interaction/publish'
 			})
+			// this.callHandler('publish', {
+			// 	'jumpCode': 'publish'
+			// });
 			// util.bridgeAndroidAndIOS({
 			// 	'key': 'inner'
 			// });

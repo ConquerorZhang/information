@@ -35,6 +35,7 @@
 		}, {
 			"path": "pages/interaction/publish",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "发布问题",
 				"app-plus": {
 					"titleNView": {

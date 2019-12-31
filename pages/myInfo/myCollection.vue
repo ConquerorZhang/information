@@ -130,6 +130,11 @@
 				}
 			}, 350)
 		},
+		onShow() {
+			this.callHandler('ObjC Echo', {
+				'key': 'inner'
+			});
+		},
 		methods: {
 			back() {
 				uni.navigateBack({

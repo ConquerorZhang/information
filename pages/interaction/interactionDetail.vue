@@ -147,7 +147,7 @@
 			if (!this.isEmpty(option.idkey) && option.idkey == 'id') {
 				this.id = this.item.id;
 			} else if (!this.isEmpty(option.idkey) && option.idkey == 'bizkey') {
-				this.id = this.item.bizkey;
+				this.id = this.item.bizKey;
 			} else {
 				this.id = this.item.id;
 			}

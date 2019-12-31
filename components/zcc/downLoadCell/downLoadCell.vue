@@ -2,7 +2,7 @@
 	<view class="learnPart">
 		<view class="topPart">
 			<view class="titlePart">
-				<image :src="data.image" mode="scaleToFill"></image>
+				<image :src="data.doctypeImageUrl" mode="scaleToFill"></image>
 				<view class="title">{{data.docName}}</view>
 			</view>
 			<image v-if="progress == ''" class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill" @click="downLoad(data.fullDocUrl)"></image>
@@ -62,7 +62,7 @@
 				width: 100rpx;
 				height: 100rpx;
 				margin-right: 20rpx;
-				background: #C8C7CC;
+				// background: #C8C7CC;
 			}
 
 			.title {

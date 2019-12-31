@@ -35,6 +35,7 @@
 		}, {
 			"path": "pages/interaction/publish",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "发布问题",
 				"app-plus": {
 					"titleNView": {
@@ -88,6 +89,7 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的收藏"
+				// "enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/search/homeSearch",

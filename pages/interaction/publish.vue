@@ -1,6 +1,21 @@
 <template>
 	<view class="container">
-		<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" />
+		<view class="top">
+			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view>
+			<!-- 自定义导航 -->
+			<view class="navBar">
+				<view class="left-icon" @click="back">
+					<uni-icons background-color="#FFFFFF" color="#333333" type="arrowleft" size="24" />
+				</view>
+				<view class="content">
+					<view class="navBar-title">发布问题</view>
+				</view>
+				<view class="rightcontent" @click="onNavigationBarButton">
+					<view class="rightText">发布</view>
+				</view>
+			</view>
+		</view>
+		<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}"/>
 		<view class="lineView"></view>
 		<view class="contentView">
 			<textarea class="content" type="text" v-model="contentText" placeholder="说点什么好呢,用心分享会得到更多互动哦" />
@@ -27,7 +42,7 @@
 <script>
 	const API = require('../../common/api.js')
 	const CONFIG = require('../../common/config.js')
-	
+	import Vue from 'vue';
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -41,6 +56,7 @@
 	export default {
 		data() {
 			return {
+				statusBarHeight: 0,
 				titleText:"",
 				contentText:"",
 				imageList:[],
@@ -55,13 +71,21 @@
 				selectedIndex:'-1',
 			}
 		},
+		onLoad() {
+			this.statusBarHeight = Vue.config.configDic.statusBarHeight-20;
+		},
 		onShow() {
 			this.callHandler('ObjC Echo',{
-				'key': 'inner'
+				'key': 'innerSelf'
 			});
 		},
 		methods: {
-			onNavigationBarButtonTap(e) {
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			onNavigationBarButton() {
 				console.log(this.submitImageIdList);
 				
 				uni.showModal({
@@ -261,6 +285,69 @@
 	}
 	.container {
 		padding: 20rpx 10rpx 0;
+		
+		.top {
+			position: fixed;
+			top: 0rpx;
+			width: 100%;
+			z-index: 500;
+			
+			.statusBar {
+				// height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
+				background: #FFFFFF;
+				width: 100%;
+			}
+		
+			.navBar {
+				width: 100%;
+				height: 60rpx;
+				display: flex;
+				flex-direction: row;
+				background-color: #FFFFFF;
+		
+				.left-icon {
+					display: flex;
+					height: 100%;
+					width: 60rpx;
+					padding: 0 10px;
+					align-items: center;
+				}
+		
+				.content {
+					width: 100%;
+					height: 100%;
+					// border: 1px solid #1AAD19;
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+		
+					.navBar-title {
+						font-size: 33upx;
+						font-weight: bold;
+		
+					}
+				}
+				
+				.rightcontent{
+					width: 20%;
+					height: 100%;
+					display: flex;
+					
+					.rightText{
+				
+						color: #EB5248;
+						font-size: 30rpx;
+						padding: 10rpx 10rpx;
+						
+					}
+				}
+				
+			}
+		}
+		
+		
+		
 		.title {
 			font-size: 40rpx;
 			font-weight: 600;

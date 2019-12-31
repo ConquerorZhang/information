@@ -80,10 +80,10 @@
 				</view>
 				<view class="item" v-for="(item, index) in datalists.list2.datalist" :key="index">
 					<view class="item-top">
-						<view class="item-head-icon" @click="navToDetailPage(item,index,'id')">
+						<view class="item-head-icon" @click="navToDetailPage(item,index,'bizkey')">
 							<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 						</view>
-						<view class="info" @click="navToDetailPage(item,index,'id')">
+						<view class="info" @click="navToDetailPage(item,index,'bizkey')">
 							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
 								<text class="item-text content">{{item.contents}}</text>
@@ -94,7 +94,7 @@
 						</view>
 					</view>
 
-					<view class="comment">
+					<view class="comment" @click="navToDetailPage(item,index,'bizkey')">
 						<view class="comment-title">
 							<text class="item-text title">我：</text>
 						</view>
@@ -401,6 +401,10 @@
 			// setTimeout(() => {
 			// 	this.getNewData(this.datalists.type);
 			// }, 500)
+			
+		},
+		
+		onShow() {
 			this.callHandler('ObjC Echo', {
 				'key': 'inner'
 			});

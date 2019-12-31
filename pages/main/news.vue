@@ -1,6 +1,6 @@
 <!-- 电科动态列表 -->
 <template>
-	<view class="container">
+	<view class="container"> 
 		<uni-nav-bar id="naviBar" left-icon="back" title="电科动态" @clickLeft="back"></uni-nav-bar>
 		<view class="searchFilterContainer">
 			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" @confirm="search" @input="input" @cancel="cancel"></uni-search-bar>
@@ -37,10 +37,12 @@
 	const API = require('../../common/api.js')
 	var util = require('../../common/bridge.js');
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+	import UniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue"
 
 	export default {
 		components: {
-			uniNavBar
+			uniNavBar,
+			UniSearchBar
 		},
 		data() {
 			return {

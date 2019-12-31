@@ -25,27 +25,36 @@
                 </view>
             </view>
         </view>
-        <swiper class="swiper" style="height:100%" @change="changeType" :current="current">
-            <swiper-item v-for="(item, index) in lv1list">
+        <swiper class="swiper" style="height:100%"  @change="changeType" :current="current">
+            <swiper-item v-for="(item_lv1list, index_lv1list) in lv1list">
                 <scroll-view style="height:100%" scroll-y="true" class="scroll-Y" @scrolltolower="onMoreLoad">
-                    <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
-                        <view class="means">
-                            <view class="con">
-                                <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
-                                <view class="title">{{ item.docName.split('.')[0] }}</view>
+                    <view v-if="fileList.length > 0">
+                        <view v-for="(item, index) in fileList" class="means-item" @click="fileDetail(item.id)">
+                            <view class="means">
+                                <view class="con">
+                                    <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
+                                    <view class="title">
+                                        {{item.docName.split(".")[0]}}
+                                    </view>
+                                </view>
+                                <image src="../../static/docs/down.png" mode="aspectFit"></image>
                             </view>
-                            <image src="../../static/docs/down.png" mode="aspectFit"></image>
-                        </view>
-                        <view class="time">
-                            <view>{{ item.createTime }}</view>
-                            <view class="tip">下载量:{{ item.downloadCount }}</view>
+                            <view class="time">
+                                <view>{{ item.createTime }}</view>
+                                <view class="tip">下载量:{{ item.downloadCount }}</view>
+                            </view>
                         </view>
                     </view>
-
-                    <uni-load-more :status="more"></uni-load-more>
+                    <view v-else class="empty">
+                        <view v-if="commentEmpty_show">
+                        	<image class="emptyImage"  src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
+                        	<view class="emptyText">没有找到相关信息～</view>
+                        </view>
+                    </view>
+                    <uni-load-more :status="more" v-if="more== 'more'"></uni-load-more>
                 </scroll-view>
-            </swiper-item>
-        </swiper>
+            </swiper-item>	
+		</swiper>
         <view class="drift"><image src="../../static/down.png" mode="aspectFit" @click="mydown"></image></view>
     </view>
 </template>
@@ -65,6 +74,7 @@ export default {
     },
     data() {
         return {
+            commentEmpty_show: false, //暂无图片的显示隐藏 默认隐藏 加载完无数据时显示
             current: 0, //滑块所处位置
             statusBarHeight: 0,
             scrollLeft: 0,
@@ -160,7 +170,7 @@ export default {
         this.statusBarHeight = Vue.config.configDic.statusBarHeight;
         this.callHandler('ObjC Echo', {
             key: 'onShow'
-        });
+        }); 
     },
     //下拉刷新
     onPullDownRefresh() {
@@ -226,6 +236,7 @@ export default {
                 this.page = 1;
                 this.fileList = [];
                 this.more = 'more';
+                this.commentEmpty_show = false;
                 uni.stopPullDownRefresh();
             }
 
@@ -258,6 +269,9 @@ export default {
                         this.more = 'noMore';
                     } else {
                         this.page += 1;
+                    }
+                    if(resdata.length == 0){
+                       this.commentEmpty_show = true; 
                     }
                     this.fileList = this.fileList.concat(resdata);
                 })
@@ -507,9 +521,15 @@ page {
 }
 
 .empty {
-    width: 600rpx;
-    height: 300rpx;
-    display: block;
-    margin: 300rpx auto 0 auto;
+    text-align: center;
+
+    .emptyImage {
+        margin-top: 300rpx;
+        width: 500rpx;
+    }
+
+    .emptyText {
+        color: #969798;
+    }
 }
 </style>

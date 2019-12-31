@@ -5,7 +5,7 @@
             <view class="time">{{detailData.createTime}}</view>
             <view class="tips">
                 <image src="../../static/my.png" mode="aspectFit"></image>
-                <text>负责人:{{detailData.charger}}</text>
+                <text>负责人:{{detailData.charger == '' ? '暂无' : detailData.charger}}</text>
                 <image src="../../static/attention.png" mode="aspectFit"></image>
                 <text>浏览: {{detailData.visitCount}}次</text>
                 <image src="../../static/down-detile.png" mode="aspectFit"></image>
@@ -33,15 +33,30 @@
                 <image src="../../static/sc_sec.png" mode="aspectFit" class="close" @click="close"></image>
                 <view class="item">
                     <view class="tip">负责人</view>
-                    <view class="title">{{detailData.charger}}</view>
+                    <view v-if="detailData.charger != '' && detailData.charger != null" class="title">
+                    	{{detailData.charger}}
+                    </view>
+                    <view class="title" v-else>
+                    	暂无
+                    </view>
                 </view>
                 <view class="item">
                     <view class="tip">联系方式</view>
-                    <view class="title">{{detailData.tel}}</view>
+                    <view v-if="detailData.tel != '' && detailData.tel != null" class="title">
+                    	{{detailData.tel.slice(0,4) + "****" +  detailData.tel.slice(8,11)}}
+                    </view>
+                    <view class="title" v-else>
+                    	暂无
+                    </view>
                 </view>
                 <view class="item x">
                     <view class="tip">文档说明</view>
-                    <view class="title">{{detailData.docDesc}}</view>
+                     <view v-if="detailData.docDesc != '' && detailData.docDesc != null" class="title">
+                    	{{detailData.docDesc}}
+                    </view>
+                    <view class="title" v-else>
+                    	暂无
+                    </view>
                 </view>
             </view>
         </uni-popup>

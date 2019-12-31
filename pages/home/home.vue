@@ -170,7 +170,7 @@ export default {
         this.statusBarHeight = Vue.config.configDic.statusBarHeight;
         this.callHandler('ObjC Echo', {
             key: 'onShow'
-        }); 
+        });
     },
     //下拉刷新
     onPullDownRefresh() {
@@ -179,10 +179,8 @@ export default {
     methods: {
         product_cli(id, index) {
             this.productId = id;
-            this.scrollLeft = this.gdleft[index].left - 5;
             //列表方法
             this.current = index;
-            this.getFileList('Refresh');
         },
         gomeans() {
             uni.navigateTo({

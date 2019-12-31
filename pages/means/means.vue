@@ -261,6 +261,9 @@
                 this.delstar = !this.delstar;
             },
             checkboxChange: function(e) {
+                if(this.allchecked == true){
+                    this.allchecked = false;
+                }
                 var values = e.detail.value;
                 this.paramIds = [];
                 this.checkValues = []; //向后台传递的id

@@ -496,10 +496,10 @@
 					line-height: 1.6em;
 					display: -webkit-box;
 					/** 对象作为伸缩盒子模型显示 **/
-					-webkit-line-clamp: 5;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					-webkit-box-orient: vertical;
+					// -webkit-line-clamp: 5;
+					// overflow: hidden;
+					// text-overflow: ellipsis;
+					// -webkit-box-orient: vertical;
 				}
 			
 				.title {

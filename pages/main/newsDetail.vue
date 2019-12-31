@@ -51,7 +51,7 @@
 			// console.log(option);
 			this.fromH5 = option.fromH5;
 			this.id = option.id;
-			this.keyword = option.keyword;
+			this.keyword = Vue.prototype.isEmpty(option.keyword) ? '' : option.keyword;
 
 			API.newsDetail({
 				id: this.id,

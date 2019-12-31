@@ -12,7 +12,7 @@
 						<image class="emptyImage" src="../../static/interaction/commentEmpty.png" mode="widthFix"></image>
 						<view class="emptyText">暂无信息～</view>
 					</view>
-					<view class="dayPart" v-for="(item,index) in tab" :key="index">
+					<view class="dayPart" v-for="(item,index) in tab" :key="index" @click="toDetail(item.bizType,item.bizId)">
 						<view class="time">{{item.visitTime}}</view>
 						<view class="detailPart">
 							<!-- <block v-for="(detail,detailIndex) in item.list" :key="detailIndex"> -->
@@ -163,6 +163,18 @@
 			clearTabData(e) {
 				this.newsList[e].length = 0;
 			},
+			toDetail(type,bizId) {
+				if (type == 'product') {
+					uni.navigateTo({
+						url:'../product/product?productId='+bizId + '&fromH5=1'
+					})
+				}
+				else {
+					uni.navigateTo({
+						url: '../main/newsDetail?id=' + bizId + '&fromH5=1'
+					});
+				}
+			}
 		}
 	}
 </script>

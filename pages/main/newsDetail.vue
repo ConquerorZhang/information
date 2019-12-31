@@ -32,6 +32,7 @@
 
 <script>
 	const API = require('../../common/api.js')
+	import Vue from 'vue'
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
@@ -48,7 +49,6 @@
 			}
 		},
 		onLoad(option) {
-			// console.log(option);
 			this.fromH5 = option.fromH5;
 			this.id = option.id;
 			this.keyword = Vue.prototype.isEmpty(option.keyword) ? '' : option.keyword;

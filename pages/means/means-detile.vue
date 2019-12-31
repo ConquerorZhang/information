@@ -15,7 +15,7 @@
         <view class="main" v-if="detailData.docDesc != '' && detailData.docDesc != null ">
             {{detailData.docDesc}}
         </view>
-        <view class="main">
+        <view  v-else class="main">
         	暂无说明
         </view>
         <view class="footers">

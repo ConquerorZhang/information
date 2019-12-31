@@ -260,10 +260,7 @@
             clickRightBtn(e) {
                 this.delstar = !this.delstar;
             },
-            checkboxChange: function(e) {
-                if(this.allchecked == true){
-                    this.allchecked = false;
-                }
+            checkboxChange: function(e) { 
                 var values = e.detail.value;
                 this.paramIds = [];
                 this.checkValues = []; //向后台传递的id
@@ -278,6 +275,12 @@
                         this.paramIds.push(this.historyList[i].downloadhistoryid)
                         this.checkValues.push(i)
                     }
+                }
+                //如果勾选后  现在页面的数据全部是选中状态 则把全选选中 否则取消
+                if(this.checkList.indexOf(false) != -1){
+                     this.allchecked = false;
+                }else{
+                     this.allchecked = true;
                 }
                 console.log(this.checkValues)
                 console.log(this.checkList)

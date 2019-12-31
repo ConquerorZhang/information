@@ -29,7 +29,7 @@
 								<view class="emptyText">您还没有收藏任何帖子哦～</view>
 							</view>
 							<view class="cardPart" v-for="(item,index) in tab.data" :key="index">
-								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.id" :checked="item.checked" />
+								<checkbox v-if="showCheckBox" color="#ee3847" :value="item.bizKey" :checked="item.checked" />
 								<view class="detailPart" @click="interDetail(index1,item.bizKey)">
 									<view class="item-top">
 										<image class="circleicon" mode="scaleToFill" :src="item.userImgUrl"></image>
@@ -146,6 +146,18 @@
 				this.rightBtnText = this.showCheckBox ? '完成' : '管理';
 
 			},
+			resetData(index) {
+				console.log('-----'+index);
+				this.allChecked.index = false;
+				this.showCheckBox = false;
+				this.rightBtnText = '管理';
+				this.newsList[index].data = [];
+				this.selectedIdArr[index] = [];
+				this.showTips = false;
+				this.pageIndex[index] = 1;;
+				this.currentList[index] = [];
+				this.canLoad[index] = true;
+			},
 			getList(index) {
 				if (!this.canLoad[index]) {
 					return;
@@ -174,8 +186,10 @@
 						} else {
 							this.allChecked[this.tabIndex] = false;
 						}
+						uni.stopPullDownRefresh();
 					}).catch(err => {
 						console.log(err);
+						uni.stopPullDownRefresh();
 					})
 					
 				} else if (index == 1) {
@@ -186,7 +200,7 @@
 					}).then(res => {
 						console.log(res);
 						this.pageIndex[index]++;
-						this.currentList[index] = res.data.data;
+						this.currentList[index] = res.data.data != null ? res.data.data : [];
 
 						// scrollView上拉不加载标志
 						this.canLoad[index] = this.currentList[index].length > 0 ? true : false;
@@ -216,12 +230,12 @@
 					switch (uni.getSystemInfoSync().platform) {
 						case 'android':
 							uni.navigateTo({
-								url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+								url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify({'id':id}))
 							})
 							break;
 						case 'ios':
 							uni.navigateTo({
-								url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+								url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify({'id':id}))
 							})
 							break;
 						default:
@@ -236,10 +250,19 @@
 				}, 500)
 			},
 			ontabtap(e) {
+				
+				
 				let index = e.target.dataset.current || e.currentTarget.dataset.current;
 				// this.switchTab(index);
 				this.tabIndex = index;
-				this.scrollInto = this.tabBars[index].id;
+				console.log(index);
+				console.log(this.tabBars);
+				let tmp = this.tabBars[parseInt(index)].id;
+				console.log('tmp:   '+tmp);
+				this.scrollInto = tmp;
+				
+				
+				
 			},
 			ontabchange(e) {
 				let index = e.target.current || e.detail.current;
@@ -298,21 +321,20 @@
 					content: '确认删除吗？',
 					success: (res) => {
 						if (res.confirm) {
+							
 							// console.log(this.selectedIdArr[this.tabIndex]);
 							// 提交删除接口
 							API.myCollectCancel({
-								collecttype: this.tabIndex == 0 ? 'issue' : 'product',
+								collecttype: this.tabIndex == 0 ? 'product' : 'issue',
 								keys: this.selectedIdArr[this.tabIndex],
 							}).then(res => {
 								console.log(res);
 								
-								// 先直接拉数据吧
-								this.getList(this.tabIndex)
+								// 更新数据
+								this.resetData(this.tabIndex)
 								
-								// // 更新数据
-								// this.newsList[this.tabIndex].data = [];
-								// // 强制刷新删除按钮颜色
-								// this.$forceUpdate();
+								// 拉数据 
+								this.getList(this.tabIndex)
 							}).catch(err => {
 								console.log(err);
 							})

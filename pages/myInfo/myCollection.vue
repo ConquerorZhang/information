@@ -207,9 +207,22 @@
 					// });
 				}
 				else {
-					uni.navigateTo({
-						url: '/pages/interaction/interactionDetail?item='+encodeURIComponent(JSON.stringify({'id':id}))
-					});
+					// 区分平台跳转互动详情
+					switch (uni.getSystemInfoSync().platform) {
+						case 'android':
+							uni.navigateTo({
+								url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+							})
+							break;
+						case 'ios':
+							uni.navigateTo({
+								url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+							})
+							break;
+						default:
+							console.log('运行在开发者工具上')
+							break;
+					}
 				}
 			},
 			loadMore(e) {

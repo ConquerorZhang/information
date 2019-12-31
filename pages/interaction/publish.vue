@@ -72,7 +72,17 @@
 			}
 		},
 		onLoad() {
-			this.statusBarHeight = Vue.config.configDic.statusBarHeight-20;
+			switch (uni.getSystemInfoSync().platform) {
+				case 'android':
+					this.statusBarHeight = Vue.config.configDic.statusBarHeight-20;
+					break;
+				case 'ios':
+					this.statusBarHeight = Vue.config.configDic.statusBarHeight-40;
+					break;
+				default:
+					console.log('运行在开发者工具上')
+					break;
+			}
 		},
 		onShow() {
 			this.callHandler('ObjC Echo',{

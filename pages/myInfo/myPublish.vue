@@ -50,9 +50,9 @@
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
-					<text class="item-text title">{{item.title}}</text>
-					<text class="item-text brief">{{item.contents}}</text>
-					<view class="item-image">
+					<text class="item-text title" @click="navToDetailPage(item,index,'id')">{{item.title}}</text>
+					<text class="item-text brief" @click="navToDetailPage(item,index,'id')">{{item.contents}}</text>
+					<view class="item-image" @click="navToDetailPage(item,index,'id')">
 						<image class="item-image-image" mode="aspectFit" v-for="(pic,index) in item.pics" :key="index" :src="pic"></image>
 						<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->

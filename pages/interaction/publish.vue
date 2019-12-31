@@ -92,7 +92,7 @@
 				this.callHandler('ObjC Echo',{
 					'key': 'innerSelf'
 				});
-			},3000)
+			},1000)
 		},
 		methods: {
 			back() {

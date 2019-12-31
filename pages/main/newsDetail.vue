@@ -49,14 +49,20 @@
 			}
 		},
 		onLoad(option) {
+			// var start = new Date().getTime();
 			this.fromH5 = option.fromH5;
 			this.id = option.id;
 			this.keyword = Vue.prototype.isEmpty(option.keyword) ? '' : option.keyword;
-
+			
 			API.newsDetail({
 				id: this.id,
 				title: this.keyword
 			}).then(res => {
+				// var end = new Date().getTime();
+				// uni.showModal({
+				// 	title:'请求接口时间',
+				// 	content:(end-start)+'',
+				// })
 				console.log(res);
 				// console.log(res.data.data);
 				this.content = res.data.data.contents;

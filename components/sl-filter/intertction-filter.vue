@@ -156,7 +156,7 @@
 				up: 'sl-up',
 				arrow_down:'../../static/arrow_down.png',
 				arrow_order:'../../static/arrow_sort.png',
-				tabHeight: 60,
+				tabHeight: 90,
 				statusList: [],
 				selectedIndex: '',
 				titleList: [],
@@ -321,7 +321,11 @@
 
 	.select-tab .select-tab-item text,
 	.select-tab-fixed-top .select-tab-item text {
-		color: #666666;
-		font-size: 14px;
+		/* color: #666666;
+		font-size: 14px; */
+		align-items: center;
+		font-size: 28rpx;
+		padding: 6rpx 0;
+		color: #fff;
 	}
 </style>

@@ -6,12 +6,13 @@
 		</head>
 		<view class="head">
 			<!-- v-bind:style="{height:stateBarHeight +'px'}" -->
-			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view><!--{{Vue.config.configDic.stateBarHeight}}-->
+			<view class="statusBar" v-bind:style="{height:parseFloat(statusBarHeight)+'rpx'}"></view>
+			<!--{{Vue.config.configDic.stateBarHeight}}-->
 			<view class="top">
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
 				<view class="v_search">
-					<uni-search-bar placeholder="关键字" radius="20" clearButton="auto" @confirm="search" class="search" />
+					<uni-search-bar placeholder="关键字搜索" radius="20" clearButton="auto" @confirm="search" class="search" />
 				</view>
 				<view class="top-right" @click="message">
 					<!--@click="window.android.click('77777777777')"-->
@@ -89,7 +90,7 @@
 	export default {
 		data() {
 			return {
-				statusBarHeight:0,
+				statusBarHeight: 0,
 				pro: '10',
 				systemInfo: '',
 				currrenIndex: -1,
@@ -120,11 +121,11 @@
 								'value': ''
 							},
 							{
-								'title': '业务资讯区',
+								'title': '业务咨询区',
 								'value': '1'
 							},
 							{
-								'title': '需求资讯区',
+								'title': '需求咨询区',
 								'value': '2'
 							},
 							{
@@ -188,7 +189,7 @@
 				uni.navigateTo({
 					url: "../myInfo/myPublish?index=0"
 				})
-				
+
 				this.callHandler('ObjC Echo', {
 					'key': 'inner'
 				});
@@ -261,98 +262,109 @@
 
 				this.currrenIndex = index;
 				uni.$once('interation$detailback', this.detailBack);
-				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
-				})
-				// util.bridgeAndroidAndIOS({
-				// 	'key': 'inner'
-				// });
-			},
-			//页面跳转到发布
-			navToPublish(item) {
-				uni.navigateTo({
-					url: '/pages/interaction/publish'
-				})
-				// util.bridgeAndroidAndIOS({
-				// 	'key': 'inner'
-				// });
-			},
-			//键盘触发搜索
-			search(key) {
-				console.log(key);
-				this.resetData();
-				this.getlistdata(1);
-			},
-			getlistdata(page) {
-				console.log('page----' + page);
-				this.data.hasmore = false;
-				API.interactionList({
-					searchKey: this.searchKey,
-					type: this.type,
-					limit: this.limit,
-					page: page,
-					orderBy: this.orderBy,
-					isAsc: this.isAsc,
 
-					// contents: this.contentText,
-					// pics: this.submitImageIdList,
-					// type: parseInt(this.selectedIndex) + 1,
-				}).then(res => {
-					console.log(res);
-					if (res.data.data.length < this.limit) {
-						this.data.loadingText = "没有更多数据了"
-						this.data.hasmore = false;
-					} else {
-						this.page = page + 1;
-						this.data.hasmore = true;
-					}
-					this.data.datalsit = this.data.datalsit.concat(res.data.data);
-					 uni.stopPullDownRefresh();
-					// this.data.datalsit=[];
-					// console.log(this.data.datalsit);
-				}).catch(err => {
-					 uni.stopPullDownRefresh();
+				// 区分平台跳转互动详情
+				switch (uni.getSystemInfoSync().platform) {
+					case 'android':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					case 'ios':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					default:
+						console.log('运行在开发者工具上')
+						break;
+				}
+			},
+		//页面跳转到发布
+		navToPublish(item) {
+			uni.navigateTo({
+				url: '/pages/interaction/publish'
+			})
+			// util.bridgeAndroidAndIOS({
+			// 	'key': 'inner'
+			// });
+		},
+		//键盘触发搜索
+		search(key) {
+			console.log(key);
+			this.resetData();
+			this.getlistdata(1);
+		},
+		getlistdata(page) {
+			console.log('page----' + page);
+			this.data.hasmore = false;
+			API.interactionList({
+				searchKey: this.searchKey,
+				type: this.type,
+				limit: this.limit,
+				page: page,
+				orderBy: this.orderBy,
+				isAsc: this.isAsc,
+
+				// contents: this.contentText,
+				// pics: this.submitImageIdList,
+				// type: parseInt(this.selectedIndex) + 1,
+			}).then(res => {
+				console.log(res);
+				if (res.data.data.length < this.limit) {
+					this.data.loadingText = "没有更多数据了"
+					this.data.hasmore = false;
+				} else {
+					this.page = page + 1;
 					this.data.hasmore = true;
-					console.log(err);
-				})
-			},
-			loadMore(currentpage) {
-				if (this.data.hasmore) {
-					console.log("加载更多")
-					this.getlistdata(this.page);
 				}
-			},
-			resetData() {
-				this.data = {
-					isLoading: false,
-					hasmore: true,
-					refreshText: "",
-					loadingText: '加载更多...',
-					datalsit: [],
-					currrenIndex: -1
-				};
-				this.page = 1;
-			},
-			//详情回调函数
-			detailBack(data) {
-				console.log("回传数据呀--------------------");
-				// console.log(data.item);
-				if (this.currrenIndex != -1) {
-					// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
-					// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
-					this.data.datalsit[this.currrenIndex] = data.item;
-					this.$forceUpdate();
-				}
-				uni.$off('interation$detailback');
-			},
-			back() {
-				console.log(uni.onBackPress())
+				this.data.datalsit = this.data.datalsit.concat(res.data.data);
+				uni.stopPullDownRefresh();
+				// this.data.datalsit=[];
+				// console.log(this.data.datalsit);
+			}).catch(err => {
+				uni.stopPullDownRefresh();
+				this.data.hasmore = true;
+				console.log(err);
+			})
+		},
+		loadMore(currentpage) {
+			if (this.data.hasmore) {
+				console.log("加载更多")
+				this.getlistdata(this.page);
 			}
 		},
-		//下拉刷新
-		onPullDownRefresh() {
+		resetData() {
+			this.data = {
+				isLoading: false,
+				hasmore: true,
+				refreshText: "",
+				loadingText: '加载更多...',
+				datalsit: [],
+				currrenIndex: -1
+			};
+			this.page = 1;
+		},
+		//详情回调函数
+		detailBack(data) {
+			console.log("回传数据呀--------------------");
+			// console.log(data.item);
+			if (this.currrenIndex != -1) {
+				// this.data.datalsit[this.currrenIndex].favour = data.item.favour;
+				// this.data.datalsit[this.currrenIndex].favourCount = data.item.favourCount;
+				this.data.datalsit[this.currrenIndex] = data.item;
+				this.$forceUpdate();
+			}
+			uni.$off('interation$detailback');
+		},
+		back() {
+			console.log(uni.onBackPress())
+		}
+	},
+	//下拉刷新
+	onPullDownRefresh() {
 			this.resetData();
-		    setTimeout(this.getlistdata(1), 5000);
+			setTimeout(this.getlistdata(1), 5000);
 		},
 
 		onLoad() {
@@ -368,6 +380,9 @@
 			// });
 		},
 		onShow() {
+			this.callHandler('ObjC Echo', {
+				'key': 'onShow'
+			});
 			this.systemInfo = getApp().globalData.systemInfo;
 			this.statusBarHeight = Vue.config.configDic.statusBarHeight;
 
@@ -375,9 +390,6 @@
 			// 	title:Vue.config.configDic.statusBarHeight,
 			// });
 
-			this.callHandler('ObjC Echo', {
-				'key': 'onShow'
-			});
 			this.resetData();
 			setTimeout(this.getlistdata(1), 1000);
 		},
@@ -387,6 +399,17 @@
 <style lang="scss">
 	page {
 		height: 100%;
+	}
+
+	/deep/ .uni-searchbar__box {
+		border: none;
+		height: 58rpx;
+		background: #fff;
+	}
+
+	/deep/ .uni-input-placeholder {
+		color: #b1b1b1;
+		font-size: 24rpx;
 	}
 
 	.page {
@@ -399,7 +422,7 @@
 			top: 0rpx;
 			width: 100%;
 			z-index: 500;
-			background-image: linear-gradient(#D74819, #C7161E);
+			background-image: linear-gradient(#C7161E, #D74819);
 
 			.statusBar {
 				height: $uni-status-height; //这里是无效的，不知为何  var(--status-bar-height)
@@ -411,42 +434,41 @@
 				justify-content: space-between;
 
 				.icon_logo {
-					width: 100upx;
-					height: 40upx;
-					flex-grow: 2;
-					padding: $uni-spacing-row-base $uni-spacing-row-base;
+					width: 121upx;
+					height: 60upx;
+					padding: 0 20rpx;
+					margin-top: -8rpx;
 				}
 
 				.v_search {
 					display: flex;
-					flex-grow: 40;
 					justify-content: center;
+					flex-grow: 1;
+					margin-top: -6rpx;
 
 					.search {
 						width: 100%;
-						height: 50rpx;
-						margin: 0rpx 10rpx;
-
+						padding: 0;
 					}
 
+					input {
+						border: none;
+					}
 				}
 
 				.top-right {
-					width: 100rpx;
+					padding: 0 20rpx;
 					display: flex;
-					flex-grow: 1;
-					right: $uni-spacing-row-base;
-					top: $uni-spacing-row-base;
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
+					margin-right: 4rpx;
 
 					.top-right-icon {
 						width: 40rpx;
 						height: 40rpx;
 						display: flex;
 						justify-content: center;
-
 					}
 
 					.top-right-text {
@@ -459,7 +481,7 @@
 
 			.filter {
 				width: 100%;
-				height: 60rpx;
+				height: 90rpx;
 			}
 		}
 

@@ -497,9 +497,22 @@
 				this.currrenIndex = index;
 				
 				uni.$once('interation$detailback', this.detailBack);
-				uni.navigateTo({
-					url: '/pages/interaction/interactionDetail?idkey=' + idkey + '&item=' + encodeURIComponent(JSON.stringify(item))
-				})
+				// 区分平台跳转互动详情
+				switch (uni.getSystemInfoSync().platform) {
+					case 'android':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					case 'ios':
+						uni.navigateTo({
+							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+						})
+						break;
+					default:
+						console.log('运行在开发者工具上')
+						break;
+				}
 				uni.showToast({
 					title:this.currrenIndex+'',
 				})

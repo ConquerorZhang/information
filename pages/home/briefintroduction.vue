@@ -12,7 +12,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="contentView" v-bind:style="{'margin-top':(statusBarHeight+100) +'rpx'}" v-html="content"></view>
+		<view class="contentView" v-bind:style="{'margin-top': (parseFloat(statusBarHeight)+100) +'rpx'}" v-html="content"></view>
 	</view>
 </template>
 

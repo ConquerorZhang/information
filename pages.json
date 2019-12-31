@@ -54,7 +54,8 @@
 		}, {
 			"path": "pages/interaction/interactionDetail",
 			"style": {
-				"navigationBarTitleText": "问题详情"
+				"navigationBarTitleText": "问题详情",
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/myInfo/MessageDetail",
@@ -166,6 +167,12 @@
         ,{
             "path" : "components/zcc/homeSearchBar/homeSearchBar",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/interaction/interactionDetailIOS",
+            "style" : {
+				"navigationBarTitleText": "问题详情"
+			}
         }
     ],
 	"globalStyle": {

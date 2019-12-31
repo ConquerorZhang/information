@@ -1,7 +1,19 @@
 <template>
 	<view class="container">
 		<uni-nav-bar id="naviBar" left-icon="back" title="动态详情" @clickLeft="back"></uni-nav-bar>
+
 		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y>
+			<view class="titleView">
+				<view class="title">{{data.title}}</view>
+				<view class="timePart">
+					<image src="../../static/dynamic/time.png" mode="scaleToFill"></image>
+					<text>{{data.createTime}}</text>
+				</view>
+				<view class="addressPart">
+					<image src="../../static/dynamic/location.png" mode="scaleToFill"></image>
+					<text>{{data.location}}</text>
+				</view>
+			</view>
 			<view class="contentView" v-html="content">{{content}}</view>
 		</scroll-view>
 		<view class="bottomView">
@@ -95,12 +107,49 @@
 		.scroll-v {
 			flex: 1;
 			width: 750upx;
-			height: calc(100% - 170rpx);
+			height: calc(100% - 190rpx);
 			flex-direction: column;
-
-			.contentView {
-				height: calc(100% - 200rpx);
+			
+			.titleView {
+				padding: 20rpx;
+				margin-bottom: 20rpx;
+				border-bottom: 1px solid #f1f2f3;
+				
+				.title {
+					font-size: 40rpx;
+					font-weight: 500;
+				}
+				.timePart {
+					align-items: center;
+					display: flex;
+					margin-top: 10rpx;
+					
+					color: #9b9c9d;
+					font-size: 30rpx;
+					image {
+						width: 30rpx;
+						height: 30rpx;
+						margin-right: 5rpx;
+					}
+				}
+				.addressPart {
+					align-items: center;
+					display: flex;
+					margin-top: 10rpx;
+					
+					color: #9b9c9d;
+					font-size: 30rpx;
+					image {
+						width: 28rpx;
+						height: 32rpx;
+						margin-right: 5rpx;
+					}
+				}
 			}
+
+			// .contentView {
+			// 	height: calc(100% - 200rpx);
+			// }
 		}
 
 		.bottomView {

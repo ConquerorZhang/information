@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<view class="myFunctionModel">
-			<view class="content" v-for="(item,index) in data.myFunctionArr" :key="index">
+			<view class="content" v-for="(item,index) in data.myFunctionArr" :key="index" v-on:click="navigateToFunc(index)">
 				<image :class="index == 1 ? 'downImage' : 'myFunctionImage'" :src="item.image" mode="scaleToFill" v-on:click="navigateToFunc(index)"></image>
 				<view class="myFunctionImageLabel">{{item.text}}</view>
 			</view>

@@ -301,6 +301,7 @@
 				}
 
 				.detailText {
+					width: 600rpx;
 
 					.title {
 						color: #272829;

@@ -88,6 +88,11 @@
 			this.callHandler('ObjC Echo',{
 				'key': 'innerSelf'
 			});
+			setTimeout(()=>{
+				this.callHandler('ObjC Echo',{
+					'key': 'innerSelf'
+				});
+			},1000)
 		},
 		methods: {
 			back() {

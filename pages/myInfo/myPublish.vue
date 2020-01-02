@@ -50,9 +50,9 @@
 							<image class="collect-icon" mode="aspectFit" src="../../static/black_dot.png"></image>
 						</view>
 					</view>
-					<text class="item-text title">{{item.title}}</text>
-					<text class="item-text brief">{{item.contents}}</text>
-					<view class="item-image">
+					<text class="item-text title" @click="navToDetailPage(item,index,'id')">{{item.title}}</text>
+					<text class="item-text brief" @click="navToDetailPage(item,index,'id')">{{item.contents}}</text>
+					<view class="item-image" @click="navToDetailPage(item,index,'id')">
 						<image class="item-image-image" mode="aspectFit" v-for="(pic,index) in item.pics" :key="index" :src="pic"></image>
 						<!-- <image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image>
 						<image class="item-image-image" mode="aspectFit" src="../../static/logo.png"></image> -->
@@ -80,10 +80,10 @@
 				</view>
 				<view class="item" v-for="(item, index) in datalists.list2.datalist" :key="index">
 					<view class="item-top">
-						<view class="item-head-icon" @click="navToDetailPage(item,index,'bizkey')">
+						<view class="item-head-icon" @click="navToDetailPage(item,index,'bizKey')">
 							<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 						</view>
-						<view class="info" @click="navToDetailPage(item,index,'bizkey')">
+						<view class="info" @click="navToDetailPage(item,index,'bizKey')">
 							<text class="item-text name">{{item.createName}}</text>
 							<view class="info-bottom">
 								<text class="item-text content">{{item.contents}}</text>
@@ -94,7 +94,7 @@
 						</view>
 					</view>
 
-					<view class="comment" @click="navToDetailPage(item,index,'bizkey')">
+					<view class="comment" @click="navToDetailPage(item,index,'bizKey')">
 						<view class="comment-title">
 							<text class="item-text title">我：</text>
 						</view>
@@ -124,10 +124,10 @@
 							</view>
 							<view class="item" v-for="(item, index) in tab.datalist" :key="index">
 								<view class="item-top">
-									<view class="item-head-icon" @click="navToDetailPage(item,index,'bizkey')">
+									<view class="item-head-icon" @click="navToDetailPage(item,index,'bizKey')">
 										<image class="circleicon" mode="aspectFill" :src="item.avatarUrl"></image>
 									</view>
-									<view class="info" @click="navToDetailPage(item,index,'bizkey')">
+									<view class="info" @click="navToDetailPage(item,index,'bizKey')">
 										<text class="item-text name">{{item.createName}}</text>
 										<view class="info-bottom">
 											<text class="item-text time">{{item.createTime}}</text>
@@ -148,7 +148,7 @@
 									</view>
 								</view>
 
-								<view class="comment" @click="navToDetailPage(item,index,'bizkey')">
+								<view class="comment" @click="navToDetailPage(item,index,'bizKey')">
 									<view class="comment-title">
 										<text class="item-text title">我的帖子：</text>
 									</view>
@@ -505,12 +505,12 @@
 				switch (uni.getSystemInfoSync().platform) {
 					case 'android':
 						uni.navigateTo({
-							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))
+							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))+'&idkey='+idkey,
 						})
 						break;
 					case 'ios':
 						uni.navigateTo({
-							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))
+							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))+'&idkey='+idkey,
 						})
 						break;
 					default:

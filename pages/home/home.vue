@@ -144,11 +144,6 @@ export default {
             fileList: []
         };
     },
-    computed: {
-        qwe: function() {
-            return 'calc(100% - 220rpx - 50rpx)';
-        }
-    },
     onLoad() {
         this.getlv1list(); //获取分类列表
         this.getFileList('Refresh');
@@ -157,12 +152,9 @@ export default {
     updated() {
         if (this.gdleft.length == 0) {
             const query = uni.createSelectorQuery().in(this);
-            query
-                .selectAll('.scroll .item')
-                .boundingClientRect(data => {
-                    this.gdleft = data;
-                })
-                .exec();
+            query.selectAll('.scroll .item').boundingClientRect(data => {
+                this.gdleft = data;
+            }).exec();
         }
     },
     onShow() {
@@ -339,7 +331,7 @@ export default {
         changeType(e) {
             //返回 type的下标
             this.productId = this.lv1list[e.target.current].id;
-            this.scrollLeft = this.gdleft[e.target.current].left - 5;
+            this.scrollLeft = this.gdleft[e.target.current].left - 187.5 + this.gdleft[e.target.current].width / 2;
             //把滑动到该 type选中
             this.getFileList('Refresh');
         },
@@ -448,7 +440,7 @@ page {
 }
 .scroll {
     font-size: 28rpx;
-    padding: 6rpx 0;
+    padding: 2rpx 0;
     color: #fff;
     white-space: nowrap;
     width: 100%;
@@ -466,8 +458,9 @@ page {
                 content: '';
                 display: block;
                 height: 4rpx;
-                width: 110%;
-                left: -5%;
+                width: 50%;
+                margin-left: -25%;
+                left: 50%;
                 bottom: 0;
                 position: absolute;
                 background: #fff;

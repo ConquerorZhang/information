@@ -127,15 +127,15 @@
 			};
 		},
 		onLoad(option) {
-			console.log("-----pages:"+getCurrentPages())
+			console.log("-----pages:" + getCurrentPages())
 			console.log(option);
-			// console.log(JSON.parse(option.item).id)
+			console.log(JSON.parse(option.item))
 			this.item = JSON.parse(option.item);
-			if(!this.isEmpty(option.idkey) && option.idkey == 'id'){
+			if (!this.isEmpty(option.idkey) && option.idkey == 'id') {
 				this.id = this.item.id;
-			}else if(!this.isEmpty(option.idkey) && option.idkey == 'bizkey'){
-				this.id = this.item.bizkey;
-			}else{
+			} else if (!this.isEmpty(option.idkey) && option.idkey == 'bizKey') {
+				this.id = this.item.bizKey;
+			} else {
 				this.id = this.item.id;
 			}
 			uni.getSystemInfo({ //获取设备信息
@@ -145,7 +145,7 @@
 				}
 			});
 			uni.startPullDownRefresh();
-
+			
 			// 请求数据
 			API.interDetail({
 				id: this.id
@@ -155,7 +155,7 @@
 			}).catch(err => {
 				console.log(err);
 			})
-
+			
 			// 评论列表
 			this.commentData();
 		},

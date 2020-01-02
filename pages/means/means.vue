@@ -23,7 +23,7 @@
                     <view class="title">{{item.docName.split(".")[0]}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
-                <view class="tip" v-if="delstar == false"></view>
+                <view class="tip" v-if="delstar == false">完成</view>
                 <view class="del" v-else>
                     <checkbox :value="index+ ''" :checked="checkList[index]" />
                 </view>
@@ -230,6 +230,7 @@
                 })
             },
             delAll() {
+                let page_this = this
                 uni.showModal({
                     title: '提示',
                     confirmColor: '#fa436a',
@@ -238,7 +239,7 @@
                         API.deletealthistory({
                         }).then(res => {
                             if (res.data.code == 0) {
-                                this.historyList = [];
+                                page_this.historyList = [];
                             }
                         }).catch(err => {
                             console.log(err);

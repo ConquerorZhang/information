@@ -315,6 +315,13 @@
 
 			/* #endif */
 			swiper {
+				height: 300rpx;
+				
+				swiper-item {
+					height: 300rpx;
+					line-height: 300rpx;
+				}
+				
 				image {
 					width: 750rpx;
 					height: 300rpx;

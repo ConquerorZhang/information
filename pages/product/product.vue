@@ -56,12 +56,12 @@
 					<view class="downCellPart" v-for="(item,index) in data.docsList" :key="index">
 						<downLoadCell :data="item"></downLoadCell>
 					</view>
-				</view>
-				<view class="productPart" v-if='data.subProductList.length > 0'>
-					<view class="title">产品中心</view>
-					<view class="subtitle">{{data.briefIntroduction}}</view>
-					<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
-						<productCell :data="item" fromH5='1'></productCell>
+					<view class="productPart" v-if='data.subProductList.length > 0'>
+						<view class="title">产品中心</view>
+						<view class="subtitle">{{data.briefIntroduction}}</view>
+						<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
+							<productCell :data="item" fromH5='1'></productCell>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -159,21 +159,21 @@
 							id: 'jiagou_url'
 						})
 						this.jiagou_url = this.data.jiagou_url;
-					} 
+					}
 					if (!Vue.prototype.isEmpty(this.data.zucheng_url)) {
 						this.tabBars.push({
 							name: '组成',
 							id: 'zucheng_url'
 						})
 						this.zucheng_url = this.data.zucheng_url;
-					} 
+					}
 					if (!Vue.prototype.isEmpty(this.data.youshi_url)) {
 						this.tabBars.push({
 							name: '优势',
 							id: 'youshi_url'
 						})
 						this.youshi_url = this.data.youshi_url;
-					} 
+					}
 					if (!Vue.prototype.isEmpty(this.data.gongneng_url)) {
 						this.tabBars.push({
 							name: '功能',
@@ -322,7 +322,8 @@
 			}
 
 			.modelPart {
-
+				
+				z-index: 10;
 				.model {
 					margin-top: 20rpx;
 					background: #FFFFFF;
@@ -345,11 +346,12 @@
 					justify-content: space-between;
 					align-items: center;
 					height: 90rpx;
-					line-height: 90rpx;
+					// line-height: 90rpx;
 					margin-bottom: -30rpx;
 
 					.title {
 						margin-left: 20rpx;
+						width: 570rpx;
 					}
 
 					.collectPart {
@@ -399,24 +401,25 @@
 					background: #FFFFFF;
 					margin-bottom: 20rpx;
 				}
-			}
-
-			.productPart {
-				background: #FFFFFF;
-
-				.title {
-					border-bottom: 0.5px solid #dbdcdd;
-					height: 90rpx;
-					line-height: 90rpx;
-					margin: 0 20rpx;
+				
+				.productPart {
+					background: #FFFFFF;
+					margin-top: 20rpx;
+				
+					.title {
+						border-bottom: 0.5px solid #dbdcdd;
+						height: 90rpx;
+						line-height: 90rpx;
+						margin: 0 20rpx;
+					}
+				
+					.subtitle {
+						font-size: 32rpx;
+						margin: 20rpx 20rpx 0;
+					}
+				
+					.downCellPart {}
 				}
-
-				.subtitle {
-					font-size: 32rpx;
-					margin: 20rpx 20rpx 0;
-				}
-
-				.downCellPart {}
 			}
 		}
 

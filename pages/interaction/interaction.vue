@@ -295,6 +295,7 @@
 			//键盘触发搜索
 			search(key) {
 				console.log(key);
+				this.searchKey = key.value;
 				this.resetData();
 				this.getlistdata(1);
 			},

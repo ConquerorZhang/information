@@ -17,6 +17,11 @@
 		onLoad(option) {
 			this.id = option.id;
 		},
+		onShow() {
+			this.callHandler('ObjC Echo', {
+				'key': 'inner'
+			});
+		},
 		methods: {
 			checkMyPublish() {
 				uni.navigateTo({

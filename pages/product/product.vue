@@ -388,49 +388,51 @@
 				}
 			}
 
-			.docPart {
-				margin-top: 20rpx;
-
-				.topPart {
-					display: flex;
-					justify-content: space-between;
-					background: #FFFFFF;
-					border-bottom: 0.5px solid #dbdcdd;
-					height: 90rpx;
-					line-height: 90rpx;
-
-					.title {
-						margin-left: 20rpx;
+			.xiangGuanPart {
+				.docPart {
+					margin-top: 20rpx;
+				
+					.topPart {
+						display: flex;
+						justify-content: space-between;
+						background: #FFFFFF;
+						border-bottom: 0.5px solid #dbdcdd;
+						height: 90rpx;
+						line-height: 90rpx;
+				
+						.title {
+							margin-left: 20rpx;
+						}
+				
+						.subtitle {
+							color: #7c7d7e;
+							font-size: 30rpx;
+							margin-right: 20rpx;
+						}
 					}
-
-					.subtitle {
-						color: #7c7d7e;
-						font-size: 30rpx;
-						margin-right: 20rpx;
+				
+					.downCellPart {
+						background: #FFFFFF;
+						margin-bottom: 20rpx;
 					}
 				}
-
-				.downCellPart {
-					background: #FFFFFF;
-					margin-bottom: 20rpx;
-				}
-
+				
 				.productPart {
 					background: #FFFFFF;
 					margin-top: 20rpx;
-
+				
 					.title {
 						border-bottom: 0.5px solid #dbdcdd;
 						height: 90rpx;
 						line-height: 90rpx;
 						margin: 0 20rpx;
 					}
-
+				
 					.subtitle {
 						font-size: 32rpx;
 						margin: 20rpx 20rpx 0;
 					}
-
+				
 					.downCellPart {}
 				}
 			}

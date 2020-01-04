@@ -176,9 +176,9 @@
 				<text class="loading-more-text">{{datalists.type == '1'?datalists.list1.loadingText:datalists.list2.loadingText}}</text>
 			</view>
 		</scroll-view>
-		<uni-popup :show="showpopup" type="bottom" @change="change">
+		<uni-popup class="bottom-pop-contener" :show="showpopup" type="bottom" @change="change">
 			<view class="bottom-pop">
-				<text class="popup-content delete" @click="delete_" id="deleteid" >{{datalists.type=='1'?'删除该帖子':'删除该回复'}}</text>
+				<text class="popup-content delete" @click="delete_" id="deleteid">{{datalists.type=='1'?'删除该帖子':'删除该回复'}}</text>
 				<text class="popup-content" @click="cancel">取消</text>
 			</view>
 
@@ -400,9 +400,9 @@
 			// setTimeout(() => {
 			// 	this.getNewData(this.datalists.type);
 			// }, 500)
-			
+
 		},
-		
+
 		onShow() {
 			this.callHandler('ObjC Echo', {
 				'key': 'inner'
@@ -498,18 +498,20 @@
 			//页面跳转到详情
 			navToDetailPage(item, index, idkey) {
 				this.currrenIndex = index;
-				
+
 				uni.$once('interation$detailback', this.detailBack);
 				// 区分平台跳转互动详情
 				switch (uni.getSystemInfoSync().platform) {
 					case 'android':
 						uni.navigateTo({
-							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item))+'&idkey='+idkey,
+							url: '/pages/interaction/interactionDetail?item=' + encodeURIComponent(JSON.stringify(item)) + '&idkey=' +
+								idkey,
 						})
 						break;
 					case 'ios':
 						uni.navigateTo({
-							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item))+'&idkey='+idkey,
+							url: '/pages/interaction/interactionDetailIOS?item=' + encodeURIComponent(JSON.stringify(item)) + '&idkey=' +
+								idkey,
 						})
 						break;
 					default:
@@ -517,7 +519,7 @@
 						break;
 				}
 				uni.showToast({
-					title:this.currrenIndex+'',
+					title: this.currrenIndex + '',
 				})
 			},
 			//详情回调函数
@@ -1605,26 +1607,32 @@
 			}
 		}
 
-		.bottom-pop {
-			display: flex;
-			flex-direction: column;
-			background: #f1f1f1;
+		.bottom-pop-contener {
+			position: fixed;
+			// bottom: 50rpx;
+			z-index: 500;
+			
+			.bottom-pop {
+				display: flex;
+				flex-direction: column;
+				background: #f1f1f1;
 
-			.popup-content {
-				/* #ifndef APP-NVUE */
-				display: block;
-				/* #endif */
-				background-color: #fff;
-				padding: 15px;
-				font-size: $uni-font-size-name;
-				text-align: center;
+				.popup-content {
+					/* #ifndef APP-NVUE */
+					display: block;
+					/* #endif */
+					background-color: #fff;
+					padding: 15px;
+					font-size: $uni-font-size-name;
+					text-align: center;
+				}
+
+				.delete {
+					color: #C7161E;
+					margin-bottom: 10rpx;
+				}
+
 			}
-
-			.delete {
-				color: #C7161E;
-				margin-bottom: 10rpx;
-			}
-
 		}
 
 	}

@@ -60,6 +60,9 @@
 			clear() {
 				console.log('clear');
 				this.searchVal = ""
+				this.$emit("cleartext", {
+					value: this.searchVal
+				});
 			},
 			cancel() {
 				this.$emit("cancel", {

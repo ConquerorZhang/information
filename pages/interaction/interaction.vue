@@ -12,7 +12,7 @@
 				<image class="icon_logo" mode="aspectFit" src="../../static/logo_cetc.png"></image>
 				<!-- 自定义Placeholder 搜索框 -->
 				<view class="v_search">
-					<uni-search-bar placeholder="关键字搜索" radius="20" clearButton="auto" @confirm="search" class="search" />
+					<uni-search-bar placeholder="关键字搜索" radius="20" clearButton="auto" @cleartext="cleartext" @confirm="search" class="search" />
 				</view>
 				<view class="top-right" @click="message">
 					<!--@click="window.android.click('77777777777')"-->
@@ -296,6 +296,14 @@
 			search(key) {
 				console.log(key);
 				this.searchKey = key.value;
+				this.resetData();
+				this.getlistdata(1);
+			},
+			
+			//键盘触发搜索
+			cleartext(key) {
+				console.log(key);
+				this.searchKey = "";
 				this.resetData();
 				this.getlistdata(1);
 			},

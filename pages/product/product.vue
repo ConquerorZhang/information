@@ -20,7 +20,8 @@
 					<view class="topPart">
 						<view class="title">{{data.productName}}</view>
 						<view class="collectPart" @click="clickCollect">
-							<image :src="data.collect ? '../../static/interaction/collected.png' : '../../static/interaction/unCollected.png'" mode="scaleToFill"></image>
+							<image :src="data.collect ? '../../static/interaction/collected.png' : '../../static/interaction/unCollected.png'"
+							 mode="scaleToFill"></image>
 							<text :class="data.collect ? 'collectColor' : 'unCollectColor'">收藏</text>
 						</view>
 					</view>
@@ -48,13 +49,15 @@
 						<htmlPanel :url.sync="anli_url"></htmlPanel>
 					</view>
 				</block>
-				<view class="docPart" id="xiangguan" v-if='data.docsList.length > 0'>
-					<view class="topPart">
-						<view class="title">相关资料</view>
-						<!-- <view class="subtitle">更多资料</view> -->
-					</view>
-					<view class="downCellPart" v-for="(item,index) in data.docsList" :key="index">
-						<downLoadCell :data="item"></downLoadCell>
+				<view class="xiangGuanPart" id="xiangguan">
+					<view class="docPart" v-if='data.docsList.length > 0'>
+						<view class="topPart">
+							<view class="title">相关资料</view>
+							<!-- <view class="subtitle">更多资料</view> -->
+						</view>
+						<view class="downCellPart" v-for="(item,index) in data.docsList" :key="index">
+							<downLoadCell :data="item"></downLoadCell>
+						</view>
 					</view>
 					<view class="productPart" v-if='data.subProductList.length > 0'>
 						<view class="title">产品中心</view>
@@ -188,10 +191,12 @@
 						})
 						this.anli_url = this.data.anli_url;
 					}
-					this.tabBars.push({
-						name: '相关',
-						id: 'xiangguan'
-					})
+					if (this.data.docsList.length > 0 || this.data.subProductList.length > 0) {
+						this.tabBars.push({
+							name: '相关',
+							id: 'xiangguan'
+						})
+					}
 				}).catch(err => {
 					console.log(err);
 				})
@@ -316,12 +321,12 @@
 			/* #endif */
 			swiper {
 				height: 300rpx;
-				
+
 				swiper-item {
 					height: 300rpx;
 					line-height: 300rpx;
 				}
-				
+
 				image {
 					width: 750rpx;
 					height: 300rpx;
@@ -329,8 +334,9 @@
 			}
 
 			.modelPart {
-				
+
 				z-index: 10;
+
 				.model {
 					margin-top: 20rpx;
 					background: #FFFFFF;
@@ -408,23 +414,23 @@
 					background: #FFFFFF;
 					margin-bottom: 20rpx;
 				}
-				
+
 				.productPart {
 					background: #FFFFFF;
 					margin-top: 20rpx;
-				
+
 					.title {
 						border-bottom: 0.5px solid #dbdcdd;
 						height: 90rpx;
 						line-height: 90rpx;
 						margin: 0 20rpx;
 					}
-				
+
 					.subtitle {
 						font-size: 32rpx;
 						margin: 20rpx 20rpx 0;
 					}
-				
+
 					.downCellPart {}
 				}
 			}

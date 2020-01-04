@@ -1493,6 +1493,7 @@
 
 							.comment {
 								display: flex;
+								float: left;
 								flex-direction: row;
 								align-items: flex-start;
 								margin: 0 20rpx 20rpx 20rpx;
@@ -1501,7 +1502,7 @@
 								background: #F1F1F1;
 
 								.comment-title {
-									width: 38%;
+									width: 21%;
 
 									.title {
 										color: #525252;
@@ -1511,6 +1512,7 @@
 								}
 
 								.brief {
+									width: 79%;
 									margin: 0 0 15rpx 0;
 									line-height: 1.6em;
 									align-items: flex-start;

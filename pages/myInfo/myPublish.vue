@@ -1502,17 +1502,18 @@
 								background: #F1F1F1;
 
 								.comment-title {
-									width: 21%;
+									width: 25%;
 
 									.title {
 										color: #525252;
 										line-height: 1.6em;
 										font-size: $uni-font-size-article-brief;
+										
 									}
 								}
 
 								.brief {
-									width: 79%;
+									width: 75%;
 									margin: 0 0 15rpx 0;
 									line-height: 1.6em;
 									align-items: flex-start;

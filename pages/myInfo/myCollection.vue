@@ -451,6 +451,15 @@
 		checkbox {
 			margin-right: 15rpx;
 		}
+		
+		/deep/ uni-checkbox .uni-checkbox-input{
+		    border-radius: 50%;
+		}
+		/deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked{
+		    border: 1px solid rgb(199, 22, 30);
+		    background-color: rgb(199, 22, 30);
+		    color: #FFF !important;
+		}
 	}
 
 	.empty {
@@ -473,6 +482,15 @@
 
 		checkbox {
 			margin-right: 15rpx;
+		}
+		
+		/deep/ uni-checkbox .uni-checkbox-input{
+		    border-radius: 50%;
+		}
+		/deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked{
+		    border: 1px solid rgb(199, 22, 30);
+		    background-color: rgb(199, 22, 30);
+		    color: #FFF !important;
 		}
 
 		.detailPart {
@@ -557,6 +575,15 @@
 
 		checkbox {
 			margin-left: 20rpx;
+		}
+		
+		/deep/ uni-checkbox .uni-checkbox-input{
+		    border-radius: 50%;
+		}
+		/deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked{
+		    border: 1px solid rgb(199, 22, 30);
+		    background-color: rgb(199, 22, 30);
+		    color: #FFF !important;
 		}
 
 		.delete {

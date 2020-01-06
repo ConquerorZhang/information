@@ -4,9 +4,9 @@
 		<view class="searchPart">
 			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" :initShowClose=initShowClose @searchClick="searchClick"></uni-search-bar>
 		</view>
-		<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false">
-			<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap(index)">
-				<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+		<scroll-view id="tab-bar" class="scroll-h scrollMark" :scroll-x="true" :show-scrollbar="false">
+			<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap(tab.id)">
+				<text class="uni-tab-item-title" :class="tabIndexId==tab.id ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
 			</view>
 		</scroll-view>
 		<scroll-view class="scroll-v" enableBackToTop="true" scroll-y :scroll-into-view="scrollViewId" @scroll="scrollY">
@@ -28,28 +28,28 @@
 					<htmlPanel :url.sync="productinfo_url"></htmlPanel>
 				</view>
 				<block v-for="(item,index) in tabBars" :key="index">
-					<view class="model" id="jiagou_url" v-if='item.id == "jiagou_url"'>
+					<view class="model scrollMark" id="jiagou_url" v-if='item.id == "jiagou_url"'>
 						<view class="title">整体架构</view>
 						<htmlPanel :url.sync="jiagou_url"></htmlPanel>
 					</view>
-					<view class="model" id="zucheng_url" v-else-if='item.id == "zucheng_url"'>
+					<view class="model scrollMark" id="zucheng_url" v-else-if='item.id == "zucheng_url"'>
 						<view class="title">模块组成</view>
 						<htmlPanel :url.sync="zucheng_url"></htmlPanel>
 					</view>
-					<view class="model" id="youshi_url" v-else-if='item.id == "youshi_url"'>
+					<view class="model scrollMark" id="youshi_url" v-else-if='item.id == "youshi_url"'>
 						<view class="title">模块优势</view>
 						<htmlPanel :url.sync="youshi_url"></htmlPanel>
 					</view>
-					<view class="model" id="gongneng_url" v-else-if='item.id == "gongneng_url"'>
+					<view class="model scrollMark" id="gongneng_url" v-else-if='item.id == "gongneng_url"'>
 						<view class="title">产品功能</view>
 						<htmlPanel :url.sync="gongneng_url"></htmlPanel>
 					</view>
-					<view class="model" id="anli_url" v-else-if='item.id == "anli_url"'>
+					<view class="model scrollMark" id="anli_url" v-else-if='item.id == "anli_url"'>
 						<view class="title">经典案例</view>
 						<htmlPanel :url.sync="anli_url"></htmlPanel>
 					</view>
 				</block>
-				<view class="xiangGuanPart" id="xiangguan">
+				<view class="xiangGuanPart scrollMark" id="xiangguan">
 					<view class="docPart" v-if='data.docsList.length > 0'>
 						<view class="topPart">
 							<view class="title">相关资料</view>
@@ -112,8 +112,9 @@
 			return {
 				initShowClose: false, //搜索框右侧的叉号
 				showPhoneInfos: false,
-				tabIndex: 0,
+				tabIndexId: '',
 				tabBars: [],
+				clickTabFlag: false,
 				productId: '',
 				data: {
 					productAffixList: [],
@@ -140,12 +141,30 @@
 					url: '../search/homeSearch?fromH5=' + '1'
 				})
 			},
-			ontabtap(index) {
-				this.tabIndex = index;
-				this.scrollViewId = this.tabBars[index].id;
+			ontabtap(tabID) {
+				this.clickTabFlag = true;
+				this.tabIndexId = tabID;
+				this.scrollViewId = tabID;
 			},
 			scrollY(event) {
-				// console.log(event);
+				// 点击的话，直接返回
+				if (this.clickTabFlag) {
+					this.clickTabFlag = false;
+					return;
+				}
+				// 随着滚动，类型跟随选中
+				uni.createSelectorQuery().in(this).selectAll('.scrollMark').boundingClientRect(rects => {	
+					let baseHeight = rects[0].top + 45;
+						// console.log(baseHeight);
+					for (let i = rects.length -1; i > 0;i--) {
+						// console.log('++++++++++++++');
+						// console.log(rects[i].top);
+						if (rects[i].top <= baseHeight) {
+							this.tabIndexId = rects[i].id;
+							break;
+						}
+					}
+				}).exec();
 			},
 			getProductData() {
 				// 我的产品
@@ -162,6 +181,9 @@
 							id: 'jiagou_url'
 						})
 						this.jiagou_url = this.data.jiagou_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'jiagou_url';
+						}
 					}
 					if (!Vue.prototype.isEmpty(this.data.zucheng_url)) {
 						this.tabBars.push({
@@ -169,6 +191,9 @@
 							id: 'zucheng_url'
 						})
 						this.zucheng_url = this.data.zucheng_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'zucheng_url';
+						}
 					}
 					if (!Vue.prototype.isEmpty(this.data.youshi_url)) {
 						this.tabBars.push({
@@ -176,6 +201,9 @@
 							id: 'youshi_url'
 						})
 						this.youshi_url = this.data.youshi_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'youshi_url';
+						}
 					}
 					if (!Vue.prototype.isEmpty(this.data.gongneng_url)) {
 						this.tabBars.push({
@@ -183,6 +211,9 @@
 							id: 'gongneng_url'
 						})
 						this.gongneng_url = this.data.gongneng_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'gongneng_url';
+						}
 					}
 					if (!Vue.prototype.isEmpty(this.data.anli_url)) {
 						this.tabBars.push({
@@ -190,12 +221,18 @@
 							id: 'anli_url'
 						})
 						this.anli_url = this.data.anli_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'anli_url';
+						}
 					}
 					if (this.data.docsList.length > 0 || this.data.subProductList.length > 0) {
 						this.tabBars.push({
 							name: '相关',
 							id: 'xiangguan'
 						})
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'xiangguan';
+						}
 					}
 				}).catch(err => {
 					console.log(err);

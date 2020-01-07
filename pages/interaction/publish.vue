@@ -103,6 +103,21 @@
 			onNavigationBarButton() {
 				console.log(this.submitImageIdList);
 				
+				if (this.titleText == '') {
+					uni.showModal({
+						title:'提示',
+						content:'请输入标题'
+					})
+					return;
+				}
+				if (this.selectedIndex == '-1') {
+					uni.showModal({
+						title:'提示',
+						content:'请选择分区'
+					})
+					return;
+				}
+				
 				uni.showModal({
 					content: '确认发布吗？',
 					success: (res) => {

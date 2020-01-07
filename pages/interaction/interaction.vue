@@ -390,6 +390,9 @@
 
 			// 	})
 			// });
+			
+			this.resetData();
+			setTimeout(this.getlistdata(1), 1000);
 		},
 		onShow() {
 			this.callHandler('ObjC Echo', {
@@ -407,8 +410,8 @@
 			// 	title:Vue.config.configDic.statusBarHeight,
 			// });
 
-			this.resetData();
-			setTimeout(this.getlistdata(1), 1000);
+			// this.resetData();
+			// setTimeout(this.getlistdata(1), 1000);
 		},
 	}
 </script>

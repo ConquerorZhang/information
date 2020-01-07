@@ -211,9 +211,9 @@
 			},
 			// 评论
 			topiccomment(topicid) {
-				uni.showToast({
-					title: topicid,
-				})
+				// uni.showToast({
+				// 	title: topicid,
+				// })
 				console.log(topicid);
 				this.pro = topicid;
 			},

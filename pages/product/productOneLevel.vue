@@ -7,7 +7,7 @@
 				</swiper-item>
 			</swiper>
 			<view class="modelPart">
-				<view class="productInfo" v-if='data.subProductList.length > 0'>
+				<view class="productInfo" v-if='productinfo_url.length > 0'>
 					<htmlPanel :url.sync="productinfo_url"></htmlPanel>
 				</view>
 				<view class="productPart" v-if='data.subProductList.length > 0'>

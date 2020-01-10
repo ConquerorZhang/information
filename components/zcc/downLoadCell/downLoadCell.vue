@@ -1,11 +1,11 @@
 <template>
-	<view class="learnPart">
+	<view class="learnPart" @click="openFile(data.docName)">
 		<view class="topPart">
 			<view class="titlePart">
 				<image :src="data.doctypeImageUrl" mode="scaleToFill"></image>
 				<view class="title">{{data.docName}}</view>
 			</view>
-			<image v-if="progress == ''" class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill" @click="downLoad(data.fullDocUrl)"></image>
+			<image v-if="progress == ''" class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill" @click.stop="downLoad(data.fullDocUrl)"></image>
 			<view v-else class="progressView">{{progress.length > 3 ? '完成' : progress}}</view>
 		</view>
 		<view class="bottomPart">
@@ -40,6 +40,18 @@
 						that.reFreshProgress(responseData)//更新值用
 						this.progress = responseData;//有一句话就行，不知原因
 				   })
+			},
+			openFile(fileName) {
+				this.callHandlerBack("native_fileOpen",  {filename:fileName}, function(responseData) {
+				    //注意第一次回调问题
+				    if(responseData == 0 || responseData == "0"){
+				        // uni.showToast({
+				        //     icon:"none",
+				        //     title:"文件不存在!"
+				        // })
+				        return;  
+				    }
+				})
 			},
 			reFreshProgress (progress) {
 				this.progress = progress;

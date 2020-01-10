@@ -67,7 +67,7 @@
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 5,
 				count: [1, 2, 3, 4, 5, 6],
-				typeList:["业务咨询区","需求咨询区","经验分享区"],
+				typeList:["业务交流区","技术交流区","经验交流区"],
 				selectedIndex:'-1',
 			}
 		},

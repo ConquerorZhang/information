@@ -176,6 +176,12 @@
 				"navigationBarTitleText": "问题详情"
 			}
         }
+        ,{
+            "path" : "pages/interaction/personInfo",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

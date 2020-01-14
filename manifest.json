@@ -85,6 +85,11 @@
             "base" : "/cpkstatic/"
         },
         "domain" : "http://117.78.40.206/",
-        "title" : "cpkstatic"
+        "title" : "cpkstatic",
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
     }
 }

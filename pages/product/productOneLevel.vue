@@ -10,11 +10,22 @@
 				<view class="productInfo" v-if='productinfo_url.length > 0'>
 					<htmlPanel :url.sync="productinfo_url"></htmlPanel>
 				</view>
-				<view class="productPart" v-if='data.subProductList.length > 0'>
-					<view class="title">产品中心</view>
-					<view class="subtitle">{{data.briefIntroduction}}</view>
-					<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
-						<productCell :data="item" fromH5='0'></productCell>
+				<view class="xiangGuanPart scrollMark" id="xiangguan">
+					<view class="docPart" v-if='data.docsList.length > 0'>
+						<view class="topPart">
+							<view class="title">相关资料</view>
+							<!-- <view class="subtitle">更多资料</view> -->
+						</view>
+						<view class="downCellPart" v-for="(item,index) in data.docsList" :key="index">
+							<downLoadCell :data="item"></downLoadCell>
+						</view>
+					</view>
+					<view class="productPart" v-if='data.subProductList.length > 0'>
+						<view class="title">产品中心</view>
+						<view class="subtitle">{{data.briefIntroduction}}</view>
+						<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
+							<productCell :data="item" fromH5='1'></productCell>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -26,11 +37,13 @@
 	const API = require('../../common/api.js')
 	import htmlPanel from "@/components/zcc/my-html-panel/my-html-panel.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
+	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 
 	export default {
 		components: {
 			htmlPanel,
-			productCell
+			productCell,
+			downLoadCell
 		},
 		data() {
 			return {
@@ -43,7 +56,7 @@
 			}
 		},
 		onLoad(option) {
-			this.productId = option.productId; // option.productId
+			this.productId = option.productId; 
 
 			this.getProductData();
 		},
@@ -106,22 +119,53 @@
 				background: #FFFFFF;
 			}
 
-			.productPart {
-				background: #FFFFFF;
-
-				.title {
-					border-bottom: 0.5px solid #dbdcdd;
-					height: 90rpx;
-					line-height: 90rpx;
-					margin: 0 20rpx;
+			.xiangGuanPart {
+				.docPart {
+					margin-top: 20rpx;
+				
+					.topPart {
+						display: flex;
+						justify-content: space-between;
+						background: #FFFFFF;
+						border-bottom: 0.5px solid #dbdcdd;
+						height: 90rpx;
+						line-height: 90rpx;
+				
+						.title {
+							margin-left: 20rpx;
+						}
+				
+						.subtitle {
+							color: #7c7d7e;
+							font-size: 30rpx;
+							margin-right: 20rpx;
+						}
+					}
+				
+					.downCellPart {
+						background: #FFFFFF;
+						margin-bottom: 20rpx;
+					}
 				}
-
-				.subtitle {
-					font-size: 32rpx;
-					margin: 20rpx 20rpx 0;
+				
+				.productPart {
+					background: #FFFFFF;
+					margin-top: 20rpx;
+				
+					.title {
+						border-bottom: 0.5px solid #dbdcdd;
+						height: 90rpx;
+						line-height: 90rpx;
+						margin: 0 20rpx;
+					}
+				
+					.subtitle {
+						font-size: 32rpx;
+						margin: 20rpx 20rpx 0;
+					}
+				
+					.downCellPart {}
 				}
-
-				.downCellPart {}
 			}
 		}
 	}

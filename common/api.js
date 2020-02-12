@@ -44,18 +44,18 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		
 	// })
 	//todozcc临时的token
-	// let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjI1LCJleHAiOjE1ODAzNjQ0NjYsInVzZXJuYW1lIjoi6Jab6ZSh5Zu9In0.6ziIXlMEDGyy0xXlVT8QVGUpYSQs-BtXiBB0oJ8SV34';
+	let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjI0LCJleHAiOjE1ODM5NzQxMzcsInVzZXJuYW1lIjoi5p2O5pmo5YWJIn0.C9VeqWG0xaTlOt7jk2L07WaGRgsAGaG4oWHFr5uuor8';
 	
-	let Authorization = '';
-	if(Vue.prototype.isEmpty(Vue.config.configDic.Authorization)){
-		getToken();
-		setTimeout(()=>{
-			Authorization = Vue.config.configDic.Authorization;
-		},1000);
+	// let Authorization = '';
+	// if(Vue.prototype.isEmpty(Vue.config.configDic.Authorization)){
+	// 	getToken();
+	// 	setTimeout(()=>{
+	// 		Authorization = Vue.config.configDic.Authorization;
+	// 	},1000);
 		
-	}else{
-		Authorization = Vue.config.configDic.Authorization;
-	}
+	// }else{
+	// 	Authorization = Vue.config.configDic.Authorization;
+	// }
 	
 	// let Authorization = Vue.prototype.isEmpty(Vue.config.configDic.Authorization) ? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsImV4cCI6MTU3OTMzNjU3NCwidXNlcm5hbWUiOiLogpblvawifQ.RT9sW3EAIxoCG9u2JMiFOPZngROM72uthVxs16Odzrk' : Vue.config.configDic.Authorization;
 	
@@ -304,5 +304,8 @@ module.exports = {
     },
     deletealthistory: (data) => {
         return MyAPI('learnmaterial/deleteallhistory', false, 'GET', data)
+    },
+    personalInfo: (data) => {
+        return MyAPI('users/userinfo', false, 'GET', data)
     },
 }

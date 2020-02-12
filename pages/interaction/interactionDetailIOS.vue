@@ -3,7 +3,7 @@
 		<scroll-view class="scroll-v" scroll-y enableBackToTop>
 			<view class="item">
 				<view class="item-top">
-					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl" @click="personInfo()"></image>
+					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl" @click="personInfo(detailData.id)"></image>
 					<view class="info">
 						<text class="item-text name">{{detailData.createName}}</text>
 						<view class="info-bottom">
@@ -47,7 +47,7 @@
 				<block v-for="(item,index) in commentList" :key="index">
 					<view class="commentPart">
 						<view class="headModel">
-							<image class="headImage" :src="item.avatarUrl" mode="scaleToFill" @click="personInfo()"></image>
+							<image class="headImage" :src="item.avatarUrl" mode="scaleToFill" @click="personInfo(item.id)"></image>
 							<view class="headPart">
 								<view class="headPartName">{{item.createName}}</view>
 								<view class="headPartTime">{{item.createTime}}</view>
@@ -389,9 +389,9 @@
 				// this.input_placeholder = '编辑评论';
 				// this.is_reply = false;
 			},
-			personInfo() {
+			personInfo(id) {
 				uni.navigateTo({
-					url:'./personInfo'
+					url:'./personInfo?userid='+id
 				})
 			}
 		}

@@ -10,11 +10,11 @@
 				<view class="title">用户资料</view>
 			</view>
 			<view class="headView">
-				<image src="../../static/logo.png" mode="scaleToFill"></image>
-				<view class="name">姓名</view>
+				<image :src="headUrl" mode="scaleToFill"></image>
+				<view class="name">{{name}}</view>
 			</view>
 		</view>
-		<view class="rowBlock" v-for="(item,index) in resData.list" :key="index">
+		<view class="rowBlock" v-for="(item,index) in list" :key="index">
 			<text class="title">{{item.title}}</text>
 			<text class="content">{{item.content}}</text>
 		</view>
@@ -28,16 +28,31 @@
 		data() {
 			return {
 				statusBarHeight:0,
-				resData:{
-					list:[{'title':'姓名','content':'张三'},{'title':'公司','content':'成都思乐科技有限公司'},{'title':'部门','content':'技术部'},{'title':'角色','content':'技术人员'},{'title':'电话','content':'12343233322'},{'title':'邮箱','content':'1888888888@qq.com'}],
-				}
+				headUrl: '',
+				name: '',
+				list:[{'title':'姓名','content':'张三'},{'title':'公司','content':'成都思乐科技有限公司'},{'title':'部门','content':'技术部'},{'title':'角色','content':'技术人员'},{'title':'电话','content':'12343233322'},{'title':'邮箱','content':'1888888888@qq.com'}],
+				
 			};
 		},
 		onLoad(option) {
+			var userid = option.userid;
+			
 			API.personalInfo({
-				// id:'1'
+				userid:userid
 			}).then(res => {
 				console.log(res);
+				
+				var dic = res.data.data;
+				this.headUrl = dic.avatarUrl;
+				this.name = dic.name;
+				this.list[0].content = dic.name;
+				this.list[1].content = dic.companyshortname;
+				this.list[2].content = dic.companyshortname;
+				this.list[3].content = dic.roles.join(',');
+				this.list[4].content = dic.phone;
+				this.list[5].content = dic.email;
+				
+					console.log(dic);
 			}).catch(err => {
 				console.log(err);
 			})

@@ -30,7 +30,7 @@
 				statusBarHeight:0,
 				headUrl: '',
 				name: '',
-				list:[{'title':'姓名','content':'张三'},{'title':'公司','content':'成都思乐科技有限公司'},{'title':'部门','content':'技术部'},{'title':'角色','content':'技术人员'},{'title':'电话','content':'12343233322'},{'title':'邮箱','content':'1888888888@qq.com'}],
+				list:[{'title':'姓名','content':''},{'title':'公司','content':''},{'title':'部门','content':''},{'title':'角色','content':''},{'title':'电话','content':''},{'title':'邮箱','content':''}],
 				
 			};
 		},
@@ -46,13 +46,11 @@
 				this.headUrl = dic.avatarUrl;
 				this.name = dic.name;
 				this.list[0].content = dic.name;
-				this.list[1].content = dic.companyshortname;
-				this.list[2].content = dic.companyshortname;
-				this.list[3].content = dic.roles.join(',');
+				this.list[1].content = dic.companyname;
+				this.list[2].content = dic.deptname;
+				this.list[3].content = dic.roleNames.join(',');
 				this.list[4].content = dic.phone;
 				this.list[5].content = dic.email;
-				
-					console.log(dic);
 			}).catch(err => {
 				console.log(err);
 			})

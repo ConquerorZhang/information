@@ -306,6 +306,6 @@ module.exports = {
         return MyAPI('learnmaterial/deleteallhistory', false, 'GET', data)
     },
     personalInfo: (data) => {
-        return MyAPI('users/userinfo', false, 'GET', data)
+        return MyAPI('users/anyuserinfo', false, 'GET', data)
     },
 }

@@ -15,7 +15,7 @@
 		<scroll-view class="scroll-v" scroll-y enableBackToTop v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}">
 			<view class="item">
 				<view class="item-top">
-					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl" @click="personInfo(detailData.id)"></image>
+					<image class="circleicon" mode="aspectFill" :src="detailData.avatarUrl" @click="personInfo(detailData.createBy)"></image>
 					<view class="info">
 						<text class="item-text name">{{detailData.createName}}</text>
 						<view class="info-bottom">
@@ -59,7 +59,7 @@
 				<block v-for="(item,index) in commentList" :key="index">
 					<view class="commentPart">
 						<view class="headModel">
-							<image class="headImage" :src="item.avatarUrl" mode="scaleToFill" @click="personInfo(item.id)"></image>
+							<image class="headImage" :src="item.avatarUrl" mode="scaleToFill" @click="personInfo(item.createBy)"></image>
 							<view class="headPart">
 								<view class="headPartName">{{item.createName}}</view>
 								<view class="headPartTime">{{item.createTime}}</view>

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="searchFilterContainer">
-			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" :initSearchVal="initSearchVal" @cancel="cancel" @searchClick="searchClick"></uni-search-bar>
+			<homeSearchBar class="searchBar" placeholder="关键字搜索" radius="80" :initSearchVal="initSearchVal" @cancel="cancel" @searchClick="searchClick"></homeSearchBar>
 			<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
 				<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
 					<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
@@ -83,13 +83,13 @@
 <script>
 	const API = require('../../common/api.js');
 	var util = require('../../common/bridge.js');
-	import UniSearchBar from "@/components/zcc/homeSearchBar/homeSearchBar.vue"
+	import homeSearchBar from "@/components/zcc/homeSearchBar/homeSearchBar.vue"
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
 	
 	export default {
 		components: {
-			UniSearchBar,
+			homeSearchBar,
 			downLoadCell,
 			productCell
 		},

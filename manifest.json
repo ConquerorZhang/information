@@ -84,7 +84,7 @@
             "mode" : "hash",
             "base" : "/cpkstatic/"
         },
-        "domain" : "http://117.78.40.206/",
+        "domain" : "http://116.239.32.178/",
         "title" : "cpkstatic",
         "optimization" : {
             "treeShaking" : {

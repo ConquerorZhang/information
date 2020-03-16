@@ -2,7 +2,7 @@
 	<view class="container">
 		<uni-nav-bar id="naviBar" left-icon="back" title="产品中心" @clickLeft="back"></uni-nav-bar>
 		<view class="searchPart">
-			<uni-search-bar class="searchBar" placeholder="关键字搜索" radius="80" :initShowClose=initShowClose @searchClick="searchClick"></uni-search-bar>
+			<UniSearchBar class="searchBar" placeholder="关键字搜索" radius="80" :initShowClose=initShowClose v-model="keyWord"  @searchClick="searchClick"></UniSearchBar>
 		</view>
 		<scroll-view id="tab-bar" class="scroll-h scrollMark" :scroll-x="true" :show-scrollbar="false">
 			<view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap(tab.id)">
@@ -100,13 +100,15 @@
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
 	import productCell from "@/components/zcc/productCell/productCell.vue"
 	import uniNavBar from "@/components/lib/uni-nav-bar/uni-nav-bar.vue"
+	import UniSearchBar from "@/components/lib/uni-search-bar/uni-search-bar.vue"
 
 	export default {
 		components: {
 			htmlPanel,
 			downLoadCell,
 			productCell,
-			uniNavBar
+			uniNavBar,
+			UniSearchBar
 		},
 		data() {
 			return {
@@ -128,6 +130,7 @@
 				gongneng_url: '',
 				anli_url: '',
 				fromH5: '',
+				keyWord: ''
 			}
 		},
 		onLoad(option) {

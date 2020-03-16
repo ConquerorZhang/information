@@ -9,8 +9,8 @@
 			<!-- mSearch组件 如果使用原样式，删除组件元素-->
 			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 
-			<uni-search-bar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" 
-			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel"></uni-search-bar>
+			<homeSearchBar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" 
+			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel" :initShowClose=initShowClose></homeSearchBar>
 
 			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
@@ -86,8 +86,12 @@
 <script>
 	const API = require('../../common/api.js');
 	var util = require('../../common/bridge.js');
+	import homeSearchBar from "../../components/zcc/homeSearchBar/homeSearchBar.vue"//搜索框
 	//引用mSearch组件，如不需要删除即可
 	export default {
+		components: {
+			homeSearchBar,
+		},
 		data() {
 			return {
 				defaultKeyword: "",
@@ -98,14 +102,12 @@
 				forbid: '',
 				isShowKeywordList: false,
 				fromH5: '',//判断H5的返回
+				initShowClose: true,
 			}
 		},
 		onLoad(option) {
 			this.fromH5 = option.fromH5;
 			this.init();
-		},
-		components: {
-			//引用mSearch组件，如不需要删除即可
 		},
 		methods: {
 			init() {

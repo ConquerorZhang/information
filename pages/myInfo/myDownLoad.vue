@@ -219,7 +219,6 @@
 					success: (res) => {
 						if (res.confirm) {
 							console.log(this.selectedIdArr);
-							// todozcc删除
 
 							// 更新数据
 							this.dataList = [];

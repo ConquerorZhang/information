@@ -23,7 +23,7 @@
 	import Vue from 'vue'
 	import uniIcons from "../../uni-icons/uni-icons.vue";
 	export default {
-		name: "UniSearchBar",
+		name: "homeSearchBar",
 		components: {
 			uniIcons
 		},

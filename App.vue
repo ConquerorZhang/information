@@ -9,6 +9,7 @@
 		},
 		onShow: function() {
 			console.log('App Show')
+			console.log = function() {}
 		},
 		onHide: function() {
 			console.log('App Hide')

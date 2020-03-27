@@ -154,10 +154,10 @@
 	, {
 			"path": "pages/home/briefintroduction",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white",
-				"navigationBarTitleText": "信息化平台简介",
-				"transparentTitle": "always"
+				"navigationStyle": "custom"
+				// "navigationBarTextStyle": "white",
+				// "navigationBarTitleText": "信息化平台简介111",
+				// "transparentTitle": "always"
 			}
 		}
         ,{

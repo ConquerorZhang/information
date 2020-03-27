@@ -36,16 +36,32 @@
 						<view class="title">模块组成</view>
 						<htmlPanel :url.sync="zucheng_url"></htmlPanel>
 					</view>
+					<view class="model scrollMark" id="yongtu_url" v-else-if='item.id == "yongtu_url"'>
+						<view class="title">主要用途</view>
+						<htmlPanel :url.sync="yongtu_url"></htmlPanel>
+					</view>
 					<view class="model scrollMark" id="youshi_url" v-else-if='item.id == "youshi_url"'>
-						<view class="title">模块优势</view>
+						<view class="title">核心优势</view>
 						<htmlPanel :url.sync="youshi_url"></htmlPanel>
 					</view>
 					<view class="model scrollMark" id="gongneng_url" v-else-if='item.id == "gongneng_url"'>
 						<view class="title">产品功能</view>
 						<htmlPanel :url.sync="gongneng_url"></htmlPanel>
 					</view>
+					<view class="model scrollMark" id="tedian_url" v-else-if='item.id == "tedian_url"'>
+						<view class="title">产品特点</view>
+						<htmlPanel :url.sync="tedian_url"></htmlPanel>
+					</view>
+					<view class="model scrollMark" id="shiyong_url" v-else-if='item.id == "shiyong_url"'>
+						<view class="title">产品使用</view>
+						<htmlPanel :url.sync="shiyong_url"></htmlPanel>
+					</view>
+					<view class="model scrollMark" id="canshu_url" v-else-if='item.id == "canshu_url"'>
+						<view class="title">产品参数</view>
+						<htmlPanel :url.sync="canshu_url"></htmlPanel>
+					</view>
 					<view class="model scrollMark" id="anli_url" v-else-if='item.id == "anli_url"'>
-						<view class="title">经典案例</view>
+						<view class="title">{{level == 5 ? '产品案例' : '典型案例'}}</view>
 						<htmlPanel :url.sync="anli_url"></htmlPanel>
 					</view>
 				</block>
@@ -60,7 +76,7 @@
 						</view>
 					</view>
 					<view class="productPart" v-if='data.subProductList.length > 0'>
-						<view class="title">产品中心</view>
+						<view class="title">相关产品</view>
 						<view class="subtitle">{{data.briefIntroduction}}</view>
 						<view class="downCellPart" v-for="(item,index) in data.subProductList" :key="index">
 							<productCell :data="item" fromH5='1'></productCell>
@@ -120,7 +136,6 @@
 				productId: '',
 				data: {
 					productAffixList: [],
-					level: ''
 				},
 				scrollViewId: '',
 				productinfo_url: '',
@@ -130,7 +145,13 @@
 				gongneng_url: '',
 				anli_url: '',
 				fromH5: '',
-				keyWord: ''
+				keyWord: '',
+				level: '',
+				
+				yongtu_url: '',
+				tedian_url: '',
+				shiyong_url: '',
+				canshu_url: '',
 			}
 		},
 		onLoad(option) {
@@ -176,7 +197,8 @@
 				}).then(res => {
 					console.log(res);
 					this.data = res.data.data;
-
+					
+					this.level = this.data.level || ''
 					this.productinfo_url = this.data.productinfo_url;
 					if (!Vue.prototype.isEmpty(this.data.jiagou_url)) {
 						this.tabBars.push({
@@ -198,6 +220,16 @@
 							this.tabIndexId = 'zucheng_url';
 						}
 					}
+					if (!Vue.prototype.isEmpty(this.data.yongtu_url)) {
+						this.tabBars.push({
+							name: '用途',
+							id: 'yongtu_url'
+						})
+						this.yongtu_url = this.data.yongtu_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'yongtu_url';
+						}
+					}
 					if (!Vue.prototype.isEmpty(this.data.youshi_url)) {
 						this.tabBars.push({
 							name: '优势',
@@ -216,6 +248,36 @@
 						this.gongneng_url = this.data.gongneng_url;
 						if (this.tabIndexId == '') {
 							this.tabIndexId = 'gongneng_url';
+						}
+					}
+					if (!Vue.prototype.isEmpty(this.data.tedian_url)) {
+						this.tabBars.push({
+							name: '特点',
+							id: 'tedian_url'
+						})
+						this.tedian_url = this.data.tedian_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'tedian_url';
+						}
+					}
+					if (!Vue.prototype.isEmpty(this.data.shiyong_url)) {
+						this.tabBars.push({
+							name: '使用',
+							id: 'shiyong_url'
+						})
+						this.shiyong_url = this.data.shiyong_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'shiyong_url';
+						}
+					}
+					if (!Vue.prototype.isEmpty(this.data.canshu_url)) {
+						this.tabBars.push({
+							name: '参数',
+							id: 'canshu_url'
+						})
+						this.canshu_url = this.data.canshu_url;
+						if (this.tabIndexId == '') {
+							this.tabIndexId = 'canshu_url';
 						}
 					}
 					if (!Vue.prototype.isEmpty(this.data.anli_url)) {

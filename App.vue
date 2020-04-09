@@ -6,6 +6,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			this.getSystemInfo();
+			// console.log = function() {}
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -13,9 +14,11 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+			// console.log = function() {}
 		},
 		onError: function(e) {
 			console.log(e)
+			// console.log = function() {}
 		},
 		methods:{
 			getSystemInfo(){

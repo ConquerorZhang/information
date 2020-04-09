@@ -331,6 +331,10 @@
 						this.data.hasmore = true;
 					}
 					this.data.datalsit = this.data.datalsit.concat(res.data.data);
+					// uni.showModal({
+					// 	title:'列表数据',
+					// 	content:this.data.datalsit
+					// })
 					uni.stopPullDownRefresh();
 					// this.data.datalsit=[];
 					// console.log(this.data.datalsit);

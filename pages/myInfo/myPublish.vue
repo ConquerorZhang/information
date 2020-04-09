@@ -443,6 +443,9 @@
 			},
 			//筛选菜单返回结果
 			result(val) {
+				uni.showToast({
+					title:'1111'
+				})
 				console.log('filter_result:' + JSON.stringify(val));
 				// this.filterResult = JSON.stringify(val, null, 2)
 				this.filtertype = val.part;
@@ -456,6 +459,9 @@
 			},
 			//排序菜单返回结果
 			sortresult(val) {
+				uni.showToast({
+					title:'222'
+				})
 				console.log('sortresult-filter_result:' + JSON.stringify(val));
 				this.orderBy = val.sort;
 				this.isAsc = "desc" == this.isAsc ? "asc" : "desc";

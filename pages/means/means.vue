@@ -235,19 +235,24 @@
                     title: '提示',
                     confirmColor: '#fa436a',
                     content: '是否确定清空',
-                    success: function(res) {
-                        API.deletealthistory({
-                        }).then(res => {
-                            if (res.data.code == 0) {
-                                page_this.historyList = [];
-                            }
-                        }).catch(err => {
-                            console.log(err);
-                        })
+                    success: function(re) {
+						if(re.confirm){
+							API.deletealthistory({
+							}).then(res => {
+							    if (res.data.code == 0) {
+							        page_this.historyList = [];
+							    }
+							}).catch(err => {
+							    console.log(err);
+							})
+						}
                     }
                 });
             },
 
+			deleteall(){
+				
+			},
             godetile() {
                 if (this.delstar) {} else {
                     uni.navigateTo({

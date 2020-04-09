@@ -21,7 +21,7 @@
                         <text v-for="(item, index) in lv1list" @click="product_cli(item.id, index)" :class="item.id == productId ? 'x item' : 'item'">{{ item.productName }}</text>
                     </scroll-view>
                     <!-- 筛选组件 -->
-                    <sl-filter :independence="true" :menuList.sync="menuList" @sortresult="sortresult" @result="result"></sl-filter>
+                    <slFilter :independence="true" :menuList.sync="menuList" :color="titleColor" :themeColor="themeColor" @result="result"  @sortresult="sortresult"></slFilter>
                 </view>
             </view>
         </view>
@@ -85,6 +85,9 @@ export default {
             innerVersion: '',
             kg: false,
             gdleft: [],
+			themeColor: '#333',
+			titleColor: '#333',
+			filterResult: '',
             menuList: [
                 {
                     title: '全部',
@@ -212,6 +215,9 @@ export default {
             this.getFileList('Refresh');
         },
         result(param) {
+			// uni.showToast({
+			// 	title:param['key_type']
+			// });
             //选择后 展示 title
             let title = param['key_type'] != '' ? param['key_type'] : '全部';
             this.$set(this.menuList[0], 'title', title);

@@ -22,6 +22,9 @@
 				'key': 'inner'
 			});
 		},
+		onBackPress(){
+			uni.$emit('interation$publishback',{'result':'success'})
+		},
 		methods: {
 			checkMyPublish() {
 				uni.navigateTo({

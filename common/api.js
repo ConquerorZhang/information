@@ -44,7 +44,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		
 	// })
 	//todozcc临时的token
-	// let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjI4NTY1LCJleHAiOjE1ODgzMjY3MzIsInVzZXJuYW1lIjoi5p2O5pmo5YWJIn0.6cldDee3JETJHe8iBSNoRO5MPjUJq-GDhsASKgYX0vg';
+	// let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjI1LCJleHAiOjE1ODg0ODgxMzYsInVzZXJuYW1lIjoi6Jab6ZSh5Zu9In0.Hx7ykSXs-o-X2XUcA7RUfhI0pAfqokb7ofw7dNWQGnk';
 	
 	let Authorization = '';
 	if(Vue.prototype.isEmpty(Vue.config.configDic.Authorization)){
@@ -52,7 +52,6 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		setTimeout(()=>{
 			Authorization = Vue.config.configDic.Authorization;
 		},1000);
-		
 	}else{
 		Authorization = Vue.config.configDic.Authorization;
 	}

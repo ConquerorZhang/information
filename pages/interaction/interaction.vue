@@ -282,6 +282,7 @@
 			},
 			//页面跳转到发布
 			navToPublish(item) {
+				uni.$once('interation$publishback',this.publishback);
 				uni.navigateTo({
 					url: '/pages/interaction/publish'
 				})
@@ -360,6 +361,11 @@
 					currrenIndex: -1
 				};
 				this.page = 1;
+			},
+			//发布完成回调函数
+			publishback(){
+				this.resetData();
+				setTimeout(this.getlistdata(1), 5000);
 			},
 			//详情回调函数
 			detailBack(data) {

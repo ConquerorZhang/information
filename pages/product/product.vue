@@ -324,7 +324,7 @@
 						console.log(err);
 					})
 				} else {
-					API.interactionCollect({
+					API.interactionUnCollect({
 						bizKey: this.data.id,
 						collectType: 'product'
 					}).then(res => {

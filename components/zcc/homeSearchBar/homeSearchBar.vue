@@ -70,9 +70,9 @@
 				});
 				this.searchVal = ""
 				// this.show = true;
-				this.$nextTick(() => {
-					this.showSync = true;
-				})
+				// this.$nextTick(() => {
+				// 	this.showSync = true;
+				// })
 			},
 			clear() {
 				this.searchVal = ""

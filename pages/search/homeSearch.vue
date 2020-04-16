@@ -10,9 +10,10 @@
 			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 
 			<homeSearchBar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" 
-			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel" :initShowClose=initShowClose></homeSearchBar>
+			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel" :initShowClose=initShowClose>
+			 </homeSearchBar>
 
-			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
+			 <!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
 			<!-- <view class="input-box">
 				<input type="text" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
@@ -157,8 +158,7 @@
 			//监听输入
 			inputChange(event) {
 				//兼容引入组件时传入参数情况
-				console.log("------------inputChange:"+event.value)
-				var keyword = event ? event.value : event;
+				var keyword = event ? event.value : '';
 				console.log(event.value);
 				if (!keyword) {
 					this.keywordList = [];
@@ -221,6 +221,7 @@
 			},
 			//执行搜索
 			doSearch(key) {
+				console.log("------------------doSearch")
 				key = key ? key : this.keyword ? this.keyword : this.defaultKeyword;
 				// this.keyword = key.value;
 				this.saveKeyword(key); //保存为历史 
@@ -236,6 +237,7 @@
 			},
 			doSearchhha() {
 				// console.log(event.target.value);
+				console.log("---------------doSearchhha-")
 				this.doSearch(this.keyword);
 			},
 			//保存关键字到历史记录

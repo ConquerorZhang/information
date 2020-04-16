@@ -15,11 +15,20 @@
 				</view>
 			</view>
 		</view>
-		<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}"/>
+		<view class="titlecotent">
+			<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}" />
+			<view class="tnumcount">{{gettitlenum}}
+				<p :style="{color:'#747474','font-size':'30rpx' , 'display':'inline'}">/50</p>
+			</view>
+		</view>
 		<view class="lineView"></view>
 		<view class="contentView">
-			<textarea class="content" type="text" v-model="contentText" placeholder="说点什么好呢,用心分享会得到更多互动哦" />
-			</view>
+			<textarea class="content" maxlength="200" type="text" v-model="contentText" placeholder="说点什么好呢,用心分享会得到更多互动哦" />
+			
+		</view>
+		<view class="cnumcount_all">
+			<view class="cnumcount">{{getcontentnum}}<p :style="{color:'#747474','font-size':'30rpx' , 'display':'inline'}">/200</p></view>
+		</view>
 		<view class="uni-uploader__files">
 			<block v-for="(image,index) in imageList" :key="index">
 				<view class="uni-uploader__file" style="position: relative;">
@@ -93,6 +102,14 @@
 					'key': 'innerSelf'
 				});
 			},1000)
+		},
+		computed:{
+			gettitlenum(){
+				return this.titleText.length+'';
+			},
+			getcontentnum(){
+				return this.contentText.length+'';
+			}
 		},
 		methods: {
 			back() {
@@ -363,13 +380,21 @@
 					width: 20%;
 					height: 100%;
 					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+					margin: 0 20rpx 0 0;
+					
 					
 					.rightText{
 				
 						color: #EB5248;
-						font-size: 30rpx;
-						padding: 10rpx 10rpx;
-						
+						font-size: 25rpx;
+						border: 1rpx solid #EB5248;
+						border-radius: 10rpx;
+						text-align: center;
+						align-items: center;
+						padding: 5rpx 10rpx;
 					}
 				}
 				
@@ -377,11 +402,27 @@
 		}
 		
 		
-		
-		.title {
-			font-size: 40rpx;
-			font-weight: 600;
+		.titlecotent{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			
+			
+			.title {
+				width: 100%;
+				font-size: 40rpx;
+				font-weight: 600;
+				padding: 0 10rpx;
+			}
+			
+			.tnumcount{
+				font-size: 30rpx;
+				color: #c1c1c1;
+				padding: 0 10rpx 0 0;
+			}
 		}
+		
 		.lineView {
 			margin: 20rpx 0;
 			border-bottom: 0.5rpx solid #C0C0C0;
@@ -395,7 +436,20 @@
 				height:300upx;
 				margin-bottom: 20rpx;
 			}
+			
 		}
+		.cnumcount_all{
+			height: 50rpx;
+			position: relative;
+			
+			.cnumcount{
+				position: absolute;
+				right: 10rpx;
+				font-size: 30rpx;
+				color: #c1c1c1;
+			}
+		}
+		
 		
 		.uni-uploader__files {
 			display: flex;

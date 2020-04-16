@@ -1,7 +1,7 @@
 <template>
     <view class="conter">
         <view class="detaile">
-            <view class="title">{{detailData.docName.split(".")[0]}}</view>
+            <view class="title">{{detailData.docName}}</view>
             <view class="time">{{detailData.createTime}}</view>
             <view class="tips">
                 <image src="../../static/my.png" mode="aspectFit"></image>

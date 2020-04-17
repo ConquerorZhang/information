@@ -15,8 +15,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="titlecotent">
-			<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}" />
+		<view class="titlecotent" v-bind:style="{'margin-top':(parseFloat(statusBarHeight)+60) +'rpx'}" >
+			<input class="title" type="text" v-model="titleText" placeholder="添加标题会有更多人看呦～" maxlength="50" />
 			<view class="tnumcount">{{gettitlenum}}
 				<p :style="{color:'#747474','font-size':'30rpx' , 'display':'inline'}">/50</p>
 			</view>

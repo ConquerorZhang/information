@@ -8,7 +8,7 @@
             <view class="means-item" v-for="(item,index) in downloadList">
                 <image :src="item.doctypeImageUrl" mode="aspectFit"></image>
                 <view class="con">
-                    <view class="title">{{item.docName.split(".")[0]}}</view>
+                    <view class="title">{{item.docName}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
                 <view class="tip" v-if="delstar == false">{{item.percentage}}</view>
@@ -20,7 +20,7 @@
                 	
                 </view>
                 <view class="con">
-                    <view class="title">{{item.docName.split(".")[0]}}</view>
+                    <view class="title">{{item.docName}}</view>
                     <view class="time">{{item.createTime}}</view>
                 </view>
                 <view class="tip" v-if="delstar == false">完成</view>

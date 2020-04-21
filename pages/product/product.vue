@@ -460,13 +460,12 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					height: 90rpx;
-					// line-height: 90rpx;
 					margin-bottom: -30rpx;
 
 					.title {
 						margin-left: 20rpx;
 						width: 570rpx;
+						padding: 20rpx 0;
 					}
 
 					.collectPart {

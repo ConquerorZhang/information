@@ -5,7 +5,7 @@
 				<image :src="data.doctypeImageUrl" mode="scaleToFill"></image>
 				<view class="title">{{data.docName}}</view>
 			</view>
-			<image v-if="progress == ''" class="downLoadImage" src="../../static/docs/down.png" mode="scaleToFill" @click.stop="downLoad(data.fullDocUrl)"></image>
+			<image v-if="progress == ''" class="downLoadImage" src="../../../static/docs/down.png" mode="scaleToFill" @click.stop="downLoad(data.fullDocUrl)"></image>
 			<view v-else class="progressView">{{progress.length > 3 ? '完成' : progress}}</view>
 		</view>
 		<view class="bottomPart">

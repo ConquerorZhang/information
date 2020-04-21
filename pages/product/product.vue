@@ -325,8 +325,8 @@
 					})
 				} else {
 					API.interactionUnCollect({
-						bizKey: this.data.id,
-						collectType: 'product'
+						bizkey: this.data.id,
+						collecttype: 'product'
 					}).then(res => {
 						console.log(res);
 						this.data.collect = false;

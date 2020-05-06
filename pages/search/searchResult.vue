@@ -85,7 +85,7 @@
 	var util = require('../../common/bridge.js');
 	import homeSearchBar from "@/components/zcc/homeSearchBar/homeSearchBar.vue"
 	import downLoadCell from "@/components/zcc/downLoadCell/downLoadCell.vue"
-	import productCell from "@/components/zcc/productCell/productCell.vue"
+	import productCell from "@/components/zcc/productCell/productCell_searchresult.vue"
 	
 	export default {
 		components: {

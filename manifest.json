@@ -90,6 +90,9 @@
             "treeShaking" : {
                 "enable" : true
             }
+        },
+        "devServer" : {
+            "https" : false
         }
     }
 }

@@ -6,14 +6,12 @@
 		<view class="statusBar"></view>
 
 		<view class="search-box">
-			<!-- mSearch组件 如果使用原样式，删除组件元素-->
-			<!-- <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch> -->
 
-			<homeSearchBar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" 
+			<homeSearchBar class="mSearch-input-box" radius="100" :placeholder="defaultKeyword" @input="inputChange" :v-model="keyword"
 			 @confirm="doSearchhha" confirm-type="search" @cancel="cancel" :initShowClose=initShowClose>
-			 </homeSearchBar>
+			</homeSearchBar>
 
-			 <!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
+			<!-- <view class="search-btn" @tap="doSearch(false)">搜索</view> -->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
 			<!-- <view class="input-box">
 				<input type="text" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
@@ -87,7 +85,7 @@
 <script>
 	const API = require('../../common/api.js');
 	var util = require('../../common/bridge.js');
-	import homeSearchBar from "../../components/zcc/homeSearchBar/homeSearchBar.vue"//搜索框
+	import homeSearchBar from "../../components/zcc/homeSearchBar/homeSearchBar.vue" //搜索框
 	//引用mSearch组件，如不需要删除即可
 	export default {
 		components: {
@@ -102,7 +100,7 @@
 				keywordList: [],
 				forbid: '',
 				isShowKeywordList: false,
-				fromH5: '',//判断H5的返回
+				fromH5: '', //判断H5的返回
 				initShowClose: true,
 			}
 		},
@@ -124,7 +122,7 @@
 			loadDefaultKeyword() {
 				//定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
 				this.defaultKeyword = "关键字搜索";
-				this.keyword = 'keyword';
+				this.keyword = '';
 			},
 			//加载历史搜索,自动读取本地Storage
 			loadOldKeyword() {
@@ -141,31 +139,32 @@
 				//定义热门搜索关键字，可以自己实现ajax请求数据再赋值
 				this.hotKeywordList = [];
 				API.HomeHotSearch({
-					
-				}).then(res=>{
+
+				}).then(res => {
 					console.log(res);
 					// let d = [];
-					if(res.data.data.length>0){
+					if (res.data.data.length > 0) {
 						let d = res.data.data;
 						d.forEach((item) => {
 							this.hotKeywordList.push(item.keywords);
 						})
 					}
-				}).catch(err=>{
+				}).catch(err => {
 					console.log(err);
 				})
 			},
 			//监听输入
 			inputChange(event) {
 				//兼容引入组件时传入参数情况
-				var keyword = event ? event.value : '';
+				console.log(event);
+				var keywordw = event ? event.value : '';
 				console.log(event.value);
-				if (!keyword) {
+				if (!keywordw) {
 					this.keywordList = [];
 					this.isShowKeywordList = false;
 					return;
 				}
-				this.keyword = keyword;
+				this.keyword = keywordw;
 				// this.isShowKeywordList = true;
 				//以下示例截取淘宝的关键字，请替换成你的接口
 				// this.keywordList = [{keyword:'哈哈'},{keyword:'完美'},{keyword:'哈哈好的'},{keyword:'真的不错'},{keyword:'啦啦啦啦啦'}]
@@ -213,7 +212,7 @@
 						}
 					}
 				});
-				
+
 			},
 			//热门搜索开关
 			hotToggle() {
@@ -222,7 +221,8 @@
 			//执行搜索
 			doSearch(key) {
 				console.log("------------------doSearch")
-				key = key ? key : this.keyword ? this.keyword : this.defaultKeyword;
+				key = key ? key : this.keyword ;
+				// key = key ? key : this.keyword ? this.keyword : this.defaultKeyword;
 				// this.keyword = key.value;
 				this.saveKeyword(key); //保存为历史 
 				// uni.showToast({
@@ -232,16 +232,22 @@
 				// });
 				this.defaultKeyword = key;
 				uni.navigateTo({
-					url:'./searchResult?keyword='+key
+					url: './searchResult?keyword=' + key
 				})
 			},
 			doSearchhha() {
 				// console.log(event.target.value);
 				console.log("---------------doSearchhha-")
+				if(this.keyword === "关键字搜索"){
+					this.keyword = ' ';
+				}
 				this.doSearch(this.keyword);
 			},
 			//保存关键字到历史记录
 			saveKeyword(keyword) {
+				if(keyword === ''){
+					return;
+				}
 				uni.getStorage({
 					key: 'OldKeys',
 					success: (res) => {
@@ -276,12 +282,13 @@
 			cancel() {
 				if (this.fromH5 == 1) {
 					uni.navigateBack({
-						delta:1
+						delta: 1
 					})
-				}
-				else {
+				} else {
 					// util.bridgeAndroidAndIOS({'key':'close'});
-					this.callHandler('ObjC Echo',{'key':'close'});
+					this.callHandler('ObjC Echo', {
+						'key': 'close'
+					});
 				}
 			},
 		}

@@ -44,7 +44,7 @@ const MyAPI = (url, needSubDomain, method, data) => {
 		
 	// })
 	//todozcc临时的token
-	// let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjI1LCJleHAiOjE1ODg0ODgxMzYsInVzZXJuYW1lIjoi6Jab6ZSh5Zu9In0.Hx7ykSXs-o-X2XUcA7RUfhI0pAfqokb7ofw7dNWQGnk';
+	// let Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjkyODQzLCJleHAiOjE1ODg4MjI4OTgsInVzZXJuYW1lIjoi6Jab6ZSh5Zu9In0.cbZv6RcUTy2MHhVPANU1p1wBmPM7TenbzIGX8iUVbvo';
 	
 	let Authorization = '';
 	if(Vue.prototype.isEmpty(Vue.config.configDic.Authorization)){

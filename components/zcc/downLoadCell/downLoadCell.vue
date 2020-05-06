@@ -23,7 +23,9 @@
 		props: {
 			data: {
 				type: Object,
-				default: {}
+				default(){
+					return {}
+				}
 			},
 		},
 		data() {
@@ -37,8 +39,12 @@
 				this.callHandlerBack("native_download", {
 				     'downloadUrl': this.data.fullDocUrl,'contentDisposition':'文件描述','mimeType':'','fileId':this.data.id,'filename':this.data.docName
 				    },function(responseData) {
+						if("100%" === responseData){
+							that.data.downloadCount = (parseInt(that.data.downloadCount)+1)+'';
+						}
 						that.reFreshProgress(responseData)//更新值用
 						this.progress = responseData;//有一句话就行，不知原因
+						
 				   })
 			},
 			openFile(fileName) {
